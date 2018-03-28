@@ -1,4 +1,2 @@
 *.retry
-group_vars/*
-inventory/*
 roles/*
