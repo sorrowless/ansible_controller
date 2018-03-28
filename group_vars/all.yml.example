@@ -25,7 +25,7 @@ sshd:
 iptables:
   group_allowed_tcp_ports: [909]
 
-server_common:
+server_common_group:
   dns_hostname: rusty
   users:
     - name: sbog
