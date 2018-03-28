@@ -1,0 +1,20 @@
+---
+- src: https://github.com/sorrowless/ansible_openvpn.git
+  version: master
+  name: openvpn
+
+- src: https://github.com/sorrowless/ansible_letsencrypt.git
+  version: master
+  name: letsencrypt
+
+- src: willshersystems.sshd
+  version: 0.5.1
+  name: sshd
+
+- src: https://github.com/sorrowless/ansible_iptables.git
+  version: master
+  name: iptables
+
+- src: https://github.com/sorrowless/ansible_server_common.git
+  version: master
+  name: server_common

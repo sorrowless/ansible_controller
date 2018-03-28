@@ -1,0 +1,10 @@
+---
+- name: Configure target servers
+  hosts: all
+  remote_user: root
+
+  roles:
+    - { role: server_common, tags: ['common'] }
+    - { role: iptables, tags: ['iptables'] }
+    - { role: sshd, tags: ['sshd'] }
+
