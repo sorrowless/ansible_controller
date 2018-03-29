@@ -17,7 +17,7 @@ None
 This will install all needed roles to `roles` directory:
 
 ```
-ansible-galaxy install -r get-all-roles.yml -p roles/
+./tools/get-roles.sh
 ```
 
 Then you just need to create according group/host vars, inventory files and run
