@@ -24,6 +24,7 @@ sshd:
 
 iptables:
   group_allowed_tcp_ports: [909]
+  flush_all: True
 
 server_common_group:
   dns_hostname: rusty
