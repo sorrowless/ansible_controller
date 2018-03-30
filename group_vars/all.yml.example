@@ -29,7 +29,8 @@ iptables:
 server_common_group:
   dns_hostname: rusty
   users:
-    - name: sbog
+    sbog:
+      name: sbog
       comment: "Administrator. Ask anything at sbog@sbog.ru."
       groups: sudo
       remove: no
@@ -39,7 +40,8 @@ server_common_group:
       ssh_keys:
         - name: https://github.com/sorrowless.keys
           state: present
-    - name: deployer
+    deployer:
+      name: deployer
       comment: "Deployment account. Ask anything at sbog@sbog.ru."
       groups: sudo
       remove: no
