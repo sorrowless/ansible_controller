@@ -18,3 +18,7 @@
 - src: https://github.com/sorrowless/ansible_server_common.git
   version: master
   name: server_common
+
+- src: https://github.com/sorrowless/sensu-ansible.git
+  version: master
+  name: sensu

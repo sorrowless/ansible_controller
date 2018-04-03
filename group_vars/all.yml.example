@@ -51,3 +51,14 @@ server_common_group:
       ssh_keys:
         - name: https://github.com/sorrowless.keys
           state: present
+
+# Global Sensu role variables
+static_data_store: "{{ playbook_dir }}/roles/sensu/files/data/static"
+dynamic_data_store: "{{ playbook_dir }}/roles/sensu/files/data/store"
+sensu_remote_plugins:
+  - "cpu-checks"
+  - "memory-checks"
+  - "disk-checks"
+  - "entropy-checks"
+  - "load-checks"
+  - "uptime-checks"

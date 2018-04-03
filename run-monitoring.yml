@@ -1,0 +1,10 @@
+---
+# To run this, you **MUST** have a group in inventory names
+# 'sensu_masters' which will have all Sensu master hosts
+- name: Install and configure Sensu alerting
+  hosts: all
+  remote_user: root
+
+  roles:
+    - { role: sensu, tags: ['sensu'] }
+

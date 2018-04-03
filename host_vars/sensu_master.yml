@@ -1,0 +1,10 @@
+---
+# Sensu-master-related vars
+sensu_master: true
+sensu_include_dashboard: true
+rabbitmq_server: true
+redis_server: true
+# On master rabbitmq will connect to 127.0.0.1
+rabbitmq_host: 127.0.0.1
+redis_host: 127.0.0.1
+sensu_api_host: 127.0.0.1
