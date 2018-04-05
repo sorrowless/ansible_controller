@@ -24,7 +24,7 @@ sshd:
 
 iptables:
   group_allowed_tcp_ports: [909]
-  flush_all: True
+  flush_all: False
 
 server_common_group:
   dns_hostname: rusty
@@ -50,7 +50,7 @@ server_common_group:
       password: "$1$blackgol$MzbsNy8WGqrByXJAGJ3bF0"
       ssh_keys:
         - name: https://github.com/sorrowless.keys
-          state: present
+          state: absent
 
 # Global Sensu role variables
 static_data_store: "{{ playbook_dir }}/roles/sensu/files/data/static"
@@ -65,7 +65,7 @@ sensu_remote_plugins:
   - "uptime-checks"
   - "network-checks"
   - "redis"
-uchiwa_dc_name: "DC"
-rabbitmq_host: master.host  <<
-redis_host: master.host     << Change all of these with your master IP
-sensu_api_host: master.host <<
+uchiwa_dc_name: "Rusty DC"
+rabbitmq_host: rusty.host
+redis_host: rusty.host
+sensu_api_host: rusty.host
