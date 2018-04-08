@@ -69,3 +69,6 @@ uchiwa_dc_name: "DC"
 rabbitmq_host: master.host  <<
 redis_host: master.host     << Change all of these with your master IP
 sensu_api_host: master.host <<
+uchiwa_users:
+  - username: admin
+    password: admin
