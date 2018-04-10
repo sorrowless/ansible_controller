@@ -1,2 +1,3 @@
 *.retry
 roles/*
+group_vars/all.yml
