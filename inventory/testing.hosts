@@ -19,3 +19,6 @@ master
 [common_checks]
 master
 slave
+
+[webservers]
+[mysql_server]

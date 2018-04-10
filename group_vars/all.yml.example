@@ -72,3 +72,10 @@ sensu_api_host: master.host <<
 uchiwa_users:
   - username: admin
     password: admin
+sensu_slack:
+  webhook_url: "some hook"
+  channel: "#alerts"
+  bot_name: "Monitor"
+sensu_telegram:
+  bot_token: "token here"
+  chat_id: "chat id number here"

@@ -1,4 +1,30 @@
 ---
+ansible_host: <hostname here>  <--- MUST BE CHANGED
+ansible_port: 22
+ansible_user: deployer
+ansible_become: true
+
+# Hosts name
+server_common_host:
+  dns_hostname: "monitor"
+  packages:
+    - atop
+    - sysstat
+    - iotop
+    - iftop
+    - python
+    - git
+    # We need these for building telegram sensu plugin
+    - gcc
+    - make
+    - "g++"
+
+# Iptables rules
+iptables:
+  # Beware about just opening rmq ports w/o firewalling them
+  host_allowed_tcp_ports: [22, 5671, 5672]
+  flush_all: False
+
 # Sensu-master-related vars
 sensu_master: true
 sensu_include_dashboard: true
@@ -8,3 +34,14 @@ redis_server: true
 rabbitmq_host: 127.0.0.1
 redis_host: 127.0.0.1
 sensu_api_host: 127.0.0.1
+sensu_remote_plugins:
+  - "cpu-checks"
+  - "memory-checks"
+  - "disk-checks"
+  - "entropy-checks"
+  - "load-checks"
+  - "uptime-checks"
+  - "network-checks"
+  - "redis"
+  - "slack"
+  - "telegram"
