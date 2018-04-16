@@ -1,0 +1,12 @@
+---
+- name: Configure target servers
+  hosts: jenkins
+  remote_user: root
+
+  roles:
+    - role: java
+      java_packages:
+        - openjdk-8-jdk
+      tags:
+        - java
+    - role: jenkins
