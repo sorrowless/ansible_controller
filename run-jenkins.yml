@@ -9,4 +9,6 @@
         - openjdk-8-jdk
       tags:
         - java
-    - role: jenkins
+    - { role: jenkins, tags: ['jenkins'] }
+    - { role: letsencrypt, tags: ['tls', 'nginx'] }
+    - { role: nginx, tags: ['nginx'] }
