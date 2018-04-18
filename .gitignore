@@ -2,3 +2,4 @@
 roles/*
 group_vars/all.yml
 inventory/testing.hosts
+host_vars/test.yml

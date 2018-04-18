@@ -12,7 +12,7 @@ server_common_host:
 iptables:
   # Beware about just opening rmq ports w/o firewalling them
   host_allowed_tcp_ports: [22, 80, 443]
-  flush_all: True
+  flush_all: false
 
 # LetsEncrypt vars
 le_hostname: "{{ ansible_host }}"
