@@ -1,25 +1,25 @@
-master
+test
 
 [redis_servers]
-master
+test
 
 [rabbitmq_servers]
-master
+test
 
-[sensu_masters]
-master
+[sensu_tests]
+test
 
 [graphite]
-master
+test
 
 [grafana]
-master
+test
 
 [common_checks]
-master
+test
 
 [webservers]
 [mysql_server]
 
 [jenkins]
-master
+test
