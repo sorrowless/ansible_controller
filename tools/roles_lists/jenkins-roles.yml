@@ -1,0 +1,17 @@
+---
+- src: geerlingguy.java
+  version: 1.7.7
+  name: java
+
+- src: geerlingguy.jenkins
+  version: 3.3.1
+  name: jenkins
+
+- src: https://github.com/sorrowless/ansible_letsencrypt.git
+  version: master
+  name: letsencrypt
+
+- src: jdauphant.nginx
+  version: v2.17.1
+  name: nginx
+
