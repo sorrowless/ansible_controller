@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-function get_roles() {
+function get_roles {
   ROLE_PATH="tools/roles_lists/$1"
   echo "Reading $ROLE_PATH list"
   if ! grep -q src $ROLE_PATH; then

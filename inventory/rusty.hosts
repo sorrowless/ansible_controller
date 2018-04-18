@@ -1,0 +1,25 @@
+master ansible_host=rusty.host ansible_user=sbog ansible_become=yes
+
+[redis_servers]
+master
+
+[rabbitmq_servers]
+master
+
+[sensu_masters]
+master
+
+[graphite]
+master
+
+[grafana]
+master
+
+[common_checks]
+master
+
+[webservers]
+[mysql_server]
+
+[jenkins]
+master
