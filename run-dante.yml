@@ -1,0 +1,7 @@
+---
+- name: Install Dante proxy to target servers
+  hosts: dante
+  remote_user: root
+
+  roles:
+    - { role: dante, tags: ['dante'] }
