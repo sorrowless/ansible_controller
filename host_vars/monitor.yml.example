@@ -45,3 +45,8 @@ sensu_remote_plugins:
   - "redis"
   - "slack"
   - "telegram"
+  - "systemd"
+
+sensu_systemd:
+  - "openvpn@openvpn.service"
+  - nginx.service

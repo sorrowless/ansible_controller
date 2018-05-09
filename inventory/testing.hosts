@@ -6,7 +6,7 @@ test
 [rabbitmq_servers]
 test
 
-[sensu_tests]
+[sensu_masters]
 test
 
 [graphite]
@@ -25,4 +25,7 @@ test
 test
 
 [dante]
+test
+
+[mysql]
 test

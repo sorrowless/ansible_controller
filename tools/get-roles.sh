@@ -10,6 +10,11 @@ function get_roles {
   ansible-galaxy install -r $ROLE_PATH -p ./roles/
 }
 
+if ! command -v ansible-galaxy ; then
+  echo "Ansible-galaxy not found, cannot process..."
+  exit 1
+fi
+
 if [ -z $1 ]; then
   echo "No roles arguments was passed, checkout all roles"
   for i in `ls tools/roles_lists/` ; do
