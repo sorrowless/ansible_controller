@@ -1,6 +1,6 @@
 ---
 - name: Install and configure Graylog to the target machine
-  hosts: graylog
+  hosts: graylogs
   remote_user: root
   roles:
     - { name: letsencrypt, tags: letsencrypt }

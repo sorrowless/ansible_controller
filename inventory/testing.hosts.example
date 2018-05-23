@@ -20,6 +20,7 @@ master
 master
 slave
 
+[graylogs]
 [webservers]
 [mysql_server]
 [jenkins]
