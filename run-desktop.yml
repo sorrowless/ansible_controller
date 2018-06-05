@@ -1,0 +1,15 @@
+---
+- name: Install needed desktop things everywhere
+  hosts: all
+  remote_user: root
+  vars_files:
+   - vars/dotfiles_vars.yml
+
+  pre_tasks:
+    - name: Create user {{ username }} if does not exists
+      user:
+        group: "{{ username }}"
+        name: "{{ username }}"
+
+  roles:
+    - desktop_common
