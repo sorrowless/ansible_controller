@@ -1,4 +1,10 @@
 ---
+- name: Get needed TLS certificates
+  hosts: mx
+  remote_user: root
+  roles:
+    - { role: letsencrypt, tags: ['tls', 'nginx'] }
+
 - name: Install MySQL
   hosts: mx
   remote_user: root
@@ -7,15 +13,18 @@
 
 - name: Install postfix MTA
   hosts: mx
+  remote_user: root
   roles:
     - { role: postfix, tags: ['postfix'] }
 
 - name: Install dovecot MDA
   hosts: mx
+  remote_user: root
   roles:
     - { role: dovecot, tags: ['dovecot'] }
 
 - name: Install Rainloop web-client
   hosts: mx
+  remote_user: root
   roles:
     - { role: rainloop, tags: ['rainloop'] }
