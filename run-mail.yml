@@ -1,0 +1,21 @@
+---
+- name: Install MySQL
+  hosts: mx
+  remote_user: root
+  roles:
+    - { role: mysql, tags: ['mysql'] }
+
+- name: Install postfix MTA
+  hosts: mx
+  roles:
+    - { role: postfix, tags: ['postfix'] }
+
+- name: Install dovecot MDA
+  hosts: mx
+  roles:
+    - { role: dovecot, tags: ['dovecot'] }
+
+- name: Install Rainloop web-client
+  hosts: mx
+  roles:
+    - { role: rainloop, tags: ['rainloop'] }

@@ -1,0 +1,43 @@
+---
+# Let's Encrypt vars
+le_domains:
+  - mail.example.ru
+  - smtp.example.ru
+  - imap.example.ru
+le_acme_tool: acme.sh
+le_stop_service: nginx
+
+# Mail vars
+mail_domain: example.ru
+mail_hostname: mail.example.ru
+mail_ssl_enabled: true
+check_policy:
+  enabled: true
+  address: "127.0.0.1"
+  port: 10023
+dkim:
+  enabled: false
+  milter_address: "127.0.0.1"
+  milter_port: 8891
+spamassassin:
+  enabled: false
+postfix_db_user: postfix
+postfix_db_password: postfixpassword
+postfix_db_host: "127.0.0.1"
+postfix_db_name: postfix
+mysql_port: 3306
+mysql_bind_address: "127.0.0.1"
+mysql_root_db_pass: mysqlroot
+mysql_users:
+  - name: postfix
+    pass: postfixpassword
+    priv: "postfix.*:ALL"
+  - name: postfixadmin
+    pass: pfxadmpass
+    priv: "postfix.*:ALL"
+mysql_db:
+  - name: postfix
+    replicate: no
+postfixadmin_db_password: pfxadmpass
+postfixadmin_superuser: admin
+postfixadmin_superpass: adminpassword
