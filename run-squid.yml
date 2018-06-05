@@ -1,0 +1,6 @@
+---
+- name: Install Squid on target nodes
+  hosts: squids
+  remote_user: root
+  roles:
+    - squid

@@ -26,3 +26,5 @@ slave
 [jenkins]
 [dante]
 [mysql]
+[squids]
+[mx]
