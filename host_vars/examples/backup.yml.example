@@ -1,0 +1,20 @@
+---
+ansible_host: example.host   <--- MUST BE CHANGED
+ansible_port: 22
+ansible_user: sbog
+ansible_become: true
+
+# Hosts name
+server_common_host:
+  dns_hostname: "backup"
+
+# Iptables rules
+iptables:
+  host_allowed_tcp_ports: [22]
+  flush_all: true
+
+# Rsnapshot vars
+rsnapshot:
+  master: true
+  backups:
+    - "backup_script /usr/bin/ssh backup@host 'echo backup' unused1/"
