@@ -17,4 +17,8 @@ iptables:
 rsnapshot:
   master: true
   backups:
-    - "backup_script /usr/bin/ssh backup@host 'echo backup' unused1/"
+    - "backup_script	/usr/bin/ssh -p<ssh_port> backup@host 'echo backup'	temp_files_host/"
+    - "backup	backup@host:/tmp/some_file	host/	ssh_args=-p <ssh_port>"
+# Rsnapshot wants to have commands be separated *only* by tabs, so set
+# noexpandtab to prevent converting in Vim
+# vim: set noexpandtab:
