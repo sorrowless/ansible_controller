@@ -19,7 +19,7 @@ fluentd_config:
     data:
       - |
         process_name fluentd
-          log_level warning
+        log_level warn
   - directive: source
     data:
       - |
