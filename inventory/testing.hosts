@@ -32,3 +32,6 @@ test
 
 [backups]
 test
+
+[fluentd]
+test

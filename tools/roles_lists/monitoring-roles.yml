@@ -10,3 +10,7 @@
 - src: https://github.com/sorrowless/sensu-ansible.git
   version: master
   name: sensu
+
+- src: https://github.com/sorrowless/ansible_fluentd.git
+  version: master
+  name: fluentd

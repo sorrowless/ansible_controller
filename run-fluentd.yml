@@ -1,0 +1,7 @@
+---
+- name: Configure fluentd
+  hosts: fluentd
+  remote_user: root
+
+  roles:
+    - { role: fluentd, tags: ['fluentd'] }

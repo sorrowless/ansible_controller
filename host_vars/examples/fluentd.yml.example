@@ -1,0 +1,66 @@
+---
+ansible_host: example.host   <--- MUST BE CHANGED
+ansible_port: 22
+ansible_user: sbog
+ansible_become: true
+
+# Hosts name
+server_common_host:
+  dns_hostname: "host"
+
+# Iptables rules
+iptables:
+  host_allowed_tcp_ports: [22]
+  flush_all: true
+
+# Fluentd vars
+fluentd_config:
+  - directive: system
+    data:
+      - |
+        process_name fluentd
+          log_level warning
+  - directive: source
+    data:
+      - |
+        type tail
+          tag access
+          format nginx
+          path /var/log/nginx/access.log
+          pos_file /var/lib/fluentd/pos/nginx-access_log.pos
+  - directive: match
+    directive_filter: access
+    data:
+      - |
+        type datacounter
+          tag count.access
+          unit minute
+          aggregate all
+          count_key code
+          pattern1 error ^5\d\d$
+  - directive: match
+    directive_filter: count.access
+    data:
+      - |
+        type record_reformer
+          tag server_errors
+          enable_ruby true
+          <record>
+            level ${error_count < 5 ? 'OK' : error_count < 50 ? 'WARNING' : 'CRITICAL'}
+          </record>
+  - directive: match
+    directive_filter: server_errors
+    data:
+      - |
+        type sensu
+          server localhost
+          port 3030
+
+          check_name server_errors
+          check_type standard
+          check_status_field level
+          check_ttl 100
+fluentd_plugins:
+  - fluent-plugin-sensu
+  - fluent-plugin-datacounter
+  - fluent-plugin-record-reformer
