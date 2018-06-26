@@ -1,0 +1,8 @@
+---
+- name: Configure target servers
+  hosts: nginx
+  remote_user: root
+
+  roles:
+    - { role: letsencrypt, tags: ['tls'] }
+    - { role: nginx, tags: ['nginx'] }
