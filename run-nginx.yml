@@ -4,10 +4,10 @@
   remote_user: root
 
   pre_tasks:
-    name: Install Nginx
-    package:
-      name: nginx
-      state: latest
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: latest
 
   roles:
     - { role: letsencrypt, tags: ['tls'] }
