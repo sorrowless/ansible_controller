@@ -25,6 +25,10 @@ iptables:
   host_allowed_tcp_ports: [22, 5671, 5672, 8080]
   flush_all: false
 
+# LetsEncrypt vars
+le_hostname: "{{ ansible_host }}"
+le_stop_service: nginx
+
 # Sensu-master-related vars
 sensu_master: true
 sensu_include_dashboard: true
@@ -50,3 +54,9 @@ sensu_remote_plugins:
 sensu_systemd:
   - "openvpn@openvpn.service"
   - nginx.service
+
+sensu_check_tls:
+  - name: "some-cert"
+    path: "/etc/ssl_certs/some.host/fullchain.pem"
+    warntime: 604800
+    crittime: 172800
