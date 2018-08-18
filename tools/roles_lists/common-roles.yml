@@ -2,3 +2,7 @@
 - src: https://github.com/bennojoy/mysql.git
   version: master
   name: mysql
+
+- src: https://github.com/sorrowless/ansible_tls.git
+  version: master
+  name: tls

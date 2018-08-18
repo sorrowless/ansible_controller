@@ -1,0 +1,7 @@
+---
+- name: Configure target servers
+  hosts: tls
+  remote_user: root
+
+  roles:
+    - { role: tls, tags: ['tls'] }

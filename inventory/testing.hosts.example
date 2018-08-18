@@ -30,3 +30,4 @@ slave
 [mx]
 [backups]
 [fluentd]
+[tls]

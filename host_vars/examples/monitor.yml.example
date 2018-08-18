@@ -29,6 +29,12 @@ iptables:
 le_hostname: "{{ ansible_host }}"
 le_stop_service: nginx
 
+# TLS vars
+#tls_host:
+#  target_format: nginx
+#  local_src_key: "key"
+#  local_src_cert: "cert"
+
 # Sensu-master-related vars
 sensu_master: true
 sensu_include_dashboard: true
