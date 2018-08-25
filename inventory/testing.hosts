@@ -44,3 +44,9 @@ test
 
 [tls]
 test
+
+[domain_expiration_checks]
+test
+
+[domain_dns_checks]
+test

@@ -66,6 +66,7 @@ sensu_remote_plugins:
   - "network-checks"
   - "redis"
   - "systemd"
+  - "dns"
 uchiwa_dc_name: "DC"
 rabbitmq_host: master.host  <<
 redis_host: master.host     << Change all of these with your master IP

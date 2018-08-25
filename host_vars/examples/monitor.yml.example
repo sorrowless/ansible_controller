@@ -56,6 +56,7 @@ sensu_remote_plugins:
   - "slack"
   - "telegram"
   - "systemd"
+  - "dns"
 
 sensu_systemd:
   - "openvpn@openvpn.service"
@@ -66,3 +67,11 @@ sensu_check_tls:
     path: "/etc/ssl_certs/some.host/fullchain.pem"
     warntime: 604800
     crittime: 172800
+
+sensu_domain_expiration:
+  domain: "example.com"
+  check_interval: 60
+
+sensu_check_dns:
+  domain: "example.com"
+  ips: "0.0.0.0, 0.0.0.1"
