@@ -1,4 +1,9 @@
 ---
+# In case there is no python symlink in Ubuntu Xenial, you can run this
+# playbook by:
+#
+# ansible-playbook -b run-minimal.yml -e 'ansible_python_interpreter=python3' \
+#   -i <inventory_file>
 - name: Configure target servers
   hosts: all
   remote_user: root
