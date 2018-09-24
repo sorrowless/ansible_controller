@@ -17,7 +17,7 @@
 - name: Install VPN server and create some client certs for it
   hosts: vpn-server
   remote_user: root
-  sudo: yes
+  become: yes
   vars_prompt:
     - name: "clients"
       prompt: "Please enter login name"
