@@ -1,4 +1,6 @@
 ---
+# You can run separate tags on localhost by something like this:
+# ansible-playbook -i 'localhost,' -c local -b -K run-desktop.yml --ask-vault-pass --tags "dotcommon"
 - name: Install needed desktop things everywhere
   hosts: all
   remote_user: root
