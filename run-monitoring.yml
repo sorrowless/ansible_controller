@@ -22,6 +22,24 @@
   roles:
     - { role: sensu, tags: ['sensu'] }
 
+- name: Install and configure Nginx for Uchiwa
+  hosts: sensu_masters
+  remote_user: root
+
+  pre_tasks:
+    - name: Preinstall nginx
+      package:
+        name: nginx
+        state: latest
+      tags: nginx
+
+  roles:
+    - { role: nginx, tags: ['nginx'] }
+    - { role: letsencrypt, tags: ['tls', 'nginx'] }
+
+- name: Configure Sensu hooks
+  hosts: all
+  remote_user: root
   tasks:
     - name: Allow Sensu to run some hooks with sudo
       lineinfile:
@@ -32,3 +50,6 @@
       with_items:
         - regex: '^sensu.*systemctl.*'
           line: 'sensu ALL=(ALL) NOPASSWD: /bin/systemctl *'
+      tags:
+        - sensu
+        - sudoers
