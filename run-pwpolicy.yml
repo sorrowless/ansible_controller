@@ -1,0 +1,7 @@
+---
+- name: Ensure minimal passwords policy on target hosts
+  hosts: all
+  remote_user: root
+
+  roles:
+    - { role: pw_policy, tags: ['security'] }

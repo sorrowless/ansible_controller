@@ -9,6 +9,7 @@
   remote_user: root
 
   roles:
+    - { role: pw_policy, tags: ['security'] }
     - { role: server_common, tags: ['common'] }
     - { role: iptables, tags: ['iptables'] }
     - { role: sshd, tags: ['sshd'] }
