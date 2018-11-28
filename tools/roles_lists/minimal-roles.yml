@@ -11,6 +11,6 @@
   version: master
   name: iptables
 
-- src: willshersystems.sshd
-  version: 0.5.1
+- src: https://github.com/sorrowless/ansible-sshd.git
+  version: master
   name: sshd
