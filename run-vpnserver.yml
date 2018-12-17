@@ -18,10 +18,10 @@
   hosts: vpn-server
   remote_user: root
   become: yes
-  vars_prompt:
-    - name: "clients"
-      prompt: "Please enter login name"
-      private: no
+  #  vars_prompt:
+  #    - name: "clients"
+  #      prompt: "Please enter login name"
+  #      private: no
   roles:
     - openvpn
 

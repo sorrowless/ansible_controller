@@ -50,3 +50,6 @@ test
 
 [domain_dns_checks]
 test
+
+[vpn-server]
+test
