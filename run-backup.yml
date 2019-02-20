@@ -5,3 +5,7 @@
 
   roles:
     - { role: rsnapshot, tags: ['backup'] }
+
+- name: Configure backup notifications
+  import_playbook: run-apprise.yml
+

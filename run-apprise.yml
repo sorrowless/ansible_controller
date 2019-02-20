@@ -1,0 +1,7 @@
+---
+- name: Configure backup
+  hosts: backups
+  remote_user: root
+
+  roles:
+    - { role: apprise, tags: ['backup', 'apprise'] }
