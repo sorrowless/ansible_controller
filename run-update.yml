@@ -1,0 +1,12 @@
+---
+- name: Update and upgrade apt packages
+  hosts: all
+  remote_user: root
+  become: true
+
+  tasks:
+    - name: Run upgrade
+      apt:
+        upgrade: dist
+        update_cache: yes
+        cache_valid_time: 86400 #One day
