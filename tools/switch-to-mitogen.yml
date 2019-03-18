@@ -1,0 +1,34 @@
+---
+- name: Switch to mitogen for current deployment project
+  hosts: localhost
+
+  tasks:
+    - name: Create library directory if it does not exists yet
+      file:
+        state: directory
+        path: ../library
+        mode: 0755
+
+    - name: Download mitogen binary
+      get_url:
+        url: https://files.pythonhosted.org/packages/source/m/mitogen/mitogen-0.2.6.tar.gz
+        dest: ../library/
+        mode: 0644
+
+    - name: Unpack mitogen to library directory
+      unarchive:
+        src: ../library/mitogen-0.2.6.tar.gz
+        dest: ../library/
+        creates: ../library/mitogen-0.2.6
+
+    - name: Ensure mitogen strategies in ansible config
+      lineinfile:
+        path: ../ansible.cfg
+        line: 'strategy_plugins = library/mitogen-0.2.6/ansible_mitogen/plugins/strategy'
+        insertafter: '\[defaults\]'
+
+    - name: Ensure mitogen usage in ansible config
+      lineinfile:
+        path: ../ansible.cfg
+        line: 'strategy = mitogen_linear'
+        insertafter: '^strategy_plugins = .*'
