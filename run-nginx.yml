@@ -10,5 +10,5 @@
         state: latest
 
   roles:
-    - { role: letsencrypt, tags: ['tls'] }
+    - { role: tls, tags: ['tls'] }
     - { role: nginx, tags: ['nginx'] }

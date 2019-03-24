@@ -3,7 +3,7 @@
   hosts: mx
   remote_user: root
   roles:
-    - { role: letsencrypt, tags: ['tls', 'nginx'] }
+    - { role: tls, tags: ['tls', 'nginx'] }
 
 - name: Install MySQL
   hosts: mx

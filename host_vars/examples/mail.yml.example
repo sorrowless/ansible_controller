@@ -1,11 +1,11 @@
 ---
 # Let's Encrypt vars
-le_domains:
-  - mail.example.ru
-  - smtp.example.ru
-  - imap.example.ru
-le_acme_tool: acme.sh
-le_stop_service: nginx
+tls_host:
+  acme_domains:
+    - mail.example.ru
+    - pa.mail.example.ru
+    - smtp.example.ru
+    - imap.example.ru
 
 # Mail vars
 mail_domain: example.ru
@@ -41,3 +41,8 @@ mysql_db:
 postfixadmin_db_password: pfxadmpass
 postfixadmin_superuser: admin
 postfixadmin_superpass: adminpassword
+# Dovecot additional vars
+mx_hosts:
+  - mail.rusty.host
+  - smtp.rusty.host
+  - imap.rusty.host
