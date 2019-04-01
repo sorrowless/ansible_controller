@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to test hosts availability. Just run it as any other executable
+# script and see results:
+#
+# > ./run-ping.yml
+#
+---
+- name: Configure target servers
+  hosts: all
+  remote_user: root
+
+  tasks:
+    - name: ping all nodes
+      ping:
+

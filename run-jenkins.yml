@@ -1,3 +1,12 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run Jenkins with nginx and TLS certificates on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-jenkins.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
 ---
 - name: Configure target servers
   hosts: jenkins
@@ -10,5 +19,5 @@
       tags:
         - java
     - { role: jenkins, tags: ['jenkins'] }
-    - { role: letsencrypt, tags: ['tls', 'nginx'] }
+    - { role: tls, tags: ['tls', 'nginx'] }
     - { role: nginx, tags: ['nginx'] }

@@ -1,6 +1,16 @@
----
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run desktop role on target nodes. Run
+# it like usual executable script:
+#
+# > ./run-desktop.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+#
 # You can run separate tags on localhost by something like this:
 # ansible-playbook -i 'localhost,' -c local -b -K run-desktop.yml --ask-vault-pass --tags "dotcommon"
+---
 - name: Install needed desktop things everywhere
   hosts: all
   remote_user: root

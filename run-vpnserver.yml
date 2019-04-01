@@ -1,8 +1,9 @@
----
+#!/usr/bin/env ansible-playbook
 # VPN playbook. Allows to create full-fledged OpenVPN server and issue
 # client certificates for it.
 #
-# Parameters to pass documented in defaults yml
+# Parameters to pass documented in defaults yml. Also you can look for
+# host_vars/.example directory to see bigger example.
 #
 # Usage examples:
 #
@@ -14,14 +15,14 @@
 # ansible-playbook -i <inventory_file> -b vpn.yml -e 'server_name=domain.name
 #   keys_action=revoke'
 #
+# Also this playbook can be ran like any executable:
+#
+# > ./run-vpnserver.yml
+---
 - name: Install VPN server and create some client certs for it
   hosts: vpn-server
   remote_user: root
   become: yes
-  #  vars_prompt:
-  #    - name: "clients"
-  #      prompt: "Please enter login name"
-  #      private: no
   roles:
     - openvpn
 

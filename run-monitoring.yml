@@ -1,3 +1,22 @@
+#!/usr/bin/env ansible-playbook
+#
+# This is a playbook to install full-fledged monitoring solution based on
+# Sensu. This playbook manages both Sensu master node and slave nodes which
+# should be monitored. Installation itself includes:
+# - Graphite DB to store metrics perstistently
+# - Grafana dashboard to show stored metrics
+# - Sensu master to collect all the metrics from nodes
+# - Sensu agent to be configured on slave nodes which should be monitored
+# - Uchiwa dashboard for looking at alerts happening in real-time
+# - Nginx to proxy to Uchiwa dashboard
+# - TLS role to ensure https connection to Uchiwa dashboard
+#
+# Run it like usual executable script:
+#
+# > ./run-monitoring.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
 ---
 - name: Install and configure Graphite
   hosts: graphite

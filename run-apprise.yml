@@ -1,5 +1,17 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run apprise service on target nodes. Apprise is a
+# small tool which allows one to send messages about something to various
+# services. In my case it usually used to send notifications from backup
+# services to Telegram in case of failed tasks.
+# Run it like usual executable script:
+#
+# > ./run-apprise.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
 ---
-- name: Configure backup
+- name: Configure apprise
   hosts: backups
   remote_user: root
 

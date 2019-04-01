@@ -1,3 +1,12 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run fluentd target nodes. Run
+# it like usual executable script:
+#
+# > ./run-fluentd.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
 ---
 - name: Configure fluentd
   hosts: fluentd

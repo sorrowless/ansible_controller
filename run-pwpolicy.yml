@@ -1,3 +1,12 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to harden target nodes by adding password policies. Run
+# it like usual executable script:
+#
+# > ./run-pwpolicy.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
 ---
 - name: Ensure minimal passwords policy on target hosts
   hosts: all

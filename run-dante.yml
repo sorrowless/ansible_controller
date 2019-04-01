@@ -1,6 +1,15 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run dante proxy server on target nodes. Run
+# it like usual executable script:
+#
+# > ./run-dante.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
 ---
 - name: Install Dante proxy to target servers
-  hosts: dante
+  hosts: dantes
   remote_user: root
 
   roles:

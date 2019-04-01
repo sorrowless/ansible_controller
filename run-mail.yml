@@ -1,3 +1,19 @@
+#!/usr/bin/env ansible-playbook
+#
+# This is a playbook to install full-fledged mail server solution based on
+# Postfix and Dovecot. Installation itself includes:
+# - TLS role to ensure https connection to Uchiwa dashboard
+# - MySQL to store virtual mailboxes
+# - Postfix
+# - Dovecot
+# - Rainloop web-interface
+#
+# Run it like usual executable script:
+#
+# > ./run-mail.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
 ---
 - name: Get needed TLS certificates
   hosts: mx
