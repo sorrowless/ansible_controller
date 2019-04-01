@@ -1,0 +1,54 @@
+---
+ansible_host: <some host name>  <--- must be changed
+ansible_port: 22
+ansible_user: deployer
+ansible_become: true
+
+# Hosts name
+server_common_host:
+  dns_hostname: vpnserver
+
+# Iptables rules
+iptables:
+  host_allowed_tcp_ports: [22, 1494]
+  host_allowed_udp_ports: [1494]
+  flush_all: False
+
+# OpenVPN settings
+real_server_name: "{{ ansible_host }}"
+server_port: 1494
+mail:
+  host: smtp.google.com
+  port: 587
+  user: user-to-auth-in-gmail
+  secret: password-to-auth-in-gmail
+  subject: "VPN configuration"
+  body: "Your new VPN configuration is in attach"
+# Example of clients list:
+# clients:
+#   - name: user
+#     email: user@example.com  # this one is not required
+#     ip_info: "192.168.0.1 255.255.255.0"  # this one is not required
+# Default clients list is empty.
+clients: []
+
+# Sensu checks
+sensu_check_ports:
+  - name: 'ports-world-closed'
+    host: "{{ ansible_host }}"
+    ports: [3030, 3031, 3306, 5432, 6379, 6666]
+    crit_if_open: True
+    timeout: 5
+    check_interval: 180
+  - name: 'ports-world-opened'
+    host: "{{ ansible_host }}"
+    ports: [22]
+    crit_if_open: False
+    timeout: 10
+    check_interval: 60
+  - name: 'ports-local-opened'
+    host: "127.0.0.1"
+    ports: [22, 3030, 3031, 6666]
+    crit_if_open: False
+    timeout: 10
+    check_interval: 60

@@ -1,15 +1,27 @@
 ---
+ansible_host: host  <-- MUST BE CHANGED
+ansible_port: 909
+ansible_user: deployer
+ansible_become: true
+
+iptables:
+  host_allowed_tcp_ports: [22, 25, 80, 143, 443, 465, 587, 909, 993, 995]
+  flush_all: True
+
+domain: example.ru
 # Let's Encrypt vars
 tls_host:
   acme_domains:
-    - mail.example.ru
-    - pa.mail.example.ru
-    - smtp.example.ru
-    - imap.example.ru
+    - "mail.{{ domain }}"
+    - "pa.mail.{{ domain }}"
+    - "smtp.{{ domain }}"
+    - "imap.{{ domain }}"
+    - "pop.{{ domain }}"
+    - "pop3.{{ domain }}"
 
 # Mail vars
-mail_domain: example.ru
-mail_hostname: mail.example.ru
+mail_domain: "{{ domain }}"
+mail_hostname: "mail.{{ domain }}"
 mail_ssl_enabled: true
 check_policy:
   enabled: true
@@ -43,6 +55,6 @@ postfixadmin_superuser: admin
 postfixadmin_superpass: adminpassword
 # Dovecot additional vars
 mx_hosts:
-  - mail.rusty.host
-  - smtp.rusty.host
-  - imap.rusty.host
+  - "mail.{{ domain }}"
+  - "smtp.{{ domain }}"
+  - "imap.{{ domain }}"

@@ -1,7 +1,7 @@
 ---
 ansible_host: example.host   <--- MUST BE CHANGED
 ansible_port: 22
-ansible_user: sbog
+ansible_user: deployer
 ansible_become: true
 
 # Hosts name

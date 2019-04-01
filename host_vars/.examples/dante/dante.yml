@@ -1,0 +1,35 @@
+---
+ansible_host: host  <-- MUST BE CHANGED
+# Example if your host cannot be accessed directly
+#ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q deployer@jumphost"'
+ansible_port: "{{ sshd_port }}"
+ansible_user: deployer
+ansible_become: true
+
+# Hosts name
+server_common_host:
+  dns_hostname: danteserver
+  packages:
+    - "{{ server_common_data.packages }}"
+    - nginx
+
+# Sensu checks
+sensu_check_ports:
+  - name: 'ports-world-closed'
+    host: "{{ ansible_host }}"
+    ports: [3030, 3031, 6379]
+    crit_if_open: True
+    timeout: 5
+    check_interval: 180
+  - name: 'ports-world-opened'
+    host: "{{ ansible_host }}"
+    ports: [22, 1027]
+    crit_if_open: False
+    timeout: 10
+    check_interval: 60
+  - name: 'ports-local-opened'
+    host: "127.0.0.1"
+    ports: [22, 1027, 3030, 3031]
+    crit_if_open: False
+    timeout: 10
+    check_interval: 60

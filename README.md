@@ -21,7 +21,13 @@ This will install all needed roles to `roles` directory:
 ```
 
 Then you just need to create according group/host vars, inventory files and run
-your playbooks.
+your playbooks. Some examples can be found in `host_vars/.examples` directory.
+In case you want to faster deploys there is a playbook which downloads mitogen
+and installed it locally and configures as default strategy. You can run it by
+
+```
+ansible-playbook tools/switch-to-mitogen.yml
+```
 
 #### License
 

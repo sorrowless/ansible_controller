@@ -1,7 +1,7 @@
 ---
 ansible_host: example.host   <--- MUST BE CHANGED
 ansible_port: 22
-ansible_user: sbog
+ansible_user: deployer
 ansible_become: true
 
 # Hosts name
@@ -15,8 +15,14 @@ iptables:
   flush_all: false
 
 # LetsEncrypt vars
-le_hostname: "{{ ansible_host }}"
-le_stop_service: nginx
+tls_host:
+  type: acme
+  target_dir: /etc/ssl_certs/{{ main_host }}/
+  target_format: nginx
+  target_key_name: private.pem
+  target_cert_name: fullchain.pem
+  acme_domains:
+    - "{{ ansible_host }}"
 
 # Nginx-related vars
 nginx_sites:

@@ -1,0 +1,66 @@
+---
+ansible_host: example.host   <--- MUST BE CHANGED
+ansible_port: 22
+ansible_user: deployer
+ansible_become: true
+
+# Hosts name
+server_common_host:
+  dns_hostname: "backup"
+
+# Iptables rules
+iptables:
+  host_allowed_tcp_ports: [22]
+  flush_all: True
+
+# Rsnapshot vars
+rsnapshot:
+  master: true
+  backups:
+# Simple example which uses backup script
+    - "backup_script	/usr/bin/ssh -p<ssh_port> backup@host 'echo backup'	temp_files_host/"
+# Example with backup by rsync when files on target nodes exists
+    - "backup	backup@host:/tmp/some_file	host/	ssh_args=-p <ssh_port>"
+# Example when you need to backup DB first and then copy it
+    - "backup_script	/usr/bin/ssh user@host 'MYSQL_PWD=pw mysqldump -usql_user --database db_name' > dumpname.dump	local.dir.to.store.at/"
+# The same example with postgresql
+    - "backup_script	/usr/bin/ssh user@host 'PGPASSWORD=ps pg_dump -h localhost -p 5432 -U sql_user -F c -d db_name' > dumpname.dump	local.dir.to.store.at/"
+
+# Apprise notifications settings
+apprise:
+  enabled: True
+  notifications:
+    - name: backup
+      title: "Backup went wrong"
+      body_type: cmd_stdout
+      body_cmd: 'systemctl status --full $1'
+      notification_method: telegram
+      telegram_notify_settings:
+        bottoken: "some_bot_token"
+        chat_id: "some_chat_id"
+
+# Sensu checks
+sensu_check_ports:
+  - name: 'ports-world-closed'
+    host: "{{ ansible_host }}"
+    ports: [3030, 3031, 3306, 5432, 6379]
+    crit_if_open: True
+    timeout: 5
+    check_interval: 180
+  - name: 'ports-world-opened'
+    host: "{{ ansible_host }}"
+    ports: [22]
+    crit_if_open: False
+    timeout: 10
+    check_interval: 60
+  - name: 'ports-local-opened'
+    host: "127.0.0.1"
+    ports: [22, 3030, 3031]
+    crit_if_open: False
+    timeout: 10
+    check_interval: 60
+# End sensu checks
+
+# Rsnapshot wants to have commands be separated *only* by tabs, so set
+# noexpandtab to prevent converting in Vim
+# vim: set noexpandtab:
