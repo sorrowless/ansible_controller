@@ -1,4 +1,4 @@
-#!/usr/bin/env ansible-playbook
+#!/usr/bin/env -S ansible-playbook -i 'localhost,' -c local -K --ask-vault-pass
 #
 # Playbook to install and run desktop role on target nodes. Run
 # it like usual executable script:
