@@ -5,7 +5,7 @@ ansible_user: deployer
 ansible_become: true
 
 iptables:
-  host_allowed_tcp_ports: [22, 25, 80, 143, 443, 465, 587, 909, 993, 995]
+  host_allowed_tcp_ports: [22, 25, 80, 143, 443, 465, 587, 909, 993, 995, 4190]
   flush_all: True
 
 domain: example.ru
