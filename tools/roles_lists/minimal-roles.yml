@@ -14,3 +14,7 @@
 - src: https://github.com/sorrowless/ansible-sshd.git
   version: master
   name: sshd
+
+- src: https://github.com/sorrowless/ansible-sudoers.git
+  version: master
+  name: sudoers

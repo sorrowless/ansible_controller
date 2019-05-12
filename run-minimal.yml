@@ -23,4 +23,5 @@
     - { role: server_common, tags: ['common'] }
     - { role: iptables, tags: ['iptables'] }
     - { role: sshd, tags: ['sshd'] }
+    - { role: sudoers, tags: ['sudoers'] }
 
