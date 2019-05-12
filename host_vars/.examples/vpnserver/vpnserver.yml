@@ -52,3 +52,31 @@ sensu_check_ports:
     crit_if_open: False
     timeout: 10
     check_interval: 60
+
+# Sudoers vars
+sudoer_rewrite_sudoers_file: True
+sudoer_remove_unauthorized_specs: True
+sudoer_separate_specs: True
+sudoer_separate_specs_cleanup: True
+sudoer_backup: True
+sudoer_specs:
+  - name: 10-deployer
+    comment: "Deployer can do anything"
+    users: deployer
+    hosts: ALL
+    operators: ALL
+    tags: NOPASSWD
+    commands: ALL
+  - name: 20-admins
+    comment: "Root escalation allowed for admin group with password"
+    users: '%admin'
+    hosts: ALL
+    operators: ALL
+    commands: ALL
+  - name: 30-sudo
+    comment: "Root escalation allowed for sudo group without password"
+    users: '%sudo'
+    hosts: ALL
+    operators: ALL
+    tags: NOPASSWD
+    commands: ALL
