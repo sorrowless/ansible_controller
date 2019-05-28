@@ -90,3 +90,7 @@ sensu_slack:
 sensu_telegram:
   bot_token: "token here"
   chat_id: "chat id number here"
+
+# Nginx common settings
+nginx_official_repo: True
+nginx_official_repo_mainline: True
