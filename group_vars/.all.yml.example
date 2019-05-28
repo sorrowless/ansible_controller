@@ -2,6 +2,9 @@
 sshd:
   Port: 22
   Protocol: 2
+  HostKey:
+    - /etc/ssh/ssh_host_ed25519_key
+    - /etc/ssh/ssh_host_rsa_key
   UsePrivilegeSeparation: yes
   StrictModes: yes
   PermitRootLogin: prohibit-password
@@ -21,6 +24,12 @@ sshd:
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
   UsePAM: yes
   ClientAliveInterval: 120
+  # No ECDH NIST, no 1024 bit keys, no SHA1
+  KexAlgorithms: curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+  # No DES, no RC4, 128+ bits key size, 128+ bits block size, prefer Chacha over GCM
+  Ciphers: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+  # No MD5 and SHA1, 128+ bits tag size, 128+ bits key size
+  MACs: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
 
 iptables:
   group_allowed_tcp_ports: [909]
