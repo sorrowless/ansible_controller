@@ -1,0 +1,122 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run Youtrack with nginx and TLS certificates on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-youtrack.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Configure target servers
+  hosts: youtracks
+  remote_user: root
+
+  pre_tasks:
+    - name: Ensure nginx installed
+      package:
+        name: nginx
+        state: present
+
+  roles:
+    - { role: tls, tags: ['tls', 'nginx'] }
+    - { role: nginx, tags: ['nginx'] }
+
+  tasks:
+    - name: Ensure needed packages
+      package:
+        name:
+          - docker.io
+          - python3-pip
+        state: present
+      tags:
+        - docker
+        - youtrack
+
+    - name: Ensure latest python Docker SDK
+      # In Ubuntu Xenial latest python3-docker sdk version is 1.9, but Ansible
+      # 2.8 needed 1.10 at least, so we install in system-wide by pip
+      become: yes
+      become_user: root
+      pip:
+        name:
+         - docker
+         - docker-compose
+      tags:
+        - pip
+        - docker
+        - youtrack
+
+    - name: Ensure docker service is enabled
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+      tags:
+        - docker
+        - youtrack
+
+    - name: Ensure youtrack directories
+      file:
+        state: directory
+        path: "{{ item }}"
+        mode: 0750
+        # These group and user are default for docker Youtrack installation.
+        # Read more at https://www.jetbrains.com/help/youtrack/standalone/youtrack-docker-installation.html
+        owner: 13001
+        group: 13001
+      with_items:
+        - /var/youtrack
+        - /var/youtrack/data
+        - /var/youtrack/conf
+        - /var/log/youtrack
+        - /var/youtrack/backups
+      tags:
+        - docker
+        - youtrack
+
+    - name: Configure network ranges for docker hosts
+      docker_network:
+        name: ext_network
+        driver_options:
+          # Have to be 15 symbols or less
+          com.docker.network.bridge.name: yout_bridge
+        ipam_config:
+          - subnet: 10.10.10.0/24
+            gateway: 10.10.10.1
+            iprange: 10.10.10.128/25
+      tags:
+        - docker
+        - youtrack
+
+    - name: Ensure youtrack docker container
+      docker_service:
+        state: present
+        project_name: youtrack
+        definition:
+          version: '2'
+          services:
+            youtrack:
+              # Look for versions at https://hub.docker.com/r/jetbrains/youtrack/tags/
+              image: "jetbrains/youtrack:2019.2.54193"
+              container_name: youtrack
+              ports:
+                # host:port
+                - "127.0.0.1:8080:8080"
+              volumes:
+                - "/var/youtrack/data:/opt/youtrack/data"
+                - "/var/youtrack/conf:/opt/youtrack/conf"
+                - "/var/log/youtrack:/opt/youtrack/logs"
+                - "/var/youtrack/backups:/opt/youtrack/backups"
+              hostname: youtrack
+              restart: always
+              labels:
+                - youtrack
+          networks:
+            default:
+              external:
+                name: ext_network
+      tags:
+        - docker
+        - youtrack
+

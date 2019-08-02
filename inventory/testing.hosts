@@ -1,5 +1,8 @@
 test
 
+[prometheus_masters]
+test
+
 [redis_servers]
 test
 
