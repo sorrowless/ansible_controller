@@ -6,3 +6,7 @@
 - src: https://github.com/sorrowless/ansible_tls.git
   version: master
   name: tls
+
+- src: https://github.com/sorrowless/ansible_postgresql.git
+  version: master
+  name: postgresql
