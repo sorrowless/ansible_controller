@@ -1,0 +1,43 @@
+---
+ansible_host: example.host   <--- MUST BE CHANGED
+ansible_port: 22
+ansible_user: deployer
+ansible_become: true
+
+# Hosts name
+server_common_host:
+  dns_hostname: "postgresql"
+
+iptables:
+  host_allowed_tcp_ports: [22, 80, 443]
+  flush_all: false
+
+# Postgresql-related vars
+postgresql:
+  enabled: yes
+  install_from_sources: no
+  version: 9.5
+  clusters_to_drop:
+    - main
+  clusters_to_create:
+    - name: test
+      locale: ru_RU.utf8
+      version: 9.5
+  users:
+    - name: user
+      secret: password
+      state: present
+      additional_queries:
+        - "ALTER ROLE user SET client_encoding TO 'utf8'"
+        - "ALTER ROLE user SET default_transaction_isolation TO 'read committed'"
+        - "ALTER ROLE user SET timezone TO 'UTC'"
+  databases:
+    - name: db
+      owner: user
+      encoding: UTF8
+      lc_collate: ru_RU.utf8
+      lc_ctype: ru_RU.utf8
+      connection_limit: "-1"
+  extensions:
+    - name: pg_trgm
+      db: db

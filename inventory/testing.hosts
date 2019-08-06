@@ -56,3 +56,6 @@ test
 
 [vpn-server]
 test
+
+[postgresql_servers]
+test
