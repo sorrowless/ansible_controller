@@ -1,0 +1,27 @@
+---
+haproxy_conf: |
+  frontend port_443
+      mode tcp
+      bind 0.0.0.0:443
+      timeout client-fin 5m
+      tcp-request inspect-delay 5s
+      # if ssl_hello_type 1 it means we have classic SSL handshake, so we maybe have some HTTPS
+      tcp-request content accept  if { req.ssl_hello_type 1 }
+      use_backend https       if { req.ssl_hello_type 1 }
+      use_backend ssh         if !{ req.ssl_hello_type 1 } { payload(0,7) -m bin 5353482d322e30 } OR !{ req.ssl_hello_type 1 } { req.len 0 }
+      use_backend openvpn     if !{ req.ssl_hello_type 1 } !{ req.len 0 }
+
+  backend https
+      mode tcp
+      timeout server 2h
+      server https-localhost 127.0.0.1:4433
+
+  backend openvpn
+      mode tcp
+      timeout tunnel 12h
+      server openvpn-localhost 127.0.0.1:1494
+
+  backend ssh
+      mode tcp
+      timeout tunnel 12h
+      server ssh-localhost 127.0.0.1:909
