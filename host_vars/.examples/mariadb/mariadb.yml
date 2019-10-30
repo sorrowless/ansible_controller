@@ -1,0 +1,14 @@
+---
+# MariaDB vars
+mariadb_version: 10.4
+mariadb_root_password: "rootpass"
+mariadb_bind_address: '127.0.0.1'
+mariadb_slow_query_log: true
+mariadb_users:
+  - name: "user"
+    password: "password"
+    priv: "db.*:ALL"
+    state: present
+mariadb_databases:
+  - name: "db"
+    state: present
