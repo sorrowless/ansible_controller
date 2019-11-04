@@ -1,64 +1,81 @@
-test
+test_master
+test_slave
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
 
 [prometheus_masters]
-test
+test_master
+
+[prometheus_slaves]
+test_master
 
 [redis_servers]
-test
+test_master
 
 [rabbitmq_servers]
-test
+test_master
 
 [sensu_masters]
-test
+test_master
 
 [graphite]
-test
+test_master
 
 [grafana]
-test
+test_master
 
 [common_checks]
-test
+test_master
 
 [webservers]
 [mysql_server]
 
 [jenkins]
-test
+test_master
 
 [dante]
-test
+test_master
 
 [mysql]
-test
+test_master
 
 [backups]
-test
+test_master
 
 [fluentd]
-test
+test_master
 
 [nginx]
-test
+test_master
 
 [checks_tls_certs]
-test
+test_master
 
 [tls]
-test
+test_master
 
 [domain_expiration_checks]
-test
+test_master
 
 [domain_dns_checks]
-test
+test_master
 
-[vpn-server]
-test
+[vpn_server]
+test_master
 
 [postgresql_servers]
-test
+test_master
 
 [haproxy_servers]
-test
+test_master
+
+[ssh_trust_masters]
+test_master
+
+[ssh_trust_slaves]
+test_slave
+
+[ssh_trust_servers:children]
+ssh_trust_masters
+ssh_trust_slaves

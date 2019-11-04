@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+---
+- name: Set the confidence between hosts
+  hosts: ssh_trust_servers
+  remote_user: root
+
+  roles:
+    - ssh_trust
