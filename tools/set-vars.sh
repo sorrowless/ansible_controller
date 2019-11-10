@@ -12,21 +12,21 @@
 #
 
 echo -n "Become password to export: "
-read -s ANSIBLE_BECOME_PASS
+read -r -s ANSIBLE_BECOME_PASS
 export ANSIBLE_BECOME_PASS
 echo
 
 echo -n "Filename for vault: "
-read VAULT_FILENAME
+read -r VAULT_FILENAME
 
 echo -n "Vault password: "
-read -s ANSIBLE_VAULT_REAL_PASS
+read -r -s ANSIBLE_VAULT_REAL_PASS
 echo
-echo ${ANSIBLE_VAULT_REAL_PASS} > /tmp/${VAULT_FILENAME}
+echo "${ANSIBLE_VAULT_REAL_PASS}" > "/tmp/${VAULT_FILENAME}"
 export ANSIBLE_VAULT_PASSWORD_FILE=/tmp/${VAULT_FILENAME}
 
 echo "Check for mitogen installation"
-stat library 2>&1 1>/dev/null
+stat library >/dev/null 2>&1
 MITOGEN_PATH=$(find library -maxdepth 1 -type d -iname 'mitogen*')
 if [[ -n "${MITOGEN_PATH}" ]]; then
   echo "Mitogen found in ${MITOGEN_PATH}, enable it"
@@ -38,3 +38,4 @@ else
 fi
 
 echo "You're all set, bye"
+

@@ -18,11 +18,22 @@
 # For configuration vars look at roles variables or host_vars/.example
 # directory.
 ---
-- name: Install and configure prometheus
+- name: Ensure SSH trust
+  import_playbook: run-ssh-trust.yml
+  tags:
+    - ssh_trust
+
+- name: Install and configure prometheus slaves
+  hosts: prometheus_slaves
+  remote_user: root
+  roles:
+    - { role: prometheus, tags: ["slaves"] }
+
+- name: Install and configure prometheus masters
   hosts: prometheus_masters
   remote_user: root
   roles:
-    - { role: prometheus }
+    - { role: prometheus, tags: ["masters"] }
 
       #- name: Install and configure Grafana
       #  hosts: grafana
