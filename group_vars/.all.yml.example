@@ -23,6 +23,8 @@ sshd:
   AcceptEnv: "LANG LC_*"
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
   UsePAM: yes
+  # Track login key fingerprint to track users who login to server
+  LogLevel: VERBOSE
   ClientAliveInterval: 120
   # No ECDH NIST, no 1024 bit keys, no SHA1
   KexAlgorithms: curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
