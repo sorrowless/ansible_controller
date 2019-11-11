@@ -96,3 +96,12 @@ sensu_telegram:
 # Nginx common settings
 nginx_official_repo: True
 nginx_official_repo_mainline: True
+
+# Pyenv variables
+pyenv_env: system
+pyenv_path: /usr/local/pyenv
+pyenv_python_versions:
+  - 3.6.6
+pyenv_global: 3.6.6
+pyenv_virtualenvs: []
+#  - { venv_name: "latest", py_version: "3.5.0" }
