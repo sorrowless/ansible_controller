@@ -61,7 +61,7 @@ test_master
 [domain_dns_checks]
 test_master
 
-[vpn_server]
+[vpn_servers]
 test_master
 
 [postgresql_servers]
