@@ -1,14 +1,10 @@
 test_master
 test_slave
+test_vm_01
+test_vm_02
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
-
-[prometheus_masters]
-test_master
-
-[prometheus_slaves]
-test_master
 
 [redis_servers]
 test_master
@@ -74,8 +70,20 @@ test_master
 test_master
 
 [ssh_trust_slaves]
-test_slave
+test_vm_01
+test_vm_02
 
 [ssh_trust_servers:children]
 ssh_trust_masters
 ssh_trust_slaves
+
+[prometheus]
+test_master
+test_vm_01
+test_vm_02
+
+[grafana]
+test_master
+
+[mx]
+test_master

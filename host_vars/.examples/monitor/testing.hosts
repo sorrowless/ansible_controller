@@ -1,0 +1,35 @@
+test_master
+test_vm_01
+test_vm_02
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[grafana]
+test_master
+
+[nginx]
+test_master
+
+[tls]
+test_master
+
+# That's interesting case. As we're using AutoSSH with Prometheus where slave
+# nodes have to have connect to Prometheus server node, then basically **they
+# are masters** and Prometheus server **is a slave**.
+[ssh_trust_masters]
+test_vm_01
+test_vm_02
+
+[ssh_trust_slaves]
+test_master
+
+[ssh_trust_servers:children]
+ssh_trust_masters
+ssh_trust_slaves
+
+[prometheus]
+test_master
+test_vm_01
+test_vm_02
+

@@ -18,40 +18,44 @@
 # For configuration vars look at roles variables or host_vars/.example
 # directory.
 ---
+- name: Update apt cache
+  hosts: prometheus
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        force: yes
+        upgrade: no
+        cache_valid_time: 3600
+
 - name: Ensure SSH trust
   import_playbook: run-ssh-trust.yml
   tags:
     - ssh_trust
 
-- name: Install and configure prometheus slaves
-  hosts: prometheus_slaves
+- name: Install and configure prometheus hosts
+  hosts: prometheus
   remote_user: root
   roles:
-    - { role: prometheus, tags: ["slaves"] }
+    - { role: prometheus, tags: ["prometheus"] }
 
-- name: Install and configure prometheus masters
-  hosts: prometheus_masters
+- name: Install and configure Grafana
+  hosts: grafana
   remote_user: root
   roles:
-    - { role: prometheus, tags: ["masters"] }
+    - { role: grafana, tags: [ 'grafana' ] }
 
-      #- name: Install and configure Grafana
-      #  hosts: grafana
-      #  remote_user: root
-      #  roles:
-      #    - { role: grafana, tags: [ 'grafana' ] }
+- name: Install and configure Nginx for Grafana
+  hosts: grafana
+  remote_user: root
 
-      #- name: Install and configure Nginx for Grafana
-      #  hosts: grafana
-      #  remote_user: root
-      #
-      #  pre_tasks:
-      #    - name: Preinstall nginx
-      #      package:
-      #        name: nginx
-      #        state: latest
-      #      tags: nginx
-      #
-      #  roles:
-      #    - { role: nginx, tags: ['nginx'] }
-      #    - { role: letsencrypt, tags: ['tls', 'nginx'] }
+  pre_tasks:
+    - name: Preinstall nginx
+      package:
+        name: nginx
+        state: latest
+      tags: nginx
+
+  roles:
+    - { role: tls, tags: ['tls', 'nginx'] }
+    - { role: nginx, tags: ['nginx'] }

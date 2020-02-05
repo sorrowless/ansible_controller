@@ -1,4 +1,4 @@
-#!/usr/bin/env ansible-playbook
+#!/usr/bin/env -S ansible-playbook --limit mx -e @vars/extra.yaml
 #
 # This is a playbook to install full-fledged mail server solution based on
 # Postfix and Dovecot. Installation itself includes:
@@ -15,17 +15,20 @@
 # For configuration vars look at roles variables or host_vars/.example
 # directory.
 ---
+- name: Update apt cache
+  import_playbook: run-apt-update.yml
+
 - name: Get needed TLS certificates
   hosts: mx
   remote_user: root
   roles:
     - { role: tls, tags: ['tls', 'nginx'] }
 
-- name: Install MySQL
+- name: Install MariaDB
   hosts: mx
   remote_user: root
   roles:
-    - { role: mysql, tags: ['mysql'] }
+    - { role: mariadb, tags: ['mariadb', 'mysql'] }
 
 - name: Install postfix MTA
   hosts: mx

@@ -1,0 +1,23 @@
+---
+ansible_host: <redacted>
+ansible_port: 22
+ansible_user: <redacted>
+ansible_become: true
+
+ssh_trust:
+  master: true
+  group: prometheus
+  trust_user:
+    create: false
+    name: root
+    state: present
+    comment: ""
+    shell: /bin/bash
+
+prometheus_clients_config:
+  exporters_autossh_to_prometheus:
+    enabled: true  # If enable, autossh will be installed and configured
+    master_ssh_port: "{{ ansible_port }}"
+  exporters:
+    node_exporter:
+      enabled: true
