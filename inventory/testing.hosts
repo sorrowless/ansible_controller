@@ -36,9 +36,6 @@ test_master
 [mysql]
 test_master
 
-[backups]
-test_master
-
 [fluentd]
 test_master
 
@@ -66,21 +63,27 @@ test_master
 [haproxy_servers]
 test_master
 
-[ssh_trust_masters]
+[backup_trust_masters]
 test_master
 
-[ssh_trust_slaves]
+[backup_trust_slaves]
 test_vm_01
 test_vm_02
 
-[ssh_trust_servers:children]
-ssh_trust_masters
-ssh_trust_slaves
+[backups:children]
+backup_trust_masters
+backup_trust_slaves
 
-[prometheus]
-test_master
+[prometheus_trust_masters]
 test_vm_01
 test_vm_02
+
+[prometheus_trust_slaves]
+test_master
+
+[prometheus:children]
+prometheus_trust_masters
+prometheus_trust_slaves
 
 [grafana]
 test_master
