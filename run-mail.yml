@@ -36,6 +36,12 @@
   roles:
     - { role: postfix, tags: ['postfix'] }
 
+- name: Install Nginx for postfixadmin web-interface
+  hosts: mx
+  remote_user: root
+  roles:
+    - { role: nginx, tags: ['nginx'] }
+
 - name: Install dovecot MDA
   hosts: mx
   remote_user: root
