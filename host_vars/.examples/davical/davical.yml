@@ -1,0 +1,78 @@
+---
+# Postgresql-related vars
+postgresql:
+  enabled: yes
+  install_from_sources: no
+  version: 9.5
+  clusters_to_drop:
+    - []
+  clusters_to_create:
+    - []
+
+davical_host: cal.example.com
+# Nginx vars
+nginx_sites:
+  davical_http:
+    - listen 80
+    - server_name {{ davical_host }}
+    - return 301 https://$host$request_uri
+  davical_https:
+    - listen 443 ssl
+    - server_name {{ davical_host }}
+    - gzip on
+    - gzip_types *
+    - ssl_certificate /etc/ssl_certs/{{ ansible_host }}/fullchain.pem
+    - ssl_certificate_key /etc/ssl_certs/{{ ansible_host }}/private.pem
+    - ssl_protocols TLSv1.1 TLSv1.2
+    - ssl_session_cache shared:SSL:10m
+    - ssl_ciphers EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+    - ssl_prefer_server_ciphers   on
+    - root /usr/share/davical/htdocs
+    - index index.php
+    - access_log /var/log/nginx/{{ davical_host }}.access.log
+    - error_log /var/log/nginx/{{ davical_host }}.error.log
+    - |
+      location / {
+        rewrite ^/principals/users/(.+)$    https://{{ davical_host }}/caldav.php/$1 break;
+        rewrite /.well-known/(.+)$          https://{{ davical_host }}/caldav.php/.well-known/$1 break;
+      }
+    - |
+      location ~ \.php$ {
+        try_files $uri =404;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+      }
+    - |
+      location ~ ^(.+\.php)(.*)$ {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+
+        fastcgi_split_path_info ^(.+\.php)(.*)$;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+
+        fastcgi_read_timeout 180;
+        fastcgi_buffers 4 256k;
+        fastcgi_buffer_size 128k;
+      }
+    - |
+      location ~ /\.ht {
+        deny  all;
+      }
+    - |
+      location /favicon.ico {
+        log_not_found   off;
+        access_log      off;
+      }
+
+
+davical:
+  domain_name: "{{ davical_host }}"
+  admin_email: admin@example.net
