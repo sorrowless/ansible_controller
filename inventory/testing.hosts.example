@@ -1,6 +1,9 @@
 master ansible_host=SOME.HOST.HERE ansible_user=sbog ansible_become=yes
 slave ansible_host=SOME.HOST.HERE ansible_user=sbog ansible_become=yes
 
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+
 [redis_servers]
 master
 
@@ -27,7 +30,9 @@ slave
 [dante]
 [mysql]
 [squids]
-[mx]
+[mxes]
 [backups]
-[fluentd]
-[tls]
+[fluentd_servers]
+[tls_servers]
+[nodejs_servers]
+[yarns]

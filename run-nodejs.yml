@@ -1,0 +1,13 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run nodejs
+# it like usual executable script:
+#
+# > ./run-nodejs.yml
+#
+---
+- name: Configure target servers
+  hosts: nodejs_servers
+
+  roles:
+    - { role: nodejs, tags: ['nodejs'] }
