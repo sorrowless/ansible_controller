@@ -1,4 +1,4 @@
-#!/usr/bin/env ansible-playbook
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
 #
 # This is a playbook to install full-fledged monitoring solution based on
 # Sensu. This playbook manages both Sensu master node and slave nodes which

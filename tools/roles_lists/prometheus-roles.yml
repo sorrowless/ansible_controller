@@ -1,0 +1,20 @@
+---
+- src: https://github.com/sorrowless/ansible_ssh_trust.git
+  version: master
+  name: ssh_trust
+
+- src: https://github.com/sorrowless/ansible_prometheus.git
+  version: master
+  name: prometheus
+
+- src: https://github.com/sorrowless/ansible_grafana.git
+  version: master
+  name: grafana
+
+- src: https://github.com/sorrowless/ansible_tls.git
+  version: master
+  name: tls
+
+- src: jdauphant.nginx
+  version: v2.21.2
+  name: nginx
