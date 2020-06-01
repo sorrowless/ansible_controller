@@ -1,4 +1,4 @@
-#!/usr/bin/env -S ansible-playbook -i 'localhost,' -c local -K --ask-vault-pass
+#!/usr/bin/env -S ansible-playbook -i 'localhost,' -c local -e @vars/extra.yaml
 #
 # Playbook to install and run desktop role on target nodes. Run
 # it like usual executable script:
@@ -13,12 +13,13 @@
 ---
 - name: Install needed desktop things everywhere
   hosts: all
-  remote_user: root
   vars_files:
    - vars/dotfiles_vars.yml
 
   pre_tasks:
     - name: Create user {{ username }} if does not exists
+      become: yes
+      become_user: root
       user:
         group: "{{ username }}"
         name: "{{ username }}"

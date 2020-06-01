@@ -16,14 +16,19 @@ read -r -s ANSIBLE_BECOME_PASS
 export ANSIBLE_BECOME_PASS
 echo
 
-echo -n "Filename for vault: "
-read -r VAULT_FILENAME
+#echo -n "Filename for vault: "
+#read -r VAULT_FILENAME
 
 echo -n "Vault password: "
 read -r -s ANSIBLE_VAULT_REAL_PASS
 echo
-echo "${ANSIBLE_VAULT_REAL_PASS}" > "/tmp/${VAULT_FILENAME}"
-export ANSIBLE_VAULT_PASSWORD_FILE=/tmp/${VAULT_FILENAME}
+export ANSIBLE_VAULT_REAL_PASS
+SCRIPT=$(readlink -f "$0")
+SCRIPT_PATH=$(dirname "$SCRIPT")
+VAULT_EXEC_FILE="$SCRIPT_PATH/get-vault-pass"
+#echo "${ANSIBLE_VAULT_REAL_PASS}" > "/tmp/${VAULT_FILENAME}"
+#export ANSIBLE_VAULT_PASSWORD_FILE=/tmp/${VAULT_FILENAME}
+export ANSIBLE_VAULT_PASSWORD_FILE="$VAULT_EXEC_FILE"
 
 echo "Check for mitogen installation"
 stat library >/dev/null 2>&1
