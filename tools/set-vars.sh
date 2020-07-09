@@ -11,6 +11,22 @@
 # then fill asked fields and that's it.
 #
 
+# Try to determine OS
+if [[ "$OSTYPE" =~ '^[D|d]arwin.*' ]]; then
+  # Version of readlink which comes with MacOS doesn't support '-f' flag but
+  # we're need it. So let's use GNU readlink instead
+  rl="greadlink"
+  # Try to determine if GNU readlink actually installed
+  type $rl >/dev/null
+  if [[ "$?" != "0" ]]; then
+    echo "rc was $rc"
+    echo 'Seems you do not have GNU readlink installed. Install it by typing "brew install coreutils"'
+    return 1
+  fi
+else
+  rl="readlink"
+fi
+
 echo -n "Become password to export: "
 read -r -s ANSIBLE_BECOME_PASS
 export ANSIBLE_BECOME_PASS
@@ -23,7 +39,7 @@ echo -n "Vault password: "
 read -r -s ANSIBLE_VAULT_REAL_PASS
 echo
 export ANSIBLE_VAULT_REAL_PASS
-SCRIPT=$(readlink -f "$0")
+SCRIPT=$($rl -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT")
 VAULT_EXEC_FILE="$SCRIPT_PATH/get-vault-pass"
 #echo "${ANSIBLE_VAULT_REAL_PASS}" > "/tmp/${VAULT_FILENAME}"
@@ -43,4 +59,3 @@ else
 fi
 
 echo "You're all set, bye"
-
