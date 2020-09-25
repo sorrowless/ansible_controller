@@ -7,6 +7,5 @@
   version: master
   name: apprise
 
-- src: https://github.com/sorrowless/ansible_ssh_trust.git
-  version: master
+- src: sorrowless.ssh_trust
   name: ssh_trust
