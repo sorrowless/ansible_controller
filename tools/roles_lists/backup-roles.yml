@@ -1,7 +1,6 @@
 ---
-- src: https://github.com/sorrowless/ansible_rsnapshot.git
-  version: master
-  name: rsnapshot
+- src: sorrowless.apprise
+  name: apprise
 
 - src: https://github.com/sorrowless/ansible_apprise.git
   version: master
