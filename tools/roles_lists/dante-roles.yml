@@ -1,4 +1,3 @@
 ---
-- src: https://github.com/sorrowless/ansible_dante.git
-  version: master
+- src: sorrowless.dante
   name: dante
