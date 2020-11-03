@@ -7,11 +7,9 @@
   version: 3.3.1
   name: jenkins
 
-- src: https://github.com/sorrowless/ansible_letsencrypt.git
-  version: master
-  name: letsencrypt
+- src: sorrowless.tls
+  name: tls
 
-- src: jdauphant.nginx
-  version: v2.21.2
+- src: sorrowless.nginx
   name: nginx
 
