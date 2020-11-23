@@ -105,6 +105,13 @@
                 - YUBICO_SECRET_KEY={{ yubico_secret_key }}
                 # disable this for the first time
                 - SIGNUPS_ALLOWED=false
+                - SMTP_HOST={{ smtp_host }}
+                - SMTP_FROM={{ smtp_from }}
+                - SMTP_PORT={{ smtp_port }}
+                - SMTP_SSL={{ smtp_ssl }}
+                - SMTP_USERNAME={{ smtp_username }}
+                - SMTP_PASSWORD={{ smtp_password }}
+                - DOMAIN={{ domain }}
               hostname: bitwarden
               restart: always
               labels:
