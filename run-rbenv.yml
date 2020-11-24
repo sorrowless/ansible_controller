@@ -1,0 +1,15 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook which installs rbenv to target hosts.
+# Run it like usual executable script:
+#
+# > ./run-rbenv.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Configure rbenv on target servers
+  hosts: all
+
+  roles:
+    - { role: rbenv, tags: ['rbenv'] }
