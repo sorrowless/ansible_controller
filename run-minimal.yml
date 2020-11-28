@@ -16,7 +16,6 @@
 ---
 - name: Configure target servers
   hosts: all
-  remote_user: root
 
   roles:
     - { role: pw_policy, tags: ['security'] }
