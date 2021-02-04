@@ -1,0 +1,10 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install VPN server and create some client certs for it
+  hosts: ipsec_vpn_servers
+  remote_user: root
+  become: yes
+  roles:
+    - ipsecvpn
+
