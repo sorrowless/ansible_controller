@@ -5,7 +5,7 @@
   tasks:
     - name: Set fact with mitogen version
       set_fact:
-        mitogen_version: 0.2.8
+        mitogen_version: 0.2.9
 
     - name: Create library directory if it does not exists yet
       file:
