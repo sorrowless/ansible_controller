@@ -13,4 +13,4 @@
   remote_user: root
 
   roles:
-    - { role: geerlingguy.docker, tags: ['docker'] }
+    - { role: sorrowless.docker, tags: ['docker'] }
