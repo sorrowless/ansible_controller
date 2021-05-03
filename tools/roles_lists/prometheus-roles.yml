@@ -1,17 +1,15 @@
 ---
-- src: sorrowless.ssh_trust
-  name: ssh_trust
-
-- src: https://github.com/sorrowless/ansible_prometheus.git
-  version: master
-  name: prometheus
-
-- src: https://github.com/sorrowless/ansible_grafana.git
-  version: master
-  name: grafana
-
+- src: sorrowless.prometheus_blackbox_exporter
+- src: sorrowless.prometheus_domain_exporter
+- src: sorrowless.prometheus_grok_exporter
+- src: sorrowless.prometheus_mysqld_exporter
+- src: sorrowless.prometheus_node_exporter
+- src: sorrowless.prometheus_postgres_exporter
+- src: sorrowless.prometheus_scripts_exporter
+- src: sorrowless.docker
+- src: sorrowless.victoriametrics
+- src: sorrowless.prometheus_server
+- src: sorrowless.prometheus_alertmanager
+- src: sorrowless.grafana
 - src: sorrowless.tls
-  name: tls
-
 - src: sorrowless.nginx
-  name: nginx
