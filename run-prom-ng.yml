@@ -36,6 +36,12 @@
   roles:
     - { role: sorrowless.prometheus_scripts_exporter, tags: ["scripts_exporter"] }
 
+- name: Install HAProxy to ensure reverse proxy to exporters
+  hosts: prometheus_clients
+  roles:
+    - { role: sorrowless.tls, tags: ['tls', 'nginx'] }
+    - { role: sorrowless.haproxy, tags: ["haproxy"] }
+
 - name: Install and configure prometheus hosts
   hosts: prometheus_servers
   remote_user: root

@@ -13,3 +13,4 @@
 - src: sorrowless.grafana
 - src: sorrowless.tls
 - src: sorrowless.nginx
+- src: sorrowless.haproxy
