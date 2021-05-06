@@ -3,41 +3,49 @@
 ---
 - name: Install blackbox exporters
   hosts: prometheus_blackbox_exporters
+  remote_user: root
   roles:
     - { role: sorrowless.prometheus_blackbox_exporter, tags: ["blackbox_exporter"] }
 
 - name: Install domain exporters
   hosts: prometheus_domain_exporters
+  remote_user: root
   roles:
     - { role: sorrowless.prometheus_domain_exporter, tags: ["domain_exporter"] }
 
 - name: Install grok exporters
   hosts: prometheus_grok_exporters
+  remote_user: root
   roles:
     - { role: sorrowless.prometheus_grok_exporter, tags: ["grok_exporter"] }
 
 - name: Install mysqld exporters
   hosts: prometheus_mysqld_exporters
+  remote_user: root
   roles:
     - { role: sorrowless.prometheus_mysqld_exporter, tags: ["mysqld_exporter"] }
 
 - name: Install node exporters
   hosts: prometheus_node_exporters
+  remote_user: root
   roles:
     - { role: sorrowless.prometheus_node_exporter, tags: ["node_exporter"] }
 
 - name: Install postgres exporters
   hosts: prometheus_postgres_exporters
+  remote_user: root
   roles:
     - { role: sorrowless.prometheus_postgres_exporter, tags: ["postgres_exporter"] }
 
 - name: Install scripts exporters
   hosts: prometheus_scripts_exporters
+  remote_user: root
   roles:
     - { role: sorrowless.prometheus_scripts_exporter, tags: ["scripts_exporter"] }
 
 - name: Install HAProxy to ensure reverse proxy to exporters
   hosts: prometheus_clients
+  remote_user: root
   roles:
     - { role: sorrowless.tls, tags: ['tls', 'nginx'] }
     - { role: sorrowless.haproxy, tags: ["haproxy"] }
