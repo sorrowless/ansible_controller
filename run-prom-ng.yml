@@ -43,6 +43,12 @@
   roles:
     - { role: sorrowless.prometheus_scripts_exporter, tags: ["scripts_exporter"] }
 
+- name: Install statsd exporters
+  hosts: prometheus_statsd_exporters
+  become: yes
+  roles:
+    - { role: sorrowless.prometheus_statsd_exporter, tags: ["statsd_exporter"] }
+
 - name: Install HAProxy to ensure reverse proxy to exporters
   hosts: prometheus_clients
   become: yes
