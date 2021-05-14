@@ -14,9 +14,9 @@
   become_user: root
 
   roles:
-    - { role: tls, tags: ['tls', 'nginx'] }
-    - { role: nginx, tags: ['nginx'] }
-    - { role: docker, tags: ['docker'] }
+    - { role: sorrowless.tls, tags: ['tls', 'nginx'] }
+    - { role: sorrowless.nginx, tags: ['nginx'] }
+    - { role: sorrowless.docker, tags: ['docker'] }
 
   tasks:
     - name: Ensure bitwarden directories
