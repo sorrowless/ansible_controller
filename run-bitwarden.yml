@@ -9,55 +9,16 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: bitwardens
+  hosts: bitwarden_servers
   become: yes
   become_user: root
-
-  pre_tasks:
-    - name: Ensure nginx installed
-      package:
-        name: nginx
-        state: present
 
   roles:
     - { role: tls, tags: ['tls', 'nginx'] }
     - { role: nginx, tags: ['nginx'] }
+    - { role: docker, tags: ['docker'] }
 
   tasks:
-    - name: Ensure needed packages
-      package:
-        name:
-          - docker.io
-          - python3-pip
-          - python-pip
-        state: present
-      tags:
-        - docker
-        - bitwarden
-
-    - name: Ensure latest python Docker SDK
-      # In Ubuntu Xenial latest python3-docker sdk version is 1.9, but Ansible
-      # 2.8 needed 1.10 at least, so we install in system-wide by pip
-      become: yes
-      become_user: root
-      pip:
-        name:
-         - docker
-         - docker-compose
-      tags:
-        - pip
-        - docker
-        - bitwarden
-
-    - name: Ensure docker service is enabled
-      systemd:
-        name: docker
-        state: started
-        enabled: yes
-      tags:
-        - docker
-        - bitwarden
-
     - name: Ensure bitwarden directories
       file:
         state: directory
@@ -71,20 +32,6 @@
         - docker
         - bitwarden
 
-    - name: Configure network ranges for docker hosts
-      docker_network:
-        name: ext_network
-        driver_options:
-          # Have to be 15 symbols or less
-          com.docker.network.bridge.name: bw_bridge
-        ipam_config:
-          - subnet: 10.10.10.0/24
-            gateway: 10.10.10.1
-            iprange: 10.10.10.128/25
-      tags:
-        - docker
-        - bitwarden
-
     - name: Ensure bitwarden docker container
       docker_service:
         state: present
@@ -93,7 +40,7 @@
           version: '2'
           services:
             bitwarden:
-              image: "bitwardenrs/server:latest"
+              image: "vaultwarden/server:latest"
               container_name: bitwarden
               ports:
                 # host:port

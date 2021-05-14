@@ -1,0 +1,8 @@
+---
+# Docker config
+docker_additional_networks:
+  - name: bw_network
+    bridge_name: bw_bridge
+    subnet: 10.10.11.0/24
+    gateway: 10.10.11.1
+    iprange: 10.10.11.128/25
