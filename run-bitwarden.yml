@@ -66,7 +66,7 @@
           networks:
             default:
               external:
-                name: ext_network
+                name: bw_network
       tags:
         - docker
         - bitwarden
