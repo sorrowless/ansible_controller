@@ -1,0 +1,41 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to deploy ci prerequisites. Run it like usual executable script:
+#
+# > ./run-ci-prerequisites.yml
+#
+---
+- name: Ensure CI prerequisites such as deployment keys
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Ensure user ssh directory on current local CI machine
+      delegate_to: localhost
+      file:
+        path: "/tmp/.ssh"
+        mode: 0755
+        state: directory
+      tags:
+        - local
+
+    - name: Ensure private keys to access target host from CI machine
+      delegate_to: localhost
+      copy:
+        content: "{{ item.private }}"
+        dest: "/tmp/.ssh/host_{{ item.name | default(item.type) }}"
+        mode: 0600
+      with_items:
+        - "{{ ci_to_host_keys }}"
+      no_log: yes
+      tags:
+        - local
+
+    - name: Ensure private keys to access ansible repositories from CI machine
+      delegate_to: localhost
+      copy:
+        content: "{{ machine_gunner_pkey }}"
+        dest: "/tmp/.ssh/machine_gunner_id_ed25519"
+        mode: 0600
+      no_log: yes
+      tags:
+        - local

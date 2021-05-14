@@ -1,0 +1,30 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# If host defines needed set of variables, they will be set for according
+# Travis-CI repository. Beware that you have to install travis cli utility
+# and login to it manually - all ansible does is to set according variables.
+#
+---
+- name: Ensure Travis-CI tasks
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Set according Travis-CI variables
+      delegate_to: localhost
+      shell:
+        cmd: |
+          travis env set {{ item.key }} {{ item.value }} --repo \
+          {{ travis_repo_name }}
+      loop: "{{ travis_vars }}"
+      when: travis_vars is defined
+
+    - name: Set Travis-CI settings for repos
+      delegate_to: localhost
+      shell:
+        cmd: |
+          travis settings build_pushes --enable --repo \
+          {{ travis_repo_name }}
+          travis settings build_pull_requests --{{ travis_build_pull_requests }} --repo \
+          {{ travis_repo_name }}
+      when: travis_vars is defined
