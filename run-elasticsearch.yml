@@ -38,15 +38,15 @@
               - http.host=0.0.0.0
               - transport.host=localhost
               - network.host=0.0.0.0
-              - "ES_JAVA_OPTS=-Xms4096m -Xmx4096m"
+              - "ES_JAVA_OPTS=-Xms6144m -Xmx6144m"
             restart: always
             ulimits:
               memlock:
                 soft: -1
                 hard: -1
-            mem_limit: 4g
+            mem_limit: 7g
           kibana:
             container_name: kibana
             image: docker.elastic.co/kibana/kibana:7.10.1
             ports:
-              - "127.0.0.1:8080:80"
+              - "127.0.0.1:8080:5601"
