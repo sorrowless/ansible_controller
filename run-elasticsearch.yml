@@ -2,29 +2,14 @@
 #
 - name: Ensure elasticsearch running on hosts
   hosts: elasticsearch_nodes
-  tasks:
-  - name: Install needed packages
-    package:
-      name:
-        - docker.io
-        - python3-docker
-        - docker-compose
-        - nginx
-      state: latest
+  roles:
+    - { role: sorrowless.docker, tags: ["docker", "server"] }
 
+  tasks:
   - name: Show distribution
     debug:
       msg: "OS is {{ ansible_distribution }}, release is {{ ansible_distribution_major_version }}"
       verbosity: 1
-
-  - name: Install docker-compose from pip
-    pip:
-      name:
-        - docker-compose
-      executable: pip3
-    when:
-      - ansible_distribution == 'Ubuntu'
-      - ansible_distribution_major_version == '18'
 
   - name: Create data directories
     file:
@@ -53,7 +38,7 @@
               - http.host=0.0.0.0
               - transport.host=localhost
               - network.host=0.0.0.0
-              - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+              - "ES_JAVA_OPTS=-Xms4096m -Xmx4096m"
             restart: always
             ulimits:
               memlock:
