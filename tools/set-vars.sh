@@ -39,7 +39,11 @@ echo -n "Vault password: "
 read -r -s ANSIBLE_VAULT_REAL_PASS
 echo
 export ANSIBLE_VAULT_REAL_PASS
-SCRIPT=$($rl -f "$0")
+if [[ -n "$BASH_SOURCE" ]]; then
+  SCRIPT=$($rl -f "$BASH_SOURCE")
+else
+  SCRIPT=$($rl -f "$0")
+fi
 SCRIPT_PATH=$(dirname "$SCRIPT")
 VAULT_EXEC_FILE="$SCRIPT_PATH/get-vault-pass"
 #echo "${ANSIBLE_VAULT_REAL_PASS}" > "/tmp/${VAULT_FILENAME}"
