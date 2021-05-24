@@ -14,4 +14,4 @@
   become: yes
 
   roles:
-    - logrotate
+    - ageres210784.logrotate
