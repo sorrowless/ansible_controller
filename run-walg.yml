@@ -1,0 +1,17 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and configure wal-g
+# Run it like usual executable script:
+#
+# > ./run-walg.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Install and configure wal-g
+  hosts: postgresql_servers
+  remote_user: root
+  become: yes
+
+  roles:
+    - ageres210784.ansible_walg
