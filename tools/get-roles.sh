@@ -26,7 +26,7 @@ function get_roles {
     echo "Roles list $1 does not contain valid sources, skipping"
     return 0
   fi
-  ansible-galaxy install -r "$ROLE_PATH" -p ./roles/
+  ansible-galaxy install -f -r "$ROLE_PATH" -p ./roles/
 }
 
 if ! command -v ansible-galaxy ; then
