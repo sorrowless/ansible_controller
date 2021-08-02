@@ -49,6 +49,12 @@
   roles:
     - { role: sorrowless.prometheus_statsd_exporter, tags: ["statsd_exporter"] }
 
+- name: Install cadvisor exporters
+  hosts: prometheus_cadvisor_exporters
+  become: yes
+  roles:
+    - { role: one_mind.prometheus_cadvisor_exporter, tags: ["cadvisor_exporter"] }
+
 - name: Install HAProxy to ensure reverse proxy to exporters
   hosts: prometheus_clients
   become: yes

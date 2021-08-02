@@ -7,6 +7,8 @@
 - src: sorrowless.prometheus_postgres_exporter
 - src: sorrowless.prometheus_scripts_exporter
 - src: sorrowless.prometheus_statsd_exporter
+- src: one_mind.cadvisor_ansible_role
+  name: one_mind.prometheus_cadvisor_exporter
 - src: sorrowless.docker
 - src: sorrowless.victoriametrics
 - src: sorrowless.prometheus_server
