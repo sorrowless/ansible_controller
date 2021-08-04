@@ -12,12 +12,6 @@
   hosts: nginx
   remote_user: root
 
-  pre_tasks:
-    - name: Install Nginx
-      package:
-        name: nginx
-        state: latest
-
   roles:
-    - { role: tls, tags: ['tls'] }
-    - { role: nginx, tags: ['nginx'] }
+    - { role: sorrowless.tls, tags: ['tls'] }
+    - { role: sorrowless.nginx, tags: ['nginx'] }
