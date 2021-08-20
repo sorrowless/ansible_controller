@@ -1,0 +1,9 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install gitlab-runner
+  hosts: gitlab_runner_servers
+  remote_user: root
+  become: yes
+  roles:
+    - { role: riemers.gitlab-runner, tags: ['gitlab-runner'] }
