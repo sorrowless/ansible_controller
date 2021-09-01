@@ -16,3 +16,5 @@
 - src: https://github.com/sorrowless/ansible-sudoers.git
   version: master
   name: sudoers
+
+- src: jtprogru.install_atop
