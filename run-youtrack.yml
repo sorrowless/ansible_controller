@@ -90,7 +90,7 @@
         - youtrack
 
     - name: Ensure youtrack docker container
-      docker_service:
+      community.docker.docker_compose:
         state: present
         project_name: youtrack
         definition:

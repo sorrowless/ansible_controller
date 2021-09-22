@@ -84,7 +84,7 @@
 
     - name: Ensure registry docker container
       # Look for overall configuration at https://docs.docker.com/registry/deploying/
-      docker_service:
+      community.docker.docker_compose:
         state: present
         project_name: registry
         definition:
