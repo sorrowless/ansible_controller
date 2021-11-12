@@ -22,6 +22,8 @@
         user: "root"
         minute: "0"
         hour: "2"
-        day: "1"
+        weekday: "6"
         job: "/usr/bin/docker image prune -a"
         state: present
+      tags:
+        - clean
