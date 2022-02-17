@@ -1,0 +1,73 @@
+#!/usr/bin/env ansible-playbook
+#
+# playbook to auto configure vpn clients
+#
+#
+# required variable ovpn_file_path
+# this variable is path to ovpn file which will be used
+#
+
+---
+- name: Setup openvpn-client
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Get openvpn repo key
+      become_user: root
+      apt_key:
+        url: https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
+        state: present
+
+    - name: Get openvpn sources list
+      become_user: root
+      get_url:
+        url: https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-focal.list
+        dest: /etc/apt/sources.list.d/openvpn3.list
+
+    - name: Install openvpn3 and required packages
+      become_user: root
+      apt:
+        state: present
+        name: "{{ item }}"
+        update_cache: yes
+      loop:
+         - apt-transport-https 
+         - openvpn3
+
+    - name: Send openvpn autoload config
+      become_user: root
+      copy:
+        dest: /etc/openvpn3/autoload/vpnclient.autoload
+        owner: root
+        group: root
+        mode: "600"
+        content: |
+          {
+             "autostart": true,
+             "name": "vpnclient"
+          }
+
+
+    - name: Send openvpn ovpn config
+      become_user: root
+      copy:
+        src: "{{ ovpn_file_path }}"
+        dest: /etc/openvpn3/autoload/vpnclient.ovpn
+        owner: root
+        group: root
+        mode: "600"
+
+    - name: Ensure openvpn3-autoload service is enabled and started
+      become_user: root
+      systemd:
+        name: openvpn3-autoload.service
+        enabled: true
+        state: restarted
+
+    - name: Fail when session is not started
+      become_user: root
+      shell: openvpn3 sessions-list
+      register: sessions
+      failed_when: sessions.stdout == "No sessions available"
+
