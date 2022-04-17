@@ -4,10 +4,7 @@
   name: server_common
 
 - src: sorrowless.pw_policy
-
-- src: https://github.com/sorrowless/ansible_iptables.git
-  version: master
-  name: iptables
+- src: sorrowless.iptables
 
 - src: https://github.com/sorrowless/ansible-sshd.git
   version: master

@@ -20,7 +20,7 @@
   roles:
     - { role: sorrowless.pw_policy, tags: ['security'] }
     - { role: server_common, tags: ['common'] }
-    - { role: iptables, tags: ['iptables'] }
+    - { role: sorrowless.iptables, tags: ['iptables'] }
     - { role: sshd, tags: ['sshd'] }
     - { role: sudoers, tags: ['sudoers'] }
     - { role: jtprogru.install_atop, tags: ['atop'] }
