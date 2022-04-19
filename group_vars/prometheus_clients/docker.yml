@@ -1,0 +1,8 @@
+---
+# Docker config
+docker_additional_networks:
+  - name: prom_network
+    bridge_name: prom_bridge
+    subnet: 10.10.10.0/24
+    gateway: 10.10.10.1
+    iprange: 10.10.10.128/25

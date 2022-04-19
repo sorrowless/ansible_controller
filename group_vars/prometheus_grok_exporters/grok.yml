@@ -1,0 +1,53 @@
+---
+grok_exporter_config_dir: /var/lib/grok_exporter
+grok_exporter_patterns_dir: "{{ grok_exporter_config_dir }}/patterns"
+grok_exporter_configs:
+  - name: auth_access
+    # For config example look at https://github.com/fstab/grok_exporter/blob/master/example/config.yml
+    config:
+      global:
+        config_version: 3
+        retention_check_interval: 53s
+      input:
+        type: file
+        path: /var/log/auth.log
+        readall: false
+      imports:
+        - type: grok_patterns
+          dir: "{{ grok_exporter_patterns_dir }}"
+      grok_patterns: []
+      metrics:
+        - type: counter
+          name: auth_commands
+          help: Total number of auth access log commands splitted by error
+          match: '%{AUTH_LOG}'
+          labels:
+            error: !unsafe '{{.sudo_error}}'
+      server:
+        host: 127.0.0.1
+        port: 9144
+  - name: nginx_access
+    # For config example look at https://github.com/fstab/grok_exporter/blob/master/example/config.yml
+    config:
+      global:
+        config_version: 3
+        retention_check_interval: 53s
+      input:
+        type: file
+        path: /var/log/nginx/access.log
+        readall: false
+      imports:
+        - type: grok_patterns
+          dir: "{{ grok_exporter_patterns_dir }}"
+      grok_patterns: []
+      metrics:
+        - type: counter
+          name: nginx_access
+          help: Total number of requests according access log splitted by status codes
+          match: '%{NGINX_ACCESS}'
+          labels:
+            status_code: !unsafe '{{.status}}'
+      server:
+        host: 127.0.0.1
+        port: 9145
+

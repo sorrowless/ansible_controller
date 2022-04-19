@@ -1,0 +1,5 @@
+---
+blackbox_exporter_run_in_docker: true
+blackbox_exporter_docker_network_name: prom_network
+blackbox_exporter_container_name: blackbox_exporter
+blackbox_exporter_docker_image: "prom/blackbox-exporter:v0.20.0"

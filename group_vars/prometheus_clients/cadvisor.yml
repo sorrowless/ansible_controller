@@ -1,0 +1,4 @@
+---
+cadvisor_docker_network_name: prom_network
+cadvisor_host_port: "127.0.0.1:9080"
+cadvisor_additional_cmd_args: "--store_container_labels=false --storage_duration=10m0s"
