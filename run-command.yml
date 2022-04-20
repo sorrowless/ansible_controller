@@ -1,0 +1,22 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+# Apt update playbook. Just updates cache on target nodes.
+#
+# Usage examples:
+#
+# ansible-playbook -i <inventory_file> -b run-apt-update.yml
+#
+# Also this playbook can be ran like any executable:
+#
+# > ./run-apt-update.yml
+---
+- name: Update apt cache on servers
+  hosts: "all"
+  become: yes
+
+  become_user: root
+
+  tasks:
+    - name: Run command
+      shell:
+        cmd: "{{ cmd }}"
+
