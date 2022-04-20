@@ -3,10 +3,6 @@
   hosts: localhost
 
   tasks:
-    - name: Set fact with mitogen version
-      set_fact:
-        mitogen_version: master
-
     - name: Create library directory if it does not exists yet
       file:
         state: directory
@@ -14,21 +10,15 @@
         mode: 0755
 
     - name: Download mitogen binary
-      get_url:
-        url: "https://networkgenomics.com/try/mitogen-{{ mitogen_version }}.tar.gz"
-        dest: ../library/
-        mode: 0644
-
-    - name: Unpack mitogen to library directory
-      unarchive:
-        src: "../library/mitogen-{{ mitogen_version }}.tar.gz"
-        dest: ../library/
-        creates: "../library/mitogen-{{ mitogen_version }}"
+      ansible.builtin.git:
+        repo: "https://github.com/mitogen-hq/mitogen.git"
+        dest: "../library/mitogen-master"
+        update: no
 
     - name: Ensure mitogen strategies in ansible config
       lineinfile:
         path: ../ansible.cfg
-        line: "strategy_plugins = library/mitogen-{{ mitogen_version }}/ansible_mitogen/plugins/strategy"
+        line: "strategy_plugins = library/mitogen-master/ansible_mitogen/plugins/strategy"
         insertafter: '\[defaults\]'
       when: set_local_ansible_config is defined
 
