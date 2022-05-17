@@ -1,0 +1,6 @@
+---
+- src: sorrowless.iptables
+- src: sorrowless.docker
+- src: sorrowless.tls
+- src: sorrowless.haproxy
+- src: robertdebock.vault

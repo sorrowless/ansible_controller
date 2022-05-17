@@ -1,0 +1,17 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install prerequisite roles
+  hosts: vault_servers
+  become: yes
+  roles:
+    - { role: sorrowless.iptables, tags: ["iptables", "server"] }
+    - { role: sorrowless.docker, tags: ["docker", "server"] }
+    - { role: sorrowless.tls, tags: ['tls'] }
+    - { role: sorrowless.haproxy, tags: ["haproxy"] }
+
+- name: Install vault
+  hosts: vault_servers
+  become: yes
+  roles:
+    - { role: robertdebock.vault, tags: ["vault"] }
