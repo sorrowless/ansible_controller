@@ -1,0 +1,4 @@
+---
+chrony_makestep_limit: -1
+chrony_allow:
+  - "127.0.0.1"

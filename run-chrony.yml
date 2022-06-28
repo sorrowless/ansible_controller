@@ -1,0 +1,17 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run chrony on target nodes. Run it like usual
+# executable script:
+#
+# > ./run-chrony.yml
+#
+# For configuration vars look at roles variables, group_vars/all/chrony.yml or 
+# frzk.chrony role default vars
+---
+- name: Configure target servers
+  hosts: chrony_hosts
+  become: yes
+  remote_user: root
+
+  roles:
+    - { role: frzk.chrony, tags: ['chrony'] }
