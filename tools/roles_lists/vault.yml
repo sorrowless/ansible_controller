@@ -4,3 +4,4 @@
 - src: sorrowless.tls
 - src: sorrowless.haproxy
 - src: robertdebock.vault
+- src: robertdebock.hashicorp

@@ -1,0 +1,45 @@
+---
+hashicorp_installation_method: package
+hashicorp_products:
+  - name: vault
+
+# This var is from vault role, it supposed to be disabled as vault was installed
+# by previous 'hashicorp' role
+vault_install_package: no
+vault_max_lease_ttl: "10h"
+vault_default_lease_ttl: "10h"
+vault_owner: vault
+vault_group: vault
+vault_disable_clustering: "false"
+# The leader to use, please use a fqdn, i.e. `vault.example.com`
+# This variable is not required for single-node installations, where the
+# variable `vault_disable_clustering` is set to `"True"`.
+vault_leader: vault
+vault_cluster_addr: "http://{{ vault_leader | default('localhost') }}:8201"
+vault_api_addr: "http://{{ vault_leader }}:8200"
+vault_plugin_directory: /usr/local/lib/vault/plugins
+vault_storages:
+  - name: raft
+    path: /vault/data
+    node_id: "{{ inventory_hostname_short }}"
+vault_listeners:
+  - name: tcp
+    address: "0.0.0.0:8200"
+    cluster_address: "127.0.0.1:8201"
+    tls_disable: "false"
+    tls_cert_file: "/etc/ssl_certs/vault.oom.ag/fullchain.pem"
+    tls_key_file: "/etc/vault.d/private.pem"
+vault_ui: "true"
+vault_key_shares: 5
+vault_key_threshold: 3
+vault_show_unseal_information: yes
+vault_disable_mlock: "true"
+vault_make_backup: no
+vault_backup_path: "/root/vault-raft_{{ ansible_date_time.date }}-{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}.snapshot"
+vault_namespace: ""
+vault_kv_max_versions: 5
+vault_kv_cas_required: "false"
+vault_kv_delete_version_after: 365d
+vault_log_level: "info"
+vault_store_root_token: no
+

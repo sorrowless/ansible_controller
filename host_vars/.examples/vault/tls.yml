@@ -1,0 +1,32 @@
+---
+tls_host:
+  - acme_hooks: true
+    acme_pre_hook: ''
+    acme_post_hook: 'cat /etc/ssl_certs/{{ ansible_host }}/private.pem /etc/ssl_certs/{{ ansible_host }}/fullchain.pem > /etc/ssl_certs/{{ ansible_host }}/bundle.pem || true && systemctl reload haproxy || true && systemctl reload nginx || true'
+    acme_challenge: dns
+    acme_ch_dns_type: dns_cf
+    acme_ch_dns_vars:
+      CF_Token: "{{ vault_group_cf_oomag_token }}"
+      CF_Account_ID: "{{ vault_group_cf_oomag_account }}"
+      CF_Zone_ID: "{{ vault_group_cf_oomag_zone }}"
+    target_dir: /etc/ssl_certs
+    # Formats: nginx, haproxy
+    target_format: haproxy
+    # If target_format is 'haproxy', this filename will be used
+    target_bundle_name: bundle.pem
+    acme_domains:
+      - "{{ ansible_host }}"
+  - acme_hooks: true
+    acme_pre_hook: ''
+    acme_post_hook: ''
+    acme_challenge: dns
+    acme_ch_dns_type: dns_cf
+    acme_ch_dns_vars:
+      CF_Token: "{{ vault_group_cf_oomag_token }}"
+      CF_Account_ID: "{{ vault_group_cf_oomag_account }}"
+      CF_Zone_ID: "{{ vault_group_cf_oomag_zone }}"
+    target_dir: /etc/ssl_certs
+    # Formats: nginx, haproxy
+    target_format: nginx
+    acme_domains:
+      - "vault"
