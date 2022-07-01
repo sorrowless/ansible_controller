@@ -93,3 +93,10 @@ test_master
 
 [davical_servers]
 test_master
+
+[docker_hosts]
+[monitoring_servers]
+[monitoring_clients:children]
+docker_hosts
+
+[ssl_exporters]
