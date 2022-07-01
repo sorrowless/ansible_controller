@@ -3,3 +3,4 @@ node_exporter_run_in_docker: false
 node_exporter_docker_networkname: prom_network
 node_exporter_container_name: node_exporter
 node_exporter_docker_image: "quay.io/prometheus/node-exporter:1.1.2"
+node_exporter_additional_cmd_args: "--collector.ntp"
