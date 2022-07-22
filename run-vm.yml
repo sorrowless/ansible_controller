@@ -90,3 +90,9 @@
   become: yes
   roles:
     - { role: ansible_prometheus_ssl_exporter, tags: ["exporters", "ssl_exporter"]}
+
+- name: Install ipmi exporters
+  hosts: prometheus_ipmi_exporters
+  become: yes
+  roles:
+    - { role: andrewgodgivens.ansible_prometheus_ipmi_exporter, tags: ["ipmi_exporter"]}
