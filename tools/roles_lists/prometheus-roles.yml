@@ -1,4 +1,6 @@
 ---
+- src: andrewgodgivens.ansible_prometheus_ipmi_exporter
+- src: mikecher.ansible_prometheus_ssl_exporter
 - src: sorrowless.prometheus_blackbox_exporter
 - src: sorrowless.prometheus_domain_exporter
 - src: sorrowless.prometheus_grok_exporter
