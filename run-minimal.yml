@@ -25,3 +25,13 @@
     - { role: sudoers, tags: ['sudoers'] }
     - { role: jtprogru.install_atop, tags: ['atop'] }
 
+- name: Restart docker
+  hosts: docker_hosts
+  become: yes
+  remote_user: root
+  systemd:
+    name: docker
+    state: restarted
+  when:
+    - iptables.flush_all is defined and iptables.flush_all
+    - not iptables.flush_all is defined and iptables_defaults.
