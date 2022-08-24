@@ -96,3 +96,9 @@
   become: yes
   roles:
     - { role: andrewgodgivens.ansible_prometheus_ipmi_exporter, tags: ["ipmi_exporter"]}
+
+- name: Install smartctl exporters
+  hosts: prometheus_smartctl_exporters
+  become: yes
+  roles:
+    - { role: andrewgodgivens.prometheus_smartctl_exporter, tags: ["smartctl_exporter"]}
