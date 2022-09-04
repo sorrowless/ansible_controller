@@ -29,9 +29,13 @@
   hosts: docker_hosts
   become: yes
   remote_user: root
-  systemd:
-    name: docker
-    state: restarted
-  when:
-    - iptables.flush_all is defined and iptables.flush_all
-    - not iptables.flush_all is defined and iptables_defaults.
+
+  tasks:
+    - name: Restart docker
+      systemd:
+        name: docker
+        state: restarted
+      when:
+        - (iptables.flush_all is defined and iptables.flush_all) or (not iptables.flush_all is defined and iptables_defaults.flush_all)
+      tags:
+        - iptables
