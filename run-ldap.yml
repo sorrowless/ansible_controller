@@ -1,0 +1,13 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to deploy openldap project. Run it like usual executable script:
+#
+# > ./run-ldap.yml
+#
+---
+- name:   install openLdap
+  hosts:  openLdap_server 
+  become: yes
+
+  roles:
+    - mikecher.ansible-role-openldap 
