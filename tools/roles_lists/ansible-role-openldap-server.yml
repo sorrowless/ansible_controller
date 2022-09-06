@@ -1,0 +1,4 @@
+---
+- src: https://github.com/MikeCher/ansible-role-openldap.git
+  version: master
+  name: mikecher.ansible-role-openldap
