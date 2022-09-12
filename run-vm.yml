@@ -7,8 +7,8 @@
   hosts: [monitoring_clients, monitoring_servers]
   become: yes
   roles:
-    - { role: sorrowless.iptables, tags: ["common", "iptables", "server"] }
-    - { role: sorrowless.docker, tags: ["common", "docker", "server"] }
+    - { role: sorrowless.iptables, tags: ["common", "server", "iptables"] }
+    - { role: sorrowless.docker, tags: ["common", "server", "docker"] }
     - { role: sorrowless.tls, tags: ["common", "tls"] }
     - { role: sorrowless.haproxy, tags: ["common", "haproxy"] }
 

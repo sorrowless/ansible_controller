@@ -25,4 +25,4 @@
         name: "{{ username }}"
 
   roles:
-    - desktop_common
+    - { role: desktop_common, tags: ['desktop_common'] }

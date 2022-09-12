@@ -14,4 +14,4 @@
   become: yes
 
   roles:
-    - ageres210784.logrotate
+    - { role: geres210784.logrotate, tags: ['geres210784.logrotate'] }

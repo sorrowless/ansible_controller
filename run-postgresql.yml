@@ -19,4 +19,4 @@
   remote_user: root
   become: yes
   roles:
-    - postgresql
+    - { role: sorrowless.prometheus_postgres_exporter, tags: ["postgres_exporter"] }

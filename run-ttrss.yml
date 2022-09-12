@@ -21,4 +21,4 @@
   roles:
     - { role: tls, tags: ['tls', 'nginx'] }
     - { role: nginx, tags: ['nginx'] }
-    - { role: ttrss, tags: ['ttrss', 'personal'] }
+    - { role: ttrss, tags: ['personal', 'ttrss'] }

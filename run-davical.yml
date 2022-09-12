@@ -6,7 +6,7 @@
   remote_user: root
   become: yes
   roles:
-    - davical
-    - tls
-    - nginx
+    - { role: davical, tags: ['davical'] }
+    - { role: sorrowless.tls, tags: ['tls'] }
+    - { role: sorrowless.nginx, tags: ['nginx'] }
 

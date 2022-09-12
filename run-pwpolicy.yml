@@ -13,4 +13,4 @@
   remote_user: root
 
   roles:
-    - { role: pw_policy, tags: ['security'] }
+    - { role: sorrowless.pw_policy, tags: ['security'] }

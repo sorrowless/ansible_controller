@@ -4,5 +4,5 @@
 - name: Install PowerDNS authoritative server
   hosts: dns_server_nodes
   roles:
-    - pdns
+    - { role: pdns, tags: ["pdns"] }
 

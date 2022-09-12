@@ -5,4 +5,4 @@
   remote_user: root
 
   roles:
-    - ssh_trust
+    - { role: sorrowless.ssh_trust, tags: ['ssh_trust'] }
