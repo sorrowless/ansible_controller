@@ -15,3 +15,4 @@
   name: sudoers
 
 - src: jtprogru.install_atop
+  version: 2021.2.2
