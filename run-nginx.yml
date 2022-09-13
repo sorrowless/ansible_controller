@@ -22,7 +22,7 @@
         name: sorrowless.nginx
       vars:
         nginx_sites:
-          ip_address_http.conf:
+          ip_address_http:
             - listen 80
             - server_name _
             - root /var/www/le_root
