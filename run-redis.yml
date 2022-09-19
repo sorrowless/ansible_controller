@@ -14,4 +14,4 @@
   become_user: root
 
   roles:
-    - { role: davidwittman.redis, tags: ['redis'] }
+    - { role: sorrowless.redis, tags: ['redis'] }

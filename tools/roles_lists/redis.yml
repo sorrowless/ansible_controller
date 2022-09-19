@@ -1,2 +1,4 @@
 ---
-- src: davidwittman.redis
+- src: https://github.com/sorrowless/ansible_redis.git
+  version: master
+  name: sorrowless.redis
