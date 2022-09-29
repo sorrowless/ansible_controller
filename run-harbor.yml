@@ -1,0 +1,15 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run Harbor on target nodes. Run
+# it like usual executable script:
+#
+# > ./run-harbor.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Install and run Harbor
+  hosts: docker_registries
+  become: true
+  roles:
+    - { role: one_mind.harbor_ansible_role, tags: ['harbor'] }
