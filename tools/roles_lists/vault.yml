@@ -3,5 +3,7 @@
 - src: sorrowless.docker
 - src: sorrowless.tls
 - src: sorrowless.haproxy
-- src: robertdebock.vault
 - src: robertdebock.hashicorp
+- src: https://github.com/one-mINd/ansible-role-vault.git
+  version: master
+  name: one_mind.vault

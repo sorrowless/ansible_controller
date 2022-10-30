@@ -15,4 +15,4 @@
   become: yes
   roles:
     - { role: robertdebock.hashicorp, tags: ["vault", "vault-install"] }
-    - { role: robertdebock.vault, tags: ["vault"] }
+    - { role: one_mind.vault, tags: ["vault"] }
