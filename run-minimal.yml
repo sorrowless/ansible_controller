@@ -39,3 +39,4 @@
         - (iptables.flush_all is defined and iptables.flush_all) or (not iptables.flush_all is defined and iptables_defaults.flush_all)
       tags:
         - iptables
+      failed_when: false
