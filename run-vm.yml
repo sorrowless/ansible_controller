@@ -83,7 +83,51 @@
   hosts: prometheus_cadvisor_exporters
   become: yes
   roles:
-    - { role: sorrowless.cadvisor, tags: ["exporters", "cadvisor_exporter", "cadvisor"] }
+    - { role: sorrowless.cadvisor, when: cadvisor_install is defined, tags: ["exporters", "cadvisor_exporter", "cadvisor"] }
+
+- name: Install docker-exporter
+  hosts: prometheus_cadvisor_exporters
+  become: yes
+  become_user: root
+  tasks:
+    - name: Stop docker cadvisor container
+      docker_compose:
+        state: absent
+        project_name: cadvisor
+        definition:
+          version: '2'
+          services:
+            cadvisor:
+              image: "gcr.io/cadvisor/cadvisor:v0.40.0"
+              container_name: "cadvisor_exporter"
+      tags:
+        - exporters
+        - docker_exporter
+      when: cadvisor_install is undefined
+
+    - name: Start docker-exporter container
+      docker_compose:
+        state: present
+        project_name: docker-exporter
+        definition:
+          version: '2'
+          services:
+            cadvisor:
+              image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.0.1') }}"
+              container_name: docker_exporter
+              ports:
+                - "{{ docker_exporter_host_port | default('127.0.0.1:9080') }}:8000"
+              volumes:
+                - /var/run/docker.sock:/var/run/docker.sock:ro
+              restart: always
+          networks:
+            default:
+              external:
+                name: "{{ docker_exporter_network_name | default('prom_network')}}"
+      tags:
+        - exporters
+        - docker_exporter
+      when: cadvisor_install is undefined
 
 - name: configure ssl exporters
   hosts: ssl_exporters
