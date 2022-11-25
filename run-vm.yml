@@ -113,7 +113,7 @@
           version: '2'
           services:
             cadvisor:
-              image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.0.1') }}"
+              image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.0.2') }}"
               container_name: docker_exporter
               ports:
                 - "{{ docker_exporter_host_port | default('127.0.0.1:9080') }}:8000"
