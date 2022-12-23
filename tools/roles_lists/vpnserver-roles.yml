@@ -4,3 +4,4 @@
   name: openvpn
 
 - src: sorrowless.ipsecvpn
+- src: sorrowless.wireguard
