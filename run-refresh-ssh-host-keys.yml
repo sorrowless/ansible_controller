@@ -27,7 +27,7 @@
   - name: Generate new ssh host keys
     shell:
       cmd: |
-        export DEBIAN_FRONTEND=noninteractive && dpkg-reconfigure openssh-server
+        dpkg-reconfigure openssh-server -f noninteractive
 
   - name: Restart sshd service
     systemd:
