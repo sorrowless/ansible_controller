@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it by
+#
+# > ./run-sysctl.yml
+#
+---
+- name: Config sysctl
+  hosts: all
+  become: true
+  roles:
+    - {role: ageres210784.sysctl, tags: ['sysctl'] }
