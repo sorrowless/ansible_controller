@@ -9,4 +9,4 @@
   hosts: all
   become: true
   roles:
-    - {role: ageres210784.ansible_sysctl, tags: ['sysctl'] }
+    - {role: ageres210784.sysctl, tags: ['sysctl'] }
