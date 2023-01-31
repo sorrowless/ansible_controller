@@ -1,0 +1,33 @@
+stages:
+  - preview
+  - apply
+
+preview:
+  stage: preview
+  image: harbor.oom.ag/library/ansible-ci-image:latest
+  environment:
+    name: preview
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  before_script:
+    - pip3 install argparse GitPython
+  script: 
+    - python3 tools/ci-script.py --preview --target_branch origin/master
+
+apply:
+  stage: apply
+  image: harbor.oom.ag/library/ansible-ci-image:latest
+  environment:
+    name: master
+  rules:
+    - if: '$CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE != "schedule"'
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  before_script:
+    - pip3 install argparse GitPython
+  script: 
+    - python3 tools/ci-script.py --apply --target_branch HEAD^
