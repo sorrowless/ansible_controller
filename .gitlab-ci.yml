@@ -1,0 +1,29 @@
+stages:
+  - preview
+  - apply
+
+preview:
+  stage: preview
+  image: lyricistmarbling/ansible-ci-image:latest
+  environment:
+    name: preview
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  script: 
+    - python3 tools/ci-script.py --preview --target_branch origin/master
+
+apply:
+  stage: apply
+  image: lyricistmarbling/ansible-ci-image:latest
+  environment:
+    name: master
+  rules:
+    - if: '$CI_BUILD_REF_NAME == "ci-test" && $CI_PIPELINE_SOURCE != "schedule"'
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  script: 
+    - python3 tools/ci-script.py --preview --target_branch $CI_COMMIT_BEFORE_SHA

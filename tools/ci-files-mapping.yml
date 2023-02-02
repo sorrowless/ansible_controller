@@ -1,0 +1,52 @@
+## Example mapping file
+# have following format:
+# changed_file_name:
+#   run-file-for-changed-conf.yml:
+#     - tag-for-run-one
+
+docker.yml:
+  run-docker.yml:
+    - docker
+
+grok.yml:
+  run-vm.yml:
+    - grok_exporter
+
+tls.yml:
+  run-tls.yml:
+    - tls
+
+common.yml:
+  run-minimal.yml:
+    - security
+    - common
+    - iptables
+    - common
+    - sshd
+    - sudoers
+    - atop
+
+nginx.yml:
+  run-nginx.yml:
+    - tls
+    - nginx
+
+cadvisor.yml:
+  run-vm.yml:
+    - cadvisor
+
+postgres_exporter.yml:
+  run-vm.yml:
+    - postgres_exporter
+
+statsd_exporter.yml:
+  run-vm.yml:
+    - statsd_exporter
+
+ssh_trust.yml:
+  run-ssh-trust.yml:
+    - ssh_trust
+
+run-mariadb-backup.yml:
+  run-mariadb.yml:
+    - mariadb
