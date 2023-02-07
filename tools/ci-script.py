@@ -4,7 +4,9 @@ import yaml
 import os
 import subprocess
 import argparse
+from fnmatch import fnmatch
 from git import Repo
+from glob import glob
 
 
 def run_cmd(args: list) -> str:
@@ -20,7 +22,14 @@ def run_cmd(args: list) -> str:
     return stdout_msg
 
 
-def generate_run_mapping(files_mapping: dict, changed_files: list) -> dict:
+def get_mapping_by_wildcart(files_mapping: dict, file: str):
+  for file_mapping in files_mapping.keys():
+    if fnmatch(file, file_mapping):
+      return file_mapping
+  return None
+
+
+def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: list) -> dict:
   run_mapping = {}
 
   for file in changed_files:
@@ -30,11 +39,24 @@ def generate_run_mapping(files_mapping: dict, changed_files: list) -> dict:
     file_name = splited_file_path[-1]
     host_name = splited_file_path[-2]
 
-    for run_file in files_mapping.get(file_name, dict()).items():
-      if run_file[0] in run_mapping:
-        run_mapping[run_file[0]]["limits"].append(host_name)
-      else:
-        run_mapping[run_file[0]] = {"limits": [host_name], "tags": run_file[1]}
+    run_file = "run-"+file_name
+
+    if "users" in file_name:
+      print("aaa")
+
+    matched_mapping = get_mapping_by_wildcart(files_mapping, file_name)
+    if matched_mapping is not None:
+      matched_mapping = files_mapping.get(matched_mapping)
+      for mapping_run_file in matched_mapping:
+        if mapping_run_file not in run_mapping:
+          run_mapping[mapping_run_file] = {"limits": set(), "tags": set()}
+        run_mapping[mapping_run_file]["limits"].add(host_name)
+        run_mapping[mapping_run_file]["tags"].update(matched_mapping[mapping_run_file])
+
+    elif run_file in run_files:
+      if run_file not in run_mapping:
+        run_mapping[run_file] = {"limits": set(), "tags": set()}
+      run_mapping[run_file]["limits"].add(host_name)
 
   return run_mapping
 
@@ -73,7 +95,11 @@ def generate_roles_list(run_files: list) -> list:
 
     for task in run_file_tasks:
       task_roles = task.get("roles", dict())
-      roles.extend([ role.get("role") for role in task_roles ])
+      for role in task_roles:
+        if isinstance(role, str):
+          roles.append(role)
+        else:
+          roles.append(role.get("role"))
 
   roles_lists = load_roles_lists()
   roles = match_role_name_src(roles_lists, roles)
@@ -98,9 +124,11 @@ def preview(target_branch: str):
   with open('tools/ci-files-mapping.yml', "r") as fs:
     files_mapping = yaml.safe_load(fs)
 
+  run_files = [file for file in glob("*.yml")]
+
   changed_files = Repo().git.diff(target_branch, r=True, pretty="format:", name_only=True).split("\n")
 
-  run_mapping = generate_run_mapping(files_mapping, changed_files)
+  run_mapping = generate_run_mapping(files_mapping, changed_files, run_files)
 
   roles = generate_roles_list(run_mapping.keys())
   print("This roles lists will be downloaded:")
