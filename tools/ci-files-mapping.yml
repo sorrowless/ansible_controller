@@ -4,49 +4,788 @@
 #   run-file-for-changed-conf.yml:
 #     - tag-for-run-one
 
+alertmanager.yml:
+  run-alertmanager.yml: []
+atop.yml:
+  run-atop.yml: []
+chrony.yml:
+  run-chrony.yml: []
 docker.yml:
-  run-docker.yml:
-    - docker
-
-grok.yml:
-  run-vm.yml:
-    - grok_exporter
-
-tls.yml:
-  run-tls.yml:
-    - tls
-
-common.yml:
-  run-minimal.yml:
-    - security
-    - common
-    - iptables
-    - common
-    - sshd
-    - sudoers
-    - atop
-
+  run-docker.yml: []
+exporter-blackbox.yml:
+  run-exporter-blackbox.yml: []
+exporter-cadvisor.yml:
+  run-exporter-cadvisor.yml: []
+exporter-grok.yml:
+  run-exporter-grok.yml: []
+exporter-node.yml:
+  run-exporter-node.yml: []
+exporter-ssl.yml:
+  run-exporter-ssl.yml: []
+haproxy.yml:
+  run-haproxy.yml: []
+iptables.yml:
+  run-iptables.yml: []
 nginx.yml:
-  run-nginx.yml:
-    - tls
-    - nginx
+  run-nginx.yml: []
+pwpolicy.yml:
+  run-pwpolicy.yml: []
+pyenv.yml:
+  run-pyenv.yml: []
+scrape_configs_btc_parser_mainnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_mainnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_mainnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_mainnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_mainnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_mainnet_mysql_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_mainnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_mainnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_mainnet_statsd.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_common.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_mysql_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_node.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_staging_statsd.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_mysql_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_btc_parser_testnet_statsd.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_core_parser_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_core_parser_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_core_parser_common.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_core_parser_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_core_parser_node.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_core_parser_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_mainnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_mainnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_mainnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_mainnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_mainnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_mainnet_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_mainnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_staging_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_staging_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_staging_common.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_staging_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_staging_node.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_staging_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_testnet_staging_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_deployment_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_deployment_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_deployment_common.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_deployment_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_deployment_node.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_deployment_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_heficed_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_heficed_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_heficed_common.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_heficed_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_heficed_node.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_heficed_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_us_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_us_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_us_common.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_us_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_us_node.yml:
+  run-vmagent.yml: []
+scrape_configs_cp_vpnserver_us_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_common.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_node.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_production_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_staging_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_staging_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_staging_common.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_staging_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_staging_node.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_staging_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_core_staging_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_logging_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_logging_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_logging_common.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_logging_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_logging_node.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_production_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_production_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_production_common.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_production_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_production_node.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_production_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_production_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_staging_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_staging_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_staging_common.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_staging_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_staging_node.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_staging_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_staging_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_us_corporate_vpn_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_us_corporate_vpn_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_us_corporate_vpn_common.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_us_corporate_vpn_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_embily_us_corporate_vpn_node.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_mainnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_mainnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_mainnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_mainnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_mainnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_mainnet_mysql_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_mainnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_mainnet_statsd.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_staging_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_staging_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_staging_common.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_staging_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_staging_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_staging_mysql_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_staging_node.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_parser_staging_statsd.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_testnet2_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_testnet2_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_testnet2_common.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_testnet2_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_testnet2_mysql_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_testnet2_node.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_testnet2_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_eth_testnet2_statsd.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_mail_app_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_mail_app_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_mail_app_common.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_mail_app_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_mail_app_node.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_mail_app_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_prod_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_prod_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_prod_common.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_prod_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_prod_node.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_prod_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns1_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns1_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns1_common.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns1_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns1_node.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns1_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns2_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns2_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns2_common.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns2_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns2_node.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_reverse_ns2_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_site_proxy_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_site_proxy_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_site_proxy_common.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_site_proxy_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_site_proxy_node.yml:
+  run-vmagent.yml: []
+scrape_configs_etlgr_site_proxy_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_exchange_automator_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_exchange_automator_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_exchange_automator_common.yml:
+  run-vmagent.yml: []
+scrape_configs_exchange_automator_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_exchange_automator_node.yml:
+  run-vmagent.yml: []
+scrape_configs_exchange_automator_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_master_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_master_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_master_common.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_master_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_master_node.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_master_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_master_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_staging_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_staging_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_staging_common.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_staging_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_staging_node.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_staging_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_ext_atominvest_staging_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_finmonitoring_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_finmonitoring_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_finmonitoring_common.yml:
+  run-vmagent.yml: []
+scrape_configs_finmonitoring_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_finmonitoring_node.yml:
+  run-vmagent.yml: []
+scrape_configs_finmonitoring_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_mainnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_mainnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_mainnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_mainnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_mainnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_mainnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_mainnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_testnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_testnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_testnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_testnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_testnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_testnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_bsc_testnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_mainnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_mainnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_mainnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_mainnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_mainnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_mainnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_mainnet_scripts.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_mainnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_testnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_testnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_testnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_testnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_testnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_testnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_testnet_scripts.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_btc_testnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_mainnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_mainnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_mainnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_mainnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_mainnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_mainnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_mainnet_scripts.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_mainnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_testnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_testnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_testnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_testnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_testnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_testnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_testnet_scripts.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_eth_testnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_tron_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_tron_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_tron_common.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_tron_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_tron_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_tron_node.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_tron_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_trx_testnet_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_trx_testnet_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_trx_testnet_common.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_trx_testnet_custom.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_trx_testnet_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_trx_testnet_node.yml:
+  run-vmagent.yml: []
+scrape_configs_hv_raw_trx_testnet_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_infra_gitlab_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_infra_gitlab_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_infra_gitlab_common.yml:
+  run-vmagent.yml: []
+scrape_configs_infra_gitlab_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_infra_gitlab_node.yml:
+  run-vmagent.yml: []
+scrape_configs_infra_gitlab_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_bitwarden_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_bitwarden_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_bitwarden_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_bitwarden_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_bitwarden_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_bitwarden_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_consolidator_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_consolidator_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_consolidator_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_consolidator_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_consolidator_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_consolidator_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw2_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw2_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw2_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw2_ipmi_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw2_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw2_smartctl.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw2_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw3_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw3_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw3_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw3_ipmi_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw3_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw3_smartctl.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw3_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw_ipmi_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw_smartctl.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hv_raw_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hypervisor_personal__ipmi_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hypervisor_personal_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hypervisor_personal_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hypervisor_personal_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hypervisor_personal_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hypervisor_personal_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hypervisor_personal_smartctl.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_hypervisor_personal_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_pprotocol_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_pprotocol_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_pprotocol_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_pprotocol_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_pprotocol_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_pprotocol_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_prod_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_prod_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_prod_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_prod_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_prod_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_prod_ssl_exporter .yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_registry_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_registry_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_registry_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_registry_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_registry_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_registry_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_remediation_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_remediation_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_remediation_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_remediation_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_remediation_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_victoriametrics_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_victoriametrics_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_victoriametrics_common.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_victoriametrics_domains.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_victoriametrics_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_victoriametrics_node.yml:
+  run-vmagent.yml: []
+scrape_configs_oomag_victoriametrics_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_parser_db_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_parser_db_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_parser_db_common.yml:
+  run-vmagent.yml: []
+scrape_configs_parser_db_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_parser_db_node.yml:
+  run-vmagent.yml: []
+scrape_configs_parser_db_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_self_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_stratum_proxy_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_stratum_proxy_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_stratum_proxy_common.yml:
+  run-vmagent.yml: []
+scrape_configs_stratum_proxy_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_stratum_proxy_node.yml:
+  run-vmagent.yml: []
+scrape_configs_stratum_proxy_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_production_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_production_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_production_common.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_production_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_production_node.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_production_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_production_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_staging_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_staging_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_staging_common.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_staging_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_staging_node.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_staging_postgres.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_bank_staging_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_vpnserver_support_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_vpnserver_support_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_vpnserver_support_common.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_vpnserver_support_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_vpnserver_support_node.yml:
+  run-vmagent.yml: []
+scrape_configs_ttm_vpnserver_support_ssl_exporter.yml:
+  run-vmagent.yml: []
+scrape_configs_victoriametrics_portscanner_blackbox.yml:
+  run-vmagent.yml: []
+scrape_configs_victoriametrics_portscanner_cadvisor.yml:
+  run-vmagent.yml: []
+scrape_configs_victoriametrics_portscanner_common.yml:
+  run-vmagent.yml: []
+scrape_configs_victoriametrics_portscanner_domains.yml:
+  run-vmagent.yml: []
+scrape_configs_victoriametrics_portscanner_grok.yml:
+  run-vmagent.yml: []
+scrape_configs_victoriametrics_portscanner_node.yml:
+  run-vmagent.yml: []
+scrape_configs_victoriametrics_portscanner_ssl_exporter.yml:
+  run-vmagent.yml: []
+sshd.yml:
+  run-sshd.yml: []
+sudoers.yml:
+  run-sudoers.yml: []
+syslog.yml:
+  run-syslog.yml: []
+tls.yml:
+  run-tls.yml: []
+vmagent.yml:
+  run-vmagent.yml: []
+vmalert.yml:
+  run-vmalert.yml: []
+vminsert.yml:
+  run-vminsert.yml: []
+vmselect.yml:
+  run-vmselect.yml: []
+vmstorage.yml:
+  run-vmstorage.yml: []
 
-cadvisor.yml:
-  run-vm.yml:
-    - cadvisor
-
-postgres_exporter.yml:
-  run-vm.yml:
-    - postgres_exporter
-
-statsd_exporter.yml:
-  run-vm.yml:
-    - statsd_exporter
-
-ssh_trust.yml:
-  run-ssh-trust.yml:
-    - ssh_trust
-
-run-mariadb-backup.yml:
-  run-mariadb.yml:
-    - mariadb
