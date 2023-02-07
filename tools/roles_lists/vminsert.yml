@@ -1,0 +1,4 @@
+---
+- src: https://github.com/sorrowless/vminsert.git
+  version: master
+  name: sorrowless.vminsert

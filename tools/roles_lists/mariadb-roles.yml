@@ -1,4 +1,0 @@
----
-- src: https://github.com/sorrowless/ansible_mariadb.git
-  version: master
-  name: mariadb

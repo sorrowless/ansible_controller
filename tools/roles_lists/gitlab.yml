@@ -1,0 +1,4 @@
+---
+- src: ageres210784.ansible_gitlab
+- src: riemers.gitlab-runner
+  version: v1.6.33
