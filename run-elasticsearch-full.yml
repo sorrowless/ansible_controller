@@ -1,5 +1,6 @@
 #!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
 #
+---
 - name: Setup docker 
   import_playbook: run-docker.yml
 
