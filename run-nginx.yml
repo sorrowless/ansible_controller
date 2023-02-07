@@ -10,7 +10,8 @@
 ---
 - name: Configure target servers
   hosts: nginx
-  remote_user: root
+  become: yes
+  become_user: root
 
   pre_tasks:
     - name: collect facts about system services
@@ -33,5 +34,4 @@
       when: "{{ 'nginx.service' not in services_state.ansible_facts.services }}"
 
   roles:
-    - { role: sorrowless.tls, tags: ['tls'] }
     - { role: sorrowless.nginx, tags: ['nginx'] }

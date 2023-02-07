@@ -6,6 +6,5 @@
   remote_user: root
   become: yes
   roles:
-    - { role: sorrowless.tls, tags: ['tls'] }
-    - { role: ipsecvpn, tags: ['ipsec'] }
+    - sorrowless.ipsecvpn
 

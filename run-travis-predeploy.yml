@@ -1,0 +1,29 @@
+# How to run:
+# apl -i inventory/oomag.hosts run-travis-predeploy.yml -e 'server_type=staging' --limit azure_consolidator_ng_cryptoprocessing_staging --vault-id /tmp/dokkur.vault
+#
+# where:
+#   server_type is a prefix for var with private key in host. So, it looks like 'staging' for var 'staging_node_ssh_pkey'
+#
+# Also this playbook generates SSH private key named `target_server.key` in current directory
+#
+---
+- name: Preconfigure Travis-CI deploy
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Set server type for getting proper ssh key
+      set_fact:
+        server: "{{ server_type | default('target') }}"
+
+    - name: Set ssh key fact
+      set_fact:
+        sshkey: "{{ hostvars[inventory_hostname][ server + '_node_ssh_pkey' ] }}"
+
+    - name: Extract private key which can access target servers
+      delegate_to: localhost
+      copy:
+        content: "{{ sshkey }}"
+        dest: target_server.key
+        mode: 0600
+

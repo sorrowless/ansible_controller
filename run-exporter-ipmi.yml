@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install ipmi exporters
+  hosts: prometheus_ipmi_exporters
+  become: yes
+  roles:
+    - { role: andrewgodgivens.ansible_prometheus_ipmi_exporter, tags: ["exporters", "ipmi_exporter"]}

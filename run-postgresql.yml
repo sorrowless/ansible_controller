@@ -19,4 +19,4 @@
   remote_user: root
   become: yes
   roles:
-    - postgresql
+    - sorrowless.postgresql

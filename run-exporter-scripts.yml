@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Scripts Exporter
+  hosts: prometheus_scripts_exporters
+  become: yes
+  roles:
+    - { role: sorrowless.prometheus_scripts_exporter, tags: ["exporters", "scripts_exporter"] }

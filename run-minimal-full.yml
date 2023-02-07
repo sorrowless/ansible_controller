@@ -14,16 +14,35 @@
 # ansible-playbook -b run-minimal.yml -e 'ansible_python_interpreter=python3' \
 #   -i <inventory_file>
 ---
-- name: Configure target servers
-  hosts: all
+- name: Setup pw policy
+  import_playbook: run-pw-policy.yml
+  tags:
+    - security
 
-  roles:
-    - { role: sorrowless.pw_policy, tags: ['security'] }
-    - { role: server_common, tags: ['common'] }
-    - { role: sorrowless.iptables, tags: ['iptables'] }
-    - { role: sshd, tags: ['sshd'] }
-    - { role: sudoers, tags: ['sudoers'] }
-    - { role: jtprogru.install_atop, tags: ['atop'] }
+- name: Execute common tasks
+  import_playbook: run-server-common.yml
+  tags:
+    - common
+
+- name: Configure iptables
+  import_playbook: run-iptables.yml
+  tags:
+    - iptables
+
+- name: Configure sshd
+  import_playbook: run-sshd.yml
+  tags:
+    - sshd
+
+- name: Configure sudoers
+  import_playbook: run-sudoers.yml
+  tags:
+    - sudoers
+
+- name: Setup atop
+  import_playbook: run-atop.yml
+  tags:
+    - atop
 
 - name: Restart docker
   hosts: docker_hosts

@@ -12,4 +12,4 @@
   hosts: all
 
   roles:
-    - { role: rbenv, tags: ['rbenv'] }
+    - { role: sorrowless.rbenv, tags: ['rbenv'] }

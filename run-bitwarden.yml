@@ -13,11 +13,6 @@
   become: yes
   become_user: root
 
-  roles:
-    - { role: sorrowless.tls, tags: ['tls', 'nginx'] }
-    - { role: sorrowless.nginx, tags: ['nginx'] }
-    - { role: sorrowless.docker, tags: ['docker'] }
-
   tasks:
     - name: Ensure bitwarden directories
       file:

@@ -12,7 +12,7 @@
 # directory.
 ---
 - name: Configure apprise
-  hosts: backups
+  hosts: apprise
   remote_user: root
 
   roles:

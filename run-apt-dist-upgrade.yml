@@ -11,7 +11,7 @@
 # > ./run-apt-dist-upgrade.yml
 ---
 - name: Update and upgrade servers
-  hosts: "all:!same-server"
+  hosts: "all:!excluded_common"
   become: yes
 
   become_user: root
@@ -22,4 +22,7 @@
         update_cache: yes
         upgrade: dist
         cache_valid_time: 3600
+      register: apt_update
+      until: apt_update is not failed
+      retries: 3
 

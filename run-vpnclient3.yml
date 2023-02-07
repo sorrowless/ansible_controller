@@ -33,12 +33,6 @@
          - apt-transport-https 
          - openvpn3
 
-    - name: Set openvpn resolver to resolv.conf
-      lineinfile:
-        path: /usr/share/dbus-1/system-services/net.openvpn.v3.netcfg.service
-        regexp: 'Exec='
-        line: 'Exec=/usr/lib/x86_64-linux-gnu/openvpn3-linux/openvpn3-service-netcfg --resolv-conf /etc/resolv.conf --state-dir "/var/lib/openvpn3"'
-
     - name: Send openvpn autoload config
       copy:
         dest: /etc/openvpn3/autoload/vpnclient.autoload

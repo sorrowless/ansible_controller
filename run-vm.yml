@@ -130,7 +130,7 @@
       when: cadvisor_install is undefined
 
 - name: configure ssl exporters
-  hosts: ssl_exporters
+  hosts: prometheus_ssl_exporters
   become: yes
   roles:
     - { role: mikecher.ansible_prometheus_ssl_exporter, tags: ["exporters", "ssl_exporter"]}

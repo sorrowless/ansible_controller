@@ -8,19 +8,13 @@
 #
 ---
 - name: Ensure CA
-  hosts: ca
-
-  pre_tasks:
-    - name: Update apt cache.
-      apt: update_cache=true cache_valid_time=600
-      changed_when: false
-      when: ansible_os_family == 'Debian'
-
-  roles:
-    - { role: sorrowless.ca, tags: ['ca'] }
+  import_playbook: run-ca.yml
+  tags:
+    - ca
 
 - name: Client | Create client csr
   hosts: [syslog_server, syslog_client]
+  become: yes
   tasks:
     - name: "Client | Install python requirements"
       apt:
@@ -29,6 +23,11 @@
     - name: "Client | Install openssl requirements"
       pip:
         name: cryptography>=1.3
+
+    - name: "Ensure syslog is installed"
+      become: yes
+      apt:
+        name: syslog-ng
 
     - name: "Client | Ensure csr dir"
       file:
@@ -113,6 +112,7 @@
         mode: 0640
 
 - name: Ensure syslog servers and clients
+  become: yes
   hosts: [syslog_server, syslog_client]
 
   pre_tasks:

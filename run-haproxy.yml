@@ -14,4 +14,4 @@
   become_user: root
 
   roles:
-    - { role: haproxy, tags: ['haproxy'] }
+    - { role: sorrowless.haproxy, tags: ['haproxy'] }

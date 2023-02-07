@@ -10,6 +10,7 @@
 ---
 - name: Configure target servers
   hosts: docker_hosts
+  become: yes
   remote_user: root
 
   roles:
@@ -23,7 +24,7 @@
         minute: "0"
         hour: "2"
         weekday: "6"
-        job: "/usr/bin/docker image prune -a"
+        job: "/usr/bin/docker image prune -af"
         state: present
       tags:
         - clean

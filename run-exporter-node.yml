@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Node Exporter
+  hosts: prometheus_node_exporters
+  become: yes
+  roles:
+    - { role: sorrowless.prometheus_node_exporter, tags: ["exporters", "node_exporter"] }

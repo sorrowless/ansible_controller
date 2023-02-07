@@ -1,0 +1,9 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: configure ssl exporters
+  hosts: prometheus_ssl_exporters
+  become: yes
+  roles:
+    - { role: mikecher.ansible_prometheus_ssl_exporter, tags: ["exporters", "ssl_exporter"]}
+

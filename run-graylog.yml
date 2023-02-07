@@ -12,5 +12,4 @@
   hosts: graylogs
   remote_user: root
   roles:
-    - { name: tls, tags: tls }
     - { name: graylog, tags: graylog }

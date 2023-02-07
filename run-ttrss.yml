@@ -19,6 +19,4 @@
   remote_user: root
 
   roles:
-    - { role: tls, tags: ['tls', 'nginx'] }
-    - { role: nginx, tags: ['nginx'] }
     - { role: ttrss, tags: ['ttrss', 'personal'] }

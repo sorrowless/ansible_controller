@@ -14,4 +14,4 @@
   become_user: root
 
   roles:
-    - { role: mariadb, tags: ['mysql','mariadb'] }
+    - { role: sorrowless.mariadb, tags: ['mysql','mariadb'] }

@@ -2,9 +2,6 @@
 #
 - name: Ensure elasticsearch running on hosts
   hosts: elasticsearch_nodes
-  roles:
-    - { role: sorrowless.docker, tags: ["docker", "server"] }
-
   tasks:
   - name: Show distribution
     debug:

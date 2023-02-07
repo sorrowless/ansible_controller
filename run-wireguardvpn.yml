@@ -6,6 +6,5 @@
   remote_user: root
   become: yes
   roles:
-    - { role: sorrowless.docker, tags: ['docker'] }
     - { role: sorrowless.wireguard, tags: ['wireguard', 'vpn'] }
 

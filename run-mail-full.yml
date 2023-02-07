@@ -19,37 +19,23 @@
   import_playbook: run-apt-update.yml
 
 - name: Get needed TLS certificates
-  hosts: mx
-  remote_user: root
-  roles:
-    - { role: tls, tags: ['tls', 'nginx'] }
+  import_playbook: run-tls.yml
 
 - name: Install MariaDB
-  hosts: mx
-  remote_user: root
-  roles:
-    - { role: mariadb, tags: ['mariadb', 'mysql'] }
+  import_playbook: run-mariadb.yml
 
 - name: Install postfix MTA
-  hosts: mx
-  remote_user: root
-  roles:
-    - { role: postfix, tags: ['postfix'] }
+  import_playbook: run-mariadb.yml
 
 - name: Install Nginx for postfixadmin web-interface
-  hosts: mx
-  remote_user: root
-  roles:
-    - { role: nginx, tags: ['nginx'] }
+  import_playbook: run-nginx.yml
 
 - name: Install dovecot MDA
-  hosts: mx
-  remote_user: root
-  roles:
-    - { role: dovecot, tags: ['dovecot'] }
+  import_playbook: run-dovecot.yml
+  tags:
+    - dovecot
 
 - name: Install Rainloop web-client
-  hosts: mx
-  remote_user: root
-  roles:
-    - { role: rainloop, tags: ['rainloop'] }
+  import_playbook: run-rainloop.yml
+  tags:
+    - rainloop

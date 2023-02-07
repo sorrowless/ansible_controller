@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install smartctl exporters
+  hosts: prometheus_smartctl_exporters
+  become: yes
+  roles:
+    - { role: andrewgodgivens.prometheus_smartctl_exporter, tags: ["exporters", "smartctl_exporter"]}

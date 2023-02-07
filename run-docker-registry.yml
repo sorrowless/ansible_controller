@@ -11,47 +11,14 @@
 - name: Configure target servers
   hosts: docker_registries
   remote_user: root
-
-  pre_tasks:
-    - name: Ensure nginx installed
-      package:
-        name: nginx
-        state: present
-
-  roles:
-    - { role: tls, tags: ['tls', 'nginx'] }
-    - { role: nginx, tags: ['nginx'] }
-
   tasks:
     - name: Ensure needed packages
       package:
         name:
-          - docker.io
+          - docker-compose
           - python3-pip
+          - python3-docker
         state: present
-      tags:
-        - docker
-        - registry
-
-    - name: Ensure latest python Docker SDK
-      # In Ubuntu Xenial latest python3-docker sdk version is 1.9, but Ansible
-      # 2.8 needed 1.10 at least, so we install in system-wide by pip
-      become: yes
-      become_user: root
-      pip:
-        name:
-         - docker
-         - docker-compose
-      tags:
-        - pip
-        - docker
-        - registry
-
-    - name: Ensure docker service is enabled
-      systemd:
-        name: docker
-        state: started
-        enabled: yes
       tags:
         - docker
         - registry
@@ -110,4 +77,3 @@
       tags:
         - docker
         - registry
-
