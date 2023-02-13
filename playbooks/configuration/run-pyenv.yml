@@ -1,0 +1,16 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook which installs pyenv to target hosts.
+# Run it like usual executable script:
+#
+# > ./run-pyenv.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Configure pyenv on target servers
+  hosts: all
+  remote_user: root
+
+  roles:
+    - { role: avanov.pyenv, tags: ['pyenv'] }

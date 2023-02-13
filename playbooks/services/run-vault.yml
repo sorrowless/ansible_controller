@@ -1,0 +1,9 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install vault
+  hosts: vault_servers
+  become: yes
+  roles:
+    - { role: robertdebock.hashicorp, tags: ["vault", "vault-install"] }
+    - { role: one_mind.vault, tags: ["vault"] }

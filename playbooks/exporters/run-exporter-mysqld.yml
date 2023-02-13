@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Mysqld Exporter
+  hosts: prometheus_mysqld_exporters
+  become: yes
+  roles:
+    - { role: sorrowless.prometheus_mysqld_exporter, tags: ["exporters", "mysqld_exporter"] }

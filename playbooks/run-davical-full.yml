@@ -1,0 +1,11 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install davical to target hosts
+  import_playbook: services/run-davical.yml
+
+- name: Ensure TLS certificates
+  import_playbook: services/run-tls.yml
+
+- name: Setup Nginx
+  import_playbook: services/run-nginx.yml

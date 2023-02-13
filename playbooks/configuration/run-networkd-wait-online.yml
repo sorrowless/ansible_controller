@@ -1,0 +1,27 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to configure 
+#
+# > ./run-systemd-networkd-wait-online.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Configure systemd-networkd-wait-online service
+  hosts: networkd_wait_online
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Set ExecStart options
+      lineinfile:
+        path: /lib/systemd/system/systemd-networkd-wait-online.service
+        regexp: '^ExecStart'
+        line: 'ExecStart=/lib/systemd/systemd-networkd-wait-online {{ networkd_wait_online_opts }}'
+        backrefs: yes
+
+    - name: Restart service
+      systemd:
+        name: systemd-networkd-wait-online.service
+        state: restarted
+        daemon_reload: yes

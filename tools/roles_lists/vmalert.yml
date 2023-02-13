@@ -1,0 +1,4 @@
+---
+- src: https://github.com/sorrowless/vmalert.git
+  version: master
+  name: sorrowless.vmalert

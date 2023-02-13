@@ -1,0 +1,50 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Ensure elasticsearch running on hosts
+  hosts: elasticsearch_nodes
+  tasks:
+  - name: Show distribution
+    debug:
+      msg: "OS is {{ ansible_distribution }}, release is {{ ansible_distribution_major_version }}"
+      verbosity: 1
+
+  - name: Create data directories
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: 0777
+    with_items:
+      - /var/data/elasticsearch/data
+
+  - name: Start ElasticSearch service
+    docker_compose:
+      state: present
+      project_name: elasticsearch
+      definition:
+        version: '2'
+        services:
+          elasticsearch:
+            container_name: elastic
+            image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+            volumes:
+              - /var/data/elasticsearch/data:/usr/share/elasticsearch/data
+            ports:
+              - "127.0.0.1:9200:9200"
+            environment:
+              - discovery.type=single-node
+              - http.host=0.0.0.0
+              - transport.host=localhost
+              - network.host=0.0.0.0
+              - "ES_JAVA_OPTS=-Xms6144m -Xmx6144m"
+            restart: always
+            ulimits:
+              memlock:
+                soft: -1
+                hard: -1
+            mem_limit: 7g
+          kibana:
+            container_name: kibana
+            image: docker.elastic.co/kibana/kibana:7.10.1
+            ports:
+              - "127.0.0.1:8080:5601"

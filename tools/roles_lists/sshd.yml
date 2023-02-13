@@ -1,0 +1,4 @@
+---
+- src: https://github.com/sorrowless/ansible-sshd.git
+  version: master
+  name: sorrowless.sshd

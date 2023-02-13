@@ -1,0 +1,4 @@
+---
+- src: git+ssh://git@github.com/oomag/ansible_rails.git
+  version: cryptoprocessing
+  name: oomag.rails_cryptoprocessing

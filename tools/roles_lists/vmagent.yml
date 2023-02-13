@@ -1,0 +1,4 @@
+---
+- src: https://github.com/sorrowless/vmagent.git
+  version: master
+  name: sorrowless.vmagent

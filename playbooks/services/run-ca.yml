@@ -1,0 +1,13 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-chrony.yml
+---
+- name: Configure target servers
+  hosts: chrony_hosts
+  become: yes
+  remote_user: root
+
+  roles:
+    - { role: sorrowless.ca, tags: ['ca'] }

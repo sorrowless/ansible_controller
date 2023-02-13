@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+---
+- name: Configure target servers
+  hosts: docs_api
+  serial: 5
+  remote_user: root
+
+  roles:
+    - api_docs
+  tags:
+    - api_docs
+    - docs

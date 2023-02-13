@@ -1,0 +1,15 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run Squid proxy server on target nodes. Run
+# it like usual executable script:
+#
+# > ./run-squid.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Install Squid on target nodes
+  hosts: squids
+  remote_user: root
+  roles:
+    - sorrowless.squid

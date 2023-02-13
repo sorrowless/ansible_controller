@@ -1,0 +1,5 @@
+---
+# It's a fork from geerlingguy
+- src: https://github.com/sorrowless/ansible-role-nodejs.git
+  version: master
+  name: sorrowless.nodejs

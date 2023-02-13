@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-server-common.yml
+#
+---
+- name: Configure target servers
+  hosts: all
+
+  roles:
+    - { role: sorrowless.server_common, tags: ['common'] }

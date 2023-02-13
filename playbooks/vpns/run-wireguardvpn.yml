@@ -1,0 +1,10 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install VPN server and create some client certs for it
+  hosts: wireguard_vpn_servers
+  remote_user: root
+  become: yes
+  roles:
+    - { role: sorrowless.wireguard, tags: ['wireguard', 'vpn'] }
+

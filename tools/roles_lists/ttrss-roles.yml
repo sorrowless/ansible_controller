@@ -1,4 +1,0 @@
----
-- src: https://github.com/sorrowless/ansible_ttrss.git
-  version: master
-  name: ttrss

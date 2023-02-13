@@ -1,0 +1,20 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run backup solution based on rsnapshot on target
+# nodes. Additionally it installs apprise to know when backup task was failed
+# by sending message about that to Telegram messenger.
+# Run it like usual executable script:
+#
+# > ./run-backup.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Configure ssh trust for backup hosts
+  import_playbook: configuration/run-ssh-trust.yml
+
+- name: Configure backup
+  import_playbook: backups/run-rsnapshot.yml
+
+- name: Configure backup notifications
+  import_playbook: services/run-apprise.yml

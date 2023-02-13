@@ -1,0 +1,9 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install davical to target hosts
+  hosts: davical_servers
+  remote_user: root
+  become: yes
+  roles:
+    - sorrowless.davical

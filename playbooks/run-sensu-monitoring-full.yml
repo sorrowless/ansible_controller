@@ -1,0 +1,86 @@
+#!/usr/bin/env ansible-playbook
+#
+# This is a playbook to install full-fledged monitoring solution based on
+# Sensu. This playbook manages both Sensu master node and slave nodes which
+# should be monitored. Installation itself includes:
+# - Graphite DB to store metrics perstistently
+# - Grafana dashboard to show stored metrics
+# - Sensu master to collect all the metrics from nodes
+# - Sensu agent to be configured on slave nodes which should be monitored
+# - Uchiwa dashboard for looking at alerts happening in real-time
+# - Nginx to proxy to Uchiwa dashboard
+# - TLS role to ensure https connection to Uchiwa dashboard
+#
+# Run it like usual executable script:
+#
+# > ./run-monitoring.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Install and configure needed python libs
+  hosts: [graphite, grafana]
+  remote_user: root
+  tasks:
+    - name: Ensure pip is installed
+      package:
+        name:
+         - python3-pip
+         - python-pip
+        state: present
+
+    - name: Ensure pip3 is latest version
+      pip:
+        executable: pip3
+        name: pip
+        state: latest
+
+    - name: Ensure pip is latest version
+      pip:
+        name: pip
+        state: latest
+
+    - name: Ensure pip3 docker-py version
+      pip:
+        executable: pip3
+        name:
+         - docker
+         - docker-compose
+        state: present
+
+    - name: Ensure pip docker-py version
+      pip:
+        name:
+         - docker
+         - docker-compose
+        state: present
+
+- name: Install and configure Graphite
+  import_playbook: monitoring/run-graphite.yml
+  tags:
+    - graphite
+
+- name: Install and configure Grafana
+  import_playbook: monitoring/run-grafana.yml
+  tags:
+    - grafana
+
+# To run this, you **MUST** have a group in inventory names
+# 'sensu_masters' which will have all Sensu master hosts
+# Also remember that you need to allow firewall traffic to the
+# Sensu master rabbitmq port
+- name: Install and configure Sensu alerting
+  import_playbook: monitoring/run-sensu.yml
+  tags:
+    - sensu
+
+- name: Ensure TLS certificates
+  import_playbook: services/run-tls.yml
+  tags:
+    - tls
+    - nginx
+
+- name: Setup Nginx
+  import_playbook: services/run-nginx.yml
+  tags:
+    - nginx

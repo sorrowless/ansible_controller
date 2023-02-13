@@ -1,0 +1,11 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to deploy c2c project. Run it like usual executable script:
+#
+# > ./run-c2c.yml
+#
+---
+- name: Configure target servers
+  hosts: c2c
+  roles:
+    - role: c2c

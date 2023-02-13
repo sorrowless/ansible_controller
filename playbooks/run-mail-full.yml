@@ -1,0 +1,41 @@
+#!/usr/bin/env -S ansible-playbook --limit mx -e @vars/extra.yaml
+#
+# This is a playbook to install full-fledged mail server solution based on
+# Postfix and Dovecot. Installation itself includes:
+# - TLS role to ensure https connection to Uchiwa dashboard
+# - MySQL to store virtual mailboxes
+# - Postfix
+# - Dovecot
+# - Rainloop web-interface
+#
+# Run it like usual executable script:
+#
+# > ./run-mail.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Update apt cache
+  import_playbook: utils/run-apt-update.yml
+
+- name: Get needed TLS certificates
+  import_playbook: services/run-tls.yml
+
+- name: Install MariaDB
+  import_playbook: databases/run-mariadb.yml
+
+- name: Install postfix MTA
+  import_playbook: services/run-postfix.yml
+
+- name: Install Nginx for postfixadmin web-interface
+  import_playbook: services/run-nginx.yml
+
+- name: Install dovecot MDA
+  import_playbook: services/run-dovecot.yml
+  tags:
+    - dovecot
+
+- name: Install Rainloop web-client
+  import_playbook: services/run-rainloop.yml
+  tags:
+    - rainloop

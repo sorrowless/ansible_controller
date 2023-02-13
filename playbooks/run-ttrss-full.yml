@@ -1,0 +1,32 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run minimum viable example of ttrss server on target
+# nodes. Run it like usual executable script:
+#
+# > ./run-ttrss.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+#
+# In case there is no python symlink in Ubuntu Xenial, you can run this
+# playbook by:
+#
+# ansible-playbook -b run-minimal.yml -e 'ansible_python_interpreter=python3' \
+#   -i <inventory_file>
+---
+- name: Ensure TLS certificates
+  import_playbook: services/run-tls.yml
+  tags:
+    - tls
+    - nginx
+
+- name: Setup Nginx
+  import_playbook: services/run-nginx.yml
+  tags:
+    - nginx
+
+- name: Deploy ttrss to target host
+  import_playbook: services/run-ttrss.yml
+  tags:
+    - ttrss
+    - personal

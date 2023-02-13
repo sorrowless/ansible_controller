@@ -1,0 +1,30 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run apprise container on target nodes. Apprise is a
+# small tool which allows one to send messages about something to various
+# services. In my case it usually used to send notifications from backup
+# services to Telegram in case of failed tasks.
+# Run it like usual executable script:
+#
+# > ./run-apprise-docker.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Configure apprise
+  hosts: apprise
+  remote_user: root
+  tasks:
+    - name: Start apprise container
+      docker_compose:
+        state: "{{ apprise_state | default('present') }}"
+        project_name: "{{ apprise_project_name | default('apprise') }}"
+        definition:
+          version: '2'
+          services:
+            apprise:
+              image: "caronc/apprise:{{ apprise_version | default('latest') }}"
+              container_name: apprise
+              ports:
+                - "{{ apprise_interface | default('127.0.0.1') }}:{{ apprise_port | default('8000') }}:8000"
+              environment: "{{ apprise_environments | default([]) }}"

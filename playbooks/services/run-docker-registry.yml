@@ -1,0 +1,79 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run docker registy with nginx and TLS certificates on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-docker-registry.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Configure target servers
+  hosts: docker_registries
+  remote_user: root
+  tasks:
+    - name: Ensure needed packages
+      package:
+        name:
+          - docker-compose
+          - python3-pip
+          - python3-docker
+        state: present
+      tags:
+        - docker
+        - registry
+
+    - name: Ensure registry directories
+      file:
+        state: directory
+        path: "{{ item }}"
+        mode: 0750
+      with_items:
+        - /var/registry
+        - /var/registry/data
+      tags:
+        - docker
+        - registry
+
+    - name: Configure network ranges for docker hosts
+      docker_network:
+        name: ext_network
+        driver_options:
+          # Have to be 15 symbols or less
+          com.docker.network.bridge.name: ext_bridge
+        ipam_config:
+          - subnet: 10.10.10.0/24
+            gateway: 10.10.10.1
+            iprange: 10.10.10.128/25
+      tags:
+        - docker
+        - registry
+
+    - name: Ensure registry docker container
+      # Look for overall configuration at https://docs.docker.com/registry/deploying/
+      community.docker.docker_compose:
+        state: present
+        project_name: registry
+        definition:
+          version: '2'
+          services:
+            registry:
+              # Look for versions at https://hub.docker.com/_/registry
+              image: "registry:2"
+              container_name: registry
+              ports:
+                # host:port
+                - "127.0.0.1:5000:5000"
+              volumes:
+                - "/var/registry/data:/var/lib/registry"
+              hostname: registry
+              restart: always
+              labels:
+                - registry
+          networks:
+            default:
+              external:
+                name: ext_network
+      tags:
+        - docker
+        - registry

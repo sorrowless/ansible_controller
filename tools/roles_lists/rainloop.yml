@@ -1,0 +1,4 @@
+---
+- src: https://github.com/sorrowless/ansible_rainloop.git
+  version: master
+  name: sorrowless.rainloop

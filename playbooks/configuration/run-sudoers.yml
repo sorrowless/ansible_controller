@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-sudoers.yml
+#
+---
+- name: Configure sudoers
+  hosts: all
+
+  roles:
+    - { role: sorrowless.sudoers, tags: ['sudoers'] }

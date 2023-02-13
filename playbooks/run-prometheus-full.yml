@@ -1,0 +1,46 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Docker
+  import_playbook: services/run-docker.yml
+  tags:
+    - common
+    - docker
+    - server
+
+- name: Setup Haproxy
+  import_playbook: services/run-haproxy.yml
+  tags:
+    - common
+    - haproxy
+
+- name: Setup Nginx
+  import_playbook: services/run-nginx.yml
+  tags:
+    - server
+    - nginx
+
+- name: Setup Victoriametrics Server
+  import_playbook: monitoring/run-victoriametrics.yml
+  tags:
+    - prometheus_server
+    - server
+
+- name: Setup Alertmanager
+  import_playbook: monitoring/run-alertmanager.yml
+  tags:
+    - prometheus_alertmanager
+    - alertmanager
+    - server
+
+- name: Ensure TLS Certificates
+  import_playbook: services/run-tls.yml
+  tags:
+    - common
+    - tls
+
+- name: Setup Grafana
+  import_playbook: monitoring/run-grafana.yml
+  tags:
+    - server
+    - grafana

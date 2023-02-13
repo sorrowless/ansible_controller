@@ -1,4 +1,0 @@
----
-- src: https://github.com/sorrowless/ansible_mtgproxy.git
-  version: master
-  name: mtgproxy

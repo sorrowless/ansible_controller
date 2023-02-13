@@ -1,8 +1,0 @@
-#!/usr/bin/env ansible-playbook
-#
----
-- name: Install PowerDNS authoritative server
-  hosts: dns_server_nodes
-  roles:
-    - pdns
-

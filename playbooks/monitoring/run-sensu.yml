@@ -1,0 +1,32 @@
+#!/usr/bin/env ansible-playbook
+#
+# Run it like usual executable script:
+#
+# > ./run-sensu.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Install and configure Sensu alerting
+  hosts: "all:!same_server"
+  remote_user: root
+
+  roles:
+    - sorrowless.sensu
+
+- name: Configure Sensu hooks
+  hosts: "all:!same_server"
+  remote_user: root
+  tasks:
+    - name: Allow Sensu to run some hooks with sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: "{{ item.regex }}"
+        line: "{{ item.line }}"
+      with_items:
+        - regex: '^sensu.*systemctl.*'
+          line: 'sensu ALL=(ALL) NOPASSWD: /bin/systemctl *'
+      tags:
+        - sensu
+        - sudoers

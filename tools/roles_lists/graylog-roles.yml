@@ -1,4 +1,0 @@
----
-- src: https://github.com/sorrowless/ansible_graylog.git
-  version: master
-  name: graylog

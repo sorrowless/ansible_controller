@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install and configure victoriametrics server
+  hosts: prometheus_servers
+  become: yes
+  roles:
+    - { role: sorrowless.victoriametrics, tags: ["victoriametrics", "server"] }

@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-server-common.yml
+#
+---
+- name: Configure iptables
+  hosts: all
+
+  roles:
+    - { role: sorrowless.iptables, tags: ['iptables'] }

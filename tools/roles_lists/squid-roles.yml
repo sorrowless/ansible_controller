@@ -1,4 +1,0 @@
----
-- src: https://github.com/sorrowless/ansible_squid.git
-  version: master
-  name: squid

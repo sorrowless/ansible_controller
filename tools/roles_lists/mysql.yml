@@ -1,0 +1,4 @@
+---
+- src: https://github.com/bennojoy/mysql.git
+  version: master
+  name: bennojoy.mysql

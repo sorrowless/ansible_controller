@@ -1,4 +1,0 @@
----
-- src: https://github.com/sorrowless/pdns-ansible.git
-  version: feat/named-backend
-  name: pdns

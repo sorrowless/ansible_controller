@@ -1,0 +1,4 @@
+---
+- src: https://github.com/sorrowless/sensu-ansible.git
+  version: master
+  name: sorrowless.sensu

@@ -1,0 +1,14 @@
+#!/usr/bin/env ansible-playbook
+#
+# Run it like usual executable script:
+#
+# > ./run-java.yml
+---
+- name: Setup OpenJDK on target hosts
+  hosts: jenkins
+  remote_user: root
+
+  roles:
+    - role: geerlingguy.java
+      java_packages:
+        - openjdk-8-jdk

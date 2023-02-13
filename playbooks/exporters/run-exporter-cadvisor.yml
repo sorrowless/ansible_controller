@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Cadvisor Exporter
+  hosts: prometheus_cadvisor_exporters
+  become: yes
+  roles:
+    - { role: sorrowless.cadvisor, when: cadvisor_install is defined, tags: ["exporters", "cadvisor_exporter", "cadvisor"] }

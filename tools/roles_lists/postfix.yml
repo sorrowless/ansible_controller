@@ -1,0 +1,4 @@
+---
+- src: https://github.com/sorrowless/ansible_postfix.git
+  version: master
+  name: sorrowless.postfix

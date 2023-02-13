@@ -1,4 +1,0 @@
----
-- src: https://github.com/sorrowless/ansible_haproxy.git
-  version: master
-  name: haproxy

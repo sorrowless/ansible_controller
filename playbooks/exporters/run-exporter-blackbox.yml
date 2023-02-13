@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Blackbox Exporter
+  hosts: prometheus_blackbox_exporters
+  become: yes
+  roles:
+    - { role: sorrowless.prometheus_blackbox_exporter, tags: ["exporters", "blackbox_exporter"] }

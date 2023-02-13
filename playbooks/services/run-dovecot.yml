@@ -1,0 +1,14 @@
+#!/usr/bin/env -S ansible-playbook --limit mx -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-dovecot.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Install dovecot MDA
+  hosts: mx
+  remote_user: root
+  roles:
+    - { role: sorrowless.dovecot, tags: ['dovecot'] }

@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Grok Exporter
+  hosts: prometheus_grok_exporters
+  become: yes
+  roles:
+    - { role: sorrowless.prometheus_grok_exporter, tags: ["exporters", "grok_exporter"] }

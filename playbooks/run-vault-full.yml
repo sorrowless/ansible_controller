@@ -1,0 +1,30 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Configure iptables
+  import_playbook: configuration/run-iptables.yml
+  tags:
+    - server
+    - iptables
+
+- name: Setup Docker
+  import_playbook: services/run-docker.yml
+  tags:
+    - docker
+    - server
+
+- name: Ensure TLS certificates
+  import_playbook: services/run-tls.yml
+  tags:
+    - tls
+
+- name: Setup Haproxy
+  import_playbook: services/run-haproxy.yml
+  tags:
+    - haproxy
+
+- name: Setup Vault
+  import_playbook: services/run-vault.yml
+  tags:
+    - vault-install
+    - vault

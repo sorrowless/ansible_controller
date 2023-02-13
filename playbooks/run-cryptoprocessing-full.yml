@@ -1,0 +1,22 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to deploy cryptoprocessing project. Run it like usual executable script:
+#
+# > ./run-cryptoprocessing-full.yml
+#
+---
+- name: Include postgresql configuration
+  import_playbook: databases/run-postgresql.yml
+  tags:
+    - postgresql
+
+- name: Configure target servers
+  hosts: cryptoprocessing_nodes
+  import_playbook: services/run-cryptoprocessing.yml
+  tags:
+    - rails
+
+- name: Include nginx configuration
+  import_playbook: services/run-nginx.yml
+  tags:
+    - nginx

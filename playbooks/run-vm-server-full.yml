@@ -1,0 +1,94 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+# Common part
+#
+- name: Configure Iptables
+  import_playbook: services/run-iptables.yml
+  tags:
+    - common
+    - iptables
+    - server
+
+- name: Setup Docker
+  import_playbook: services/run-docker.yml
+  tags:
+    - common
+    - docker
+    - server
+
+- name: Ensure TLS Certificates
+  import_playbook: services/run-tls.yml
+  tags:
+    - common
+    - tls
+
+- name: Setup Haproxy
+  import_playbook: services/run-haproxy.yml
+  tags:
+    - common
+    - haproxy
+
+# Server part
+#
+
+- name: Setup VMStorage
+  import_playbook: monitoring/run-vmstorage.yml
+  tags:
+    - server
+    - vm
+    - vmstorage
+
+- name: Setup VMInsert
+  import_playbook: monitoring/run-vminsert.yml
+  tags:
+    - server
+    - vm
+    - vminsert
+
+- name: Setup VMSelect
+  import_playbook: monitoring/run-vmselect.yml
+  tags:
+    - server
+    - vm
+    - vmselect
+
+- name: Setup VMAgent
+  import_playbook: monitoring/run-vmagent.yml
+  tags:
+    - server
+    - vm
+    - vmagent
+
+- name: Setup VMAlert
+  import_playbook: monitoring/run-vmalert.yml
+  tags:
+    - server
+    - vm
+    - vmalert
+
+- name: Setup AlertManager
+  import_playbook: monitoring/run-alertmanager.yml
+  tags:
+    - server
+    - vm
+    - alerts
+
+- name: Setup AlertManager
+  import_playbook: monitoring/run-alertmanager.yml
+  tags:
+    - server
+    - vm
+    - alerts
+
+- name: Setup Grafana
+  import_playbook: monitoring/run-grafana.yml
+  tags:
+    - server
+    - grafana
+
+- name: Setup Nginx
+  import_playbook: services/run-nginx.yml
+  tags:
+    - server
+    - nginx

@@ -1,0 +1,17 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run nginx with TLS certificates on target nodes. Run
+# it like usual executable script:
+#
+# > ./run-nginx.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Configure target servers
+  hosts: nginx
+  become: yes
+  become_user: root
+
+  roles:
+    - { role: sorrowless.nginx, tags: ['nginx'] }

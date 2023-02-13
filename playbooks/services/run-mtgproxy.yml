@@ -1,0 +1,10 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install MTGProxy to target hosts
+  hosts: mtgproxy_servers
+  remote_user: root
+  become: yes
+  roles:
+    - sorrowless.mtgproxy
+

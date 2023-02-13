@@ -1,0 +1,13 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run Yarn
+# it like usual executable script:
+#
+# > ./run-yarn.yml
+#
+---
+- name: Configure target servers
+  hosts: yarns
+
+  roles:
+    - { role: sorrowless.yarn, tags: ['yarn'] }

@@ -1,0 +1,9 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Backup mongo to s3 backets from target servers
+  hosts: backups_mongo_servers
+  remote_user: root
+  become: yes
+  roles:
+    - one_mind.ansible_mongo_backup
+

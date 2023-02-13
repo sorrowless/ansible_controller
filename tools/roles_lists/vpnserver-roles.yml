@@ -1,7 +1,0 @@
----
-- src: https://github.com/sorrowless/ansible_openvpn.git
-  version: master
-  name: openvpn
-
-- src: sorrowless.ipsecvpn
-- src: sorrowless.wireguard

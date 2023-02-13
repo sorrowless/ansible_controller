@@ -1,0 +1,24 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run Youtrack with nginx and TLS certificates on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-youtrack.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Ensure TLS Certificates
+  import_playbook: services/run-tls.yml
+  tags:
+    - tls
+
+- name: Setup Nginx
+  import_playbook: services/run-nginx.yml
+  tags:
+    - nginx
+
+- name: Setup Youtrack
+  import_playbook: services/run-youtrack.yml
+  tags:
+    - youtrack
