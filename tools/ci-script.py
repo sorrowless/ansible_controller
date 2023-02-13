@@ -10,7 +10,7 @@ from glob import glob
 
 
 def run_cmd(args: list) -> str:
-    out = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    out = subprocess.Popen(args, stderr=subprocess.STDOUT)
     stdout, stderr = out.communicate()
 
     if out.returncode != 0:
@@ -26,7 +26,6 @@ def get_mapping_by_wildcart(files_mapping: dict, file: str):
   for file_mapping in files_mapping.keys():
     if fnmatch(file, file_mapping):
       return file_mapping
-  return None
 
 
 def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: list) -> dict:
@@ -39,10 +38,11 @@ def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: li
     file_name = splited_file_path[-1]
     host_name = splited_file_path[-2]
 
-    run_file = "run-"+file_name
-
-    if "users" in file_name:
-      print("aaa")
+    run_file = [file for file in run_files if "run-"+file_name in file]
+    if len(run_file) > 0:
+      run_file = run_file[0]
+    else:
+      run_file = None
 
     matched_mapping = get_mapping_by_wildcart(files_mapping, file_name)
     if matched_mapping is not None:
@@ -53,7 +53,7 @@ def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: li
         run_mapping[mapping_run_file]["limits"].add(host_name)
         run_mapping[mapping_run_file]["tags"].update(matched_mapping[mapping_run_file])
 
-    elif run_file in run_files:
+    elif run_file is not None:
       if run_file not in run_mapping:
         run_mapping[run_file] = {"limits": set(), "tags": set()}
       run_mapping[run_file]["limits"].add(host_name)
@@ -110,11 +110,16 @@ def generate_roles_list(run_files: list) -> list:
 def generate_ansible_commands(run_mapping: dict) -> list:
   commands = []
   for run in run_mapping.items():
-    command = './{file_name} -t "{tags}" -l "{limits}"'.format(
+    command = './{file_name} -l {limits}'.format(
       file_name = run[0],
-      tags = ",".join(run[1]["tags"]),
       limits = ",".join(run[1]["limits"])
     )
+
+    if len(run[1]["tags"]) != 0:
+      command += ' -t {tags}'.format(
+        tags = ",".join(run[1]["tags"])
+      )
+
     commands.append(command)
 
   return commands
@@ -124,7 +129,7 @@ def preview(target_branch: str):
   with open('tools/ci-files-mapping.yml', "r") as fs:
     files_mapping = yaml.safe_load(fs)
 
-  run_files = [file for file in glob("*.yml")]
+  run_files = [file for file in glob("playbooks/**/*.yml", recursive=True)]
 
   changed_files = Repo().git.diff(target_branch, r=True, pretty="format:", name_only=True).split("\n")
 
@@ -143,9 +148,11 @@ def apply(target_branch: str):
   with open('tools/ci-files-mapping.yml', "r") as fs:
     files_mapping = yaml.safe_load(fs)
 
+  run_files = [file for file in glob("playbooks/**/*.yml", recursive=True)]
+
   changed_files = Repo().git.diff(target_branch, r=True, pretty="format:", name_only=True).split("\n")
 
-  run_mapping = generate_run_mapping(files_mapping, changed_files)
+  run_mapping = generate_run_mapping(files_mapping, changed_files, run_files)
 
   roles = generate_roles_list(run_mapping.keys())
   for role in roles:

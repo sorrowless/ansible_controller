@@ -10,7 +10,10 @@ scrape_configs_*.yml:
 users_vault.yml:
   run-server-common.yml:
     - users
+    - ssh_keys
 
 users.yml:
   run-server-common.yml:
     - users
+    - ssh_keys
+
