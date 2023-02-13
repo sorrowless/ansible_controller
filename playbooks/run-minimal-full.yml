@@ -1,0 +1,61 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run minimum viable example of server on target
+# nodes. Run it like usual executable script:
+#
+# > ./run-minimal.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+#
+# In case there is no python symlink in Ubuntu Xenial, you can run this
+# playbook by:
+#
+# ansible-playbook -b run-minimal.yml -e 'ansible_python_interpreter=python3' \
+#   -i <inventory_file>
+---
+- name: Setup pw policy
+  import_playbook: configuration/run-pwpolicy.yml
+  tags:
+    - security
+
+- name: Execute common tasks
+  import_playbook: configuration/run-server-common.yml
+  tags:
+    - common
+
+- name: Configure iptables
+  import_playbook: configuration/run-iptables.yml
+  tags:
+    - iptables
+
+- name: Configure sshd
+  import_playbook: configuration/run-sshd.yml
+  tags:
+    - sshd
+
+- name: Configure sudoers
+  import_playbook: configuration/run-sudoers.yml
+  tags:
+    - sudoers
+
+- name: Setup atop
+  import_playbook: services/run-atop.yml
+  tags:
+    - atop
+
+- name: Restart docker
+  hosts: docker_hosts
+  become: yes
+  remote_user: root
+
+  tasks:
+    - name: Restart docker
+      systemd:
+        name: docker
+        state: restarted
+      when:
+        - (iptables.flush_all is defined and iptables.flush_all) or (not iptables.flush_all is defined and iptables_defaults.flush_all)
+      tags:
+        - iptables
+      failed_when: false

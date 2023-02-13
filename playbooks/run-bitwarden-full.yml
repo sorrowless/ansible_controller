@@ -1,0 +1,21 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run Bitwarden with nginx and TLS certificates on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-bitwarden-full.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Ensure TLS certificates
+  import_playbook: services/run-tls.yml
+
+- name: Setup Nginx
+  import_playbook: services/run-nginx.yml
+
+- name: Setup Docker
+  import_playbook: services/run-docker.yml
+
+- name: Setup Bitwarden
+  import_playbook: services/run-bitwarden.yml

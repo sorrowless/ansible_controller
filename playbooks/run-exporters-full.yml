@@ -1,0 +1,83 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+# Clients part
+#
+- name: Install blackbox exporters
+  import_playbook: exporters/run-exporter-blackbox.yml
+  tags:
+    - exporters
+    - blackbox_exporter
+
+- name: Install domain exporters
+  import_playbook: exporters/run-exporter-domain.yml
+  tags:
+    - exporters
+    - domain_exporter
+
+- name: Install grok exporters
+  import_playbook: exporters/run-exporter-grok.yml
+  tags:
+    - exporters
+    - grok_exporter
+
+- name: Install mysqld exporters
+  import_playbook: exporters/run-exporter-mysqld.yml
+  tags:
+    - exporters
+    - mysqld_exporter
+
+- name: Install node exporters
+  import_playbook: exporters/run-exporter-node.yml
+  tags:
+    - exporters
+    - node_exporter
+
+- name: Install postgres exporters
+  import_playbook: exporters/run-exporter-postgres.yml
+  tags:
+    - exporters
+    - postgres_exporter
+
+- name: Install scripts exporters
+  import_playbook: exporters/run-exporter-scripts.yml
+  tags:
+    - exporters
+    - scripts_exporter
+
+- name: Install statsd exporters
+  import_playbook: exporters/run-exporter-statsd.yml
+  tags:
+    - exporters
+    - statsd_exporter
+
+- name: Install cadvisor exporters
+  import_playbook: exporters/run-exporter-cadvisor.yml
+  tags:
+    - exporters
+    - cadvisor_exporter
+    - cadvisor
+
+- name: Install docker exporters
+  import_playbook: exporters/run-exporter-docker.yml
+  tags:
+    - exporters
+    - docker_exporter
+
+- name: Install ssl exporters
+  import_playbook: exporters/run-exporter-ssl.yml
+  tags:
+    - exporters
+    - ssl_exporter
+
+- name: Install ipmi exporters
+  import_playbook: exporters/run-exporter-ipmi.yml
+  tags:
+    - exporters
+    - ipmi_exporter
+
+- name: Install smartctl exporters
+  import_playbook: exporters/run-exporter-smartctl.yml
+  tags:
+    - exporters
+    - smartctl_exporter

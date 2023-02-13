@@ -1,0 +1,20 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run docker registy with nginx and TLS certificates on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-docker-registry-full.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Setup Docker
+  import_playbook: services/run-docker.yml
+  tags:
+    - docker
+
+- name: Configure target docker registries 
+  import_playbook: services/run-docker-registry.yml
+
+- name: Include nginx-related roles
+  import_playbook: services/run-nginx.yml

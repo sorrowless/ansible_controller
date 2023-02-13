@@ -1,9 +1,0 @@
-#!/usr/bin/env ansible-playbook
-
----
-- name: configure ssl_exporter
-  hosts: prometheus_ssl_exporters
-  become: yes
-  remote_user: root
-  roles:
-    - { role: mikecher.ansible_prometheus_ssl_exporter, tags: ["ssl_exorter"] }

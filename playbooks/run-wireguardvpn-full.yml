@@ -1,0 +1,13 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install docker
+  import_playbook: services/run-docker.yml
+  tags:
+    - docker
+
+- name: Install VPN server and create some client certs for it
+  import_playbook: vpns/run-wireguardvpn.yml
+  tags:
+    - wireguard
+    - vpn

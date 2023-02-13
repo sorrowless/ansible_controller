@@ -1,0 +1,15 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run graylog with TLS certificates on target nodes.
+# Run it like usual executable script:
+#
+# > ./run-graylog.yml
+#
+# For configuration vars look at roles variables or host_vars/.example
+# directory.
+---
+- name: Ensure TLS certificates
+  import_playbook: services/run-tls.yml
+
+- name: Install and configure Graylog to the target machine
+  import_playbook: logs/run-graylog.yml

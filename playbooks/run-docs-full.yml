@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+---
+- name: Include nginx configuration
+  import_playbook: services/run-nginx.yml
+
+- name: Configure docs on target servers
+  import_playbook: services/run-docs.yml
+  
