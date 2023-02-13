@@ -10,4 +10,4 @@
   hosts: nodejs_servers
 
   roles:
-    - { role: nodejs, tags: ['nodejs'] }
+    - { role: sorrowless.nodejs, tags: ['nodejs'] }

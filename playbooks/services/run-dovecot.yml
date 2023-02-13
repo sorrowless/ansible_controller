@@ -11,4 +11,4 @@
   hosts: mx
   remote_user: root
   roles:
-    - { role: dovecot, tags: ['dovecot'] }
+    - { role: sorrowless.dovecot, tags: ['dovecot'] }

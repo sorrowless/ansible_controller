@@ -10,4 +10,4 @@
   hosts: yarns
 
   roles:
-    - { role: yarn, tags: ['yarn'] }
+    - { role: sorrowless.yarn, tags: ['yarn'] }

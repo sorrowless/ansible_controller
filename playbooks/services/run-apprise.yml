@@ -16,4 +16,4 @@
   remote_user: root
 
   roles:
-    - { role: apprise, tags: ['backup', 'apprise'] }
+    - { role: sorrowless.apprise, tags: ['backup', 'apprise'] }

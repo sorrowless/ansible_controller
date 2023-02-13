@@ -19,4 +19,4 @@
   remote_user: root
 
   roles:
-    - { role: ttrss, tags: ['ttrss', 'personal'] }
+    - { role: sorrowless.ttrss, tags: ['ttrss', 'personal'] }

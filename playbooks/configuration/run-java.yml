@@ -9,6 +9,6 @@
   remote_user: root
 
   roles:
-    - role: java
+    - role: geerlingguy.java
       java_packages:
         - openjdk-8-jdk

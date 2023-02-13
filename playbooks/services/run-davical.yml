@@ -6,4 +6,4 @@
   remote_user: root
   become: yes
   roles:
-    - davical
+    - sorrowless.davical

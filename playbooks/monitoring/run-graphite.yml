@@ -11,4 +11,4 @@
   hosts: graphite
   remote_user: root
   roles:
-    - graphite 
+    - sorrowless.graphite 

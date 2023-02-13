@@ -19,4 +19,4 @@
   hosts: postfix
   remote_user: root
   roles:
-    - { role: postfix, tags: ['postfix'] }
+    - { role: sorrowless.postfix, tags: ['postfix'] }

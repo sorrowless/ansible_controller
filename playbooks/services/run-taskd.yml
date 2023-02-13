@@ -9,4 +9,4 @@
   hosts: taskd_servers
 
   roles:
-    - { role: taskd, tags: ['taskd'] }
+    - { role: sorrowless.taskd, tags: ['taskd'] }

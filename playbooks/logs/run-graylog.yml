@@ -12,4 +12,4 @@
   hosts: graylogs
   remote_user: root
   roles:
-    - { name: graylog, tags: graylog }
+    - { name: sorrowless.graylog, tags: graylog }

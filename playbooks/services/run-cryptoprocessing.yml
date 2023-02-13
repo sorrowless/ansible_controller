@@ -9,4 +9,4 @@
   hosts: cryptoprocessing_nodes
 
   roles:
-    - { role: rails_cryptoprocessing, tags: ['rails'] }
+    - { role: oomag.rails_cryptoprocessing, tags: ['rails'] }

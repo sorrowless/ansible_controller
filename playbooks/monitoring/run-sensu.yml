@@ -12,7 +12,7 @@
   remote_user: root
 
   roles:
-    - sensu
+    - sorrowless.sensu
 
 - name: Configure Sensu hooks
   hosts: "all:!same_server"

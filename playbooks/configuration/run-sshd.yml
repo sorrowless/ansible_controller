@@ -9,4 +9,4 @@
   hosts: all
 
   roles:
-    - { role: sshd, tags: ['sshd'] }
+    - { role: sorrowless.sshd, tags: ['sshd'] }

@@ -1,4 +1,4 @@
 ---
 - src: https://github.com/sorrowless/ansible_yarn.git
   version: master
-  name: yarn
+  name: sorrowless.yarn

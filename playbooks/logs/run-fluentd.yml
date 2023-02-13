@@ -13,4 +13,4 @@
   remote_user: root
 
   roles:
-    - { role: fluentd, tags: ['fluentd'] }
+    - { role: sorrowless.fluentd, tags: ['fluentd'] }

@@ -1,4 +1,4 @@
 ---
 - src: https://github.com/sorrowless/ansible_taskd.git
   version: master
-  name: taskd
+  name: sorrowless.taskd

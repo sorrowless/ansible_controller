@@ -12,4 +12,4 @@
   hosts: squids
   remote_user: root
   roles:
-    - squid
+    - sorrowless.squid

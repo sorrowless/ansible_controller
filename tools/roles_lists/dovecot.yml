@@ -1,4 +1,4 @@
 ---
 - src: https://github.com/sorrowless/ansible_dovecot.git
   version: master
-  name: dovecot
+  name: sorrowless.dovecot

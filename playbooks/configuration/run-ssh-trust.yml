@@ -5,4 +5,4 @@
   remote_user: root
 
   roles:
-    - ssh_trust
+    - sorrowless.ssh_trust

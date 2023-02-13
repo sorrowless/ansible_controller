@@ -6,5 +6,5 @@
   remote_user: root
   become: yes
   roles:
-    - mtgproxy
+    - sorrowless.mtgproxy
 
