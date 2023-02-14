@@ -5,15 +5,15 @@
 #     - tag-for-run-one
 
 scrape_configs_*.yml:
-  run-vmagent.yml: []
+  playbooks/monitoring/run-vmagent.yml: []
 
 users_vault.yml:
-  run-server-common.yml:
+  playbooks/configuration/run-server-common.yml:
     - users
     - ssh_keys
 
 users.yml:
-  run-server-common.yml:
+  playbooks/configuration/run-server-common.yml:
     - users
     - ssh_keys
 
