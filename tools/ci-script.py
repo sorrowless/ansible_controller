@@ -7,6 +7,8 @@ import argparse
 from fnmatch import fnmatch
 from git import Repo
 from glob import glob
+from ansible.parsing.dataloader import DataLoader
+from ansible.inventory.manager import InventoryManager
 
 
 def run_cmd(args: list) -> str:
@@ -59,6 +61,66 @@ def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: li
       run_mapping[run_file]["limits"].add(host_name)
 
   return run_mapping
+
+
+def difference_inventory(target_branch: str, changed_inventory: list) -> dict:
+  diff = {}
+  for inventory in changed_inventory:
+    new_inventory = InventoryManager(loader = DataLoader(), sources=inventory)
+    new_inventory = new_inventory.get_groups_dict()
+
+    old_file = Repo().git.show(target_branch+":"+inventory)
+    with open("tmp", "w") as fs:
+        fs.write(old_file)
+    old_file = InventoryManager(loader = DataLoader(), sources="tmp")
+    old_file = old_file.get_groups_dict()
+
+    for group in new_inventory.keys():
+      old_group = set(old_file.get(group, []))
+      new_group = set(new_inventory.get(group, []))
+      changed_hosts = list(new_group.difference(old_group))
+      if len(changed_hosts) > 0:
+        diff[group] = changed_hosts
+  
+  return diff
+
+
+def get_run_files_groups(run_files: list) -> dict:
+  run_groups = {}
+
+  for run_file in run_files:
+    with open(run_file, "r") as fs:
+      run_file_tasks = yaml.safe_load(fs)
+
+    for task in run_file_tasks:
+      task_hosts = task.get("hosts", None)
+      if task_hosts is not None:
+        if isinstance(task_hosts, list):
+          for task_host in task_hosts:
+            if task_host not in run_groups:
+              run_groups[task_host] = []
+            run_groups[task_host].append(run_file) 
+        else:
+          if task_hosts not in run_groups:
+            run_groups[task_hosts] = []
+          run_groups[task_hosts].append(run_file) 
+
+  return run_groups
+
+
+def generate_run_mapping_inventory(difference_inventory: dict, run_files: list):
+  inventory_mapping = {}
+  run_groups = get_run_files_groups(run_files)
+
+  for group in difference_inventory:
+    if group in run_groups:
+      for host in difference_inventory[group]:
+        for run in run_groups[group]:
+          if run not in inventory_mapping:
+            inventory_mapping[run] = {"limits": set(), "tags": set()}
+          inventory_mapping[run]["limits"].add(host)
+
+  return inventory_mapping
 
 
 def load_roles_lists() -> dict:
@@ -128,12 +190,14 @@ def generate_ansible_commands(run_mapping: dict) -> list:
 def preview(target_branch: str):
   with open('tools/ci-files-mapping.yml', "r") as fs:
     files_mapping = yaml.safe_load(fs)
-
   run_files = [file for file in glob("playbooks/**/*.yml", recursive=True)]
-
   changed_files = Repo().git.diff(target_branch, r=True, pretty="format:", name_only=True).split("\n")
-
   run_mapping = generate_run_mapping(files_mapping, changed_files, run_files)
+
+  not_inventory_files = ["inventory/group_vars", "inventory/host_vars", "inventory/README.md"]
+  changed_inventory = [file for file in changed_files if "inventory" in file and file not in not_inventory_files]
+  if len(changed_inventory) > 0:
+    run_mapping = {**run_mapping, **generate_run_mapping_inventory(difference_inventory(target_branch, changed_inventory), run_files)}
 
   roles = generate_roles_list(run_mapping.keys())
   print("This roles lists will be downloaded:")
@@ -147,12 +211,14 @@ def preview(target_branch: str):
 def apply(target_branch: str):
   with open('tools/ci-files-mapping.yml', "r") as fs:
     files_mapping = yaml.safe_load(fs)
-
   run_files = [file for file in glob("playbooks/**/*.yml", recursive=True)]
-
   changed_files = Repo().git.diff(target_branch, r=True, pretty="format:", name_only=True).split("\n")
-
   run_mapping = generate_run_mapping(files_mapping, changed_files, run_files)
+
+  not_inventory_files = ["inventory/group_vars", "inventory/host_vars", "inventory/README.md"]
+  changed_inventory = [file for file in changed_files if "inventory" in file and file not in not_inventory_files]
+  if len(changed_inventory) > 0:
+    run_mapping = {**run_mapping, **generate_run_mapping_inventory(difference_inventory(target_branch, changed_inventory), run_files)}
 
   roles = generate_roles_list(run_mapping.keys())
   for role in roles:
