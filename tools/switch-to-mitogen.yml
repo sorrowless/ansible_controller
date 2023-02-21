@@ -13,7 +13,7 @@
       ansible.builtin.git:
         repo: "https://github.com/mitogen-hq/mitogen.git"
         dest: "../library/mitogen-master"
-        update: no
+        version: "v0.3.3"
 
     - name: Ensure mitogen strategies in ansible config
       lineinfile:
