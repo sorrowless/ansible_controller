@@ -1,6 +1,7 @@
 stages:
   - preview
   - apply
+  - triggering
 
 preview:
   stage: preview
@@ -21,7 +22,7 @@ apply:
   environment:
     name: master
   rules:
-    - if: '$CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE != "schedule"'
+    - if: '$CI_COMMIT_REF_NAME == "master" && $CI_PIPELINE_SOURCE != "schedule"'
   variables:
     GIT_STRATEGY: clone
     GIT_DEPTH: "0"
@@ -32,3 +33,14 @@ apply:
       echo $TARGET_HOST_SSH_PRIVATE_KEY | base64 -d > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-add ~/.ssh/id_rsa
   script: 
     - python3 tools/ci-script.py --apply --target_branch $CI_COMMIT_BEFORE_SHA
+
+trigger-job:
+  stage: triggering
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master" && $CI_PIPELINE_SOURCE != "schedule"'
+      change:
+        - 'tools/requirements.txt'
+  trigger:
+    project: 'oomag/infrastructure/ansible-ci-image'
+    branch: master
+    strategy: depend
