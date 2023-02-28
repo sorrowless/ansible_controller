@@ -38,7 +38,7 @@ trigger-job:
   stage: triggering
   rules:
     - if: '$CI_COMMIT_REF_NAME == "master" && $CI_PIPELINE_SOURCE != "schedule"'
-      change:
+      changes:
         - 'tools/requirements.txt'
   trigger:
     project: 'oomag/infrastructure/ansible-ci-image'
