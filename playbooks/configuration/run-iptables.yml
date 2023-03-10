@@ -10,3 +10,14 @@
 
   roles:
     - { role: sorrowless.iptables, tags: ['iptables'] }
+
+  tasks:
+    - name: Restart docker
+      systemd:
+        name: docker
+        state: restarted
+      when:
+        - (iptables.flush_all is defined and iptables.flush_all) or (not iptables.flush_all is defined and iptables_defaults.flush_all)
+      tags:
+        - iptables
+      failed_when: false
