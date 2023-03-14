@@ -33,11 +33,19 @@
          - apt-transport-https 
          - openvpn3
 
-    - name: Set openvpn resolver to resolv.conf
-      lineinfile:
-        path: /usr/share/dbus-1/system-services/net.openvpn.v3.netcfg.service
-        regexp: 'Exec='
-        line: 'Exec=/usr/lib/x86_64-linux-gnu/openvpn3-linux/openvpn3-service-netcfg --resolv-conf /etc/resolv.conf --state-dir "/var/lib/openvpn3"'
+    - name: Send openvpn ovpn config
+      copy:
+        src: "{{ ovpn_file_path }}"
+        dest: /etc/openvpn3/autoload/vpnclient.ovpn
+        owner: root
+        group: root
+        mode: "600"
+
+    - name: Fail when ovpn file not exist on target host
+      stat:
+        path: /etc/openvpn3/autoload/vpnclient.ovpn
+      register: ovpn_file
+      failed_when: not ovpn_file.stat.exists
 
     - name: Send openvpn autoload config
       copy:
@@ -51,13 +59,11 @@
              "name": "vpnclient"
           }
 
-    - name: Send openvpn ovpn config
-      copy:
-        src: "{{ ovpn_file_path }}"
-        dest: /etc/openvpn3/autoload/vpnclient.ovpn
-        owner: root
-        group: root
-        mode: "600"
+    - name: Set openvpn resolver to resolv.conf
+      lineinfile:
+        path: /usr/share/dbus-1/system-services/net.openvpn.v3.netcfg.service
+        regexp: 'Exec='
+        line: 'Exec=/usr/lib/x86_64-linux-gnu/openvpn3-linux/openvpn3-service-netcfg --resolv-conf /etc/resolv.conf --state-dir "/var/lib/openvpn3"'
 
     - name: Collect old sessions
       shell: openvpn3 sessions-list | grep Path | awk {'print $2'}
