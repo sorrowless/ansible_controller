@@ -59,6 +59,21 @@
         group: root
         mode: "600"
 
+    - name: Ensure Drop-in directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/openvpn3-autoload.d
+        state: "directory"
+        mode: "644"
+
+    - name: Ensure Drop-in before
+      community.general.ini_file:
+        path: /etc/systemd/system/openvpn3-autoload.d/before.conf
+        no_extra_spaces: true
+        section: Unit
+        option: Before
+        values: haproxy.service
+        mode: "644"
+
     - name: Collect old sessions
       shell: openvpn3 sessions-list | grep Path | awk {'print $2'}
       register: old_sessions 
