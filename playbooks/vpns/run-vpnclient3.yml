@@ -61,13 +61,13 @@
 
     - name: Ensure Drop-in directory
       ansible.builtin.file:
-        path: /etc/systemd/system/openvpn3-autoload.d
+        path: /etc/systemd/system/openvpn3-autoload.service.d
         state: "directory"
         mode: "644"
 
     - name: Ensure Drop-in before
       community.general.ini_file:
-        path: /etc/systemd/system/openvpn3-autoload.d/before.conf
+        path: /etc/systemd/system/openvpn3-autoload.service.d/before.conf
         no_extra_spaces: true
         section: Unit
         option: Before
