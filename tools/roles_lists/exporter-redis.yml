@@ -1,0 +1,3 @@
+---
+- src: https://github.com/one-mINd/prometheus_redis_exporter_role.git
+  name: one_mind.prometheus_redis_exporter

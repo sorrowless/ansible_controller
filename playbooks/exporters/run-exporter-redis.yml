@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Redis Exporter
+  hosts: prometheus_redis_exporters
+  become: yes
+  roles:
+    - { role: one_mind.prometheus_redis_exporter, tags: ["exporters", "redis_exporter"] }

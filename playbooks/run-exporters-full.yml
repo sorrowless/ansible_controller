@@ -81,3 +81,9 @@
   tags:
     - exporters
     - smartctl_exporter
+
+- name: Install redis exporters
+  import_playbook: exporters/run-exporter-redis.yml
+  tags:
+    - exporters
+    - redis_exporter
