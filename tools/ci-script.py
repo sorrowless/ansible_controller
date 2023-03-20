@@ -1,263 +1,427 @@
 #!/usr/bin/env python3
 
-import yaml
+from collections import defaultdict
+from fnmatch import fnmatch
+from glob import glob
+
+import argparse
 import os
 import subprocess
-import argparse
-from fnmatch import fnmatch
+import yaml
+
 from git import Repo
-from glob import glob
 from ansible.parsing.dataloader import DataLoader
 from ansible.inventory.manager import InventoryManager
 
 
 def run_cmd(args: list) -> str:
-    out = subprocess.Popen(args, stderr=subprocess.STDOUT)
-    stdout, stderr = out.communicate()
+    '''Run given command'''
+    with subprocess.Popen(args, stderr=subprocess.STDOUT) as out:
+        stdout, stderr = out.communicate()
 
     if out.returncode != 0:
         stdout_msg = stdout.decode('utf-8') if stdout is not None else ''
         stderr_msg = stderr.decode('utf-8') if stderr is not None else ''
-        raise Exception(f"Command returned code {out.returncode}. Stdout: '{stdout_msg}' Stderr: '{stderr_msg}'")
-    else:
-      stdout_msg = stdout.decode('utf-8') if stdout is not None else ''
+        # TODO(sbog): raise less broad exception
+        raise Exception(
+            f"Command returned code {out.returncode}. Stdout: \
+            '{stdout_msg}' Stderr: '{stderr_msg}'")
+    stdout_msg = stdout.decode('utf-8') if stdout is not None else ''
     return stdout_msg
 
 
-def get_mapping_by_wildcart(files_mapping: dict, file: str):
-  for file_mapping in files_mapping.keys():
-    if fnmatch(file, file_mapping):
-      return file_mapping
+def get_mapping_by_wildcard(files_mapping: dict, file: str) -> str:
+    '''Get mapping by passing wildcard'''
+    for file_mapping in files_mapping.keys():
+        if fnmatch(file, file_mapping):
+            return file_mapping
+    return ""
 
 
 def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: list) -> dict:
-  run_mapping = {}
+    '''Generate run mapping by given changes and run playbooks'''
+    run_mapping = {}
 
-  for file in changed_files:
-    if 'host_vars' not in file and 'group_vars' not in file:
-      continue
-    splited_file_path = file.split("/")
-    file_name = splited_file_path[-1]
-    host_name = splited_file_path[-2]
+    for file in changed_files:
+        if 'host_vars' not in file and 'group_vars' not in file:
+            continue
+        splitted_file_path = file.split("/")
+        try:
+            file_name = splitted_file_path[-1]
+            host_name = splitted_file_path[-2]
+        # TODO(sbog): raise less broad exception
+        except Exception as ex:
+            print(f"Unable to find host name for file {file}")
+            continue
 
-    run_file = [file for file in run_files if "run-"+file_name in file]
-    if len(run_file) > 0:
-      run_file = run_file[0]
-    else:
-      run_file = None
+        run_file = None
+        for r_file in run_files:
+            run_file = r_file if "run-" + file_name in r_file else None
+            if run_file:
+                break
 
-    matched_mapping = get_mapping_by_wildcart(files_mapping, file_name)
-    if matched_mapping is not None:
-      matched_mapping = files_mapping.get(matched_mapping)
-      for mapping_run_file in matched_mapping:
-        if mapping_run_file not in run_mapping:
-          run_mapping[mapping_run_file] = {"limits": set(), "tags": set()}
-        run_mapping[mapping_run_file]["limits"].add(host_name)
-        run_mapping[mapping_run_file]["tags"].update(matched_mapping[mapping_run_file])
+        matched_mapping = get_mapping_by_wildcard(files_mapping, file_name)
+        if matched_mapping:
+            matched_mapping = files_mapping.get(matched_mapping)
+            for mapping_run_file in matched_mapping:
+                if mapping_run_file not in run_mapping:
+                    run_mapping[mapping_run_file] = {"limits": set(), "tags": set()}
+                run_mapping[mapping_run_file]["limits"].add(host_name)
+                run_mapping[mapping_run_file]["tags"].update(matched_mapping[mapping_run_file])
 
-    elif run_file is not None:
-      if run_file not in run_mapping:
-        run_mapping[run_file] = {"limits": set(), "tags": set()}
-      run_mapping[run_file]["limits"].add(host_name)
+        elif run_file is not None:
+            if run_file not in run_mapping:
+                run_mapping[run_file] = {"limits": set(), "tags": set()}
+            run_mapping[run_file]["limits"].add(host_name)
 
-  return run_mapping
+    return run_mapping
 
 
 def difference_inventory(target_branch: str, changed_inventory: list) -> dict:
-  diff = {}
-  for inventory in changed_inventory:
-    new_inventory = InventoryManager(loader = DataLoader(), sources=inventory)
-    new_inventory = new_inventory.get_groups_dict()
+    '''Get inventory difference
 
-    old_file = Repo().git.show(target_branch+":"+inventory)
-    with open("tmp", "w") as fs:
-        fs.write(old_file)
-    old_file = InventoryManager(loader = DataLoader(), sources="tmp")
-    old_file = old_file.get_groups_dict()
+       args:
+           target_branch: reflog elements, like branch name of sha name
 
-    for group in new_inventory.keys():
-      old_group = set(old_file.get(group, []))
-      new_group = set(new_inventory.get(group, []))
-      changed_hosts = list(new_group.difference(old_group))
-      if len(changed_hosts) > 0:
-        diff[group] = changed_hosts
-  
-  return diff
+           changed_inventory: list of inventory files
 
+       return: dict with groups as keys and hosts of these groups as values
+    '''
+    diff = {}
+    for inventory in changed_inventory:
+        new_inventory = InventoryManager(loader = DataLoader(), sources=inventory)
+        new_inventory = new_inventory.get_groups_dict()
 
-def get_run_files_groups(run_files: list) -> dict:
-  run_groups = {}
+        old_file = Repo().git.show(target_branch+":"+inventory)
+        with open("tmp", "w", encoding='utf-8') as f_hand:
+            f_hand.write(old_file)
+        old_file = InventoryManager(loader = DataLoader(), sources="tmp")
+        old_file = old_file.get_groups_dict()
 
-  for run_file in run_files:
-    with open(run_file, "r") as fs:
-      run_file_tasks = yaml.safe_load(fs)
+        for group in new_inventory:
+            old_group = set(old_file.get(group, []))
+            new_group = set(new_inventory.get(group, []))
+            changed_hosts = list(new_group.difference(old_group))
+            if changed_hosts:
+                diff[group] = changed_hosts
 
-    for task in run_file_tasks:
-      task_hosts = task.get("hosts", None)
-      if task_hosts is not None:
-        if isinstance(task_hosts, list):
-          for task_host in task_hosts:
-            if task_host not in run_groups:
-              run_groups[task_host] = []
-            run_groups[task_host].append(run_file) 
-        else:
-          if task_hosts not in run_groups:
-            run_groups[task_hosts] = []
-          run_groups[task_hosts].append(run_file) 
-
-  return run_groups
+    return diff
 
 
-def generate_run_mapping_inventory(difference_inventory: dict, run_files: list):
-  inventory_mapping = {}
-  run_groups = get_run_files_groups(run_files)
+def get_run_files_groups(playbooks: list) -> dict:
+    '''Get hosts and groups of hosts to run playbooks on
 
-  for group in difference_inventory:
-    if group in run_groups:
-      for host in difference_inventory[group]:
-        for run in run_groups[group]:
-          if run not in inventory_mapping:
-            inventory_mapping[run] = {"limits": set(), "tags": set()}
-          inventory_mapping[run]["limits"].add(host)
+       Ansible playbooks runs on target hosts or on group of hosts which are
+       defined in inventory file. This function gets list of playbooks as
+       strings with filepaths, open each playbook and parse hosts/groups names
+       from it.
 
-  return inventory_mapping
+       args:
+           playbooks: list of playbooks
+
+       return: dict with host/group as key and playbook as value
+    '''
+    run_groups = defaultdict(list)
+
+    for playbook_name in playbooks:
+        with open(playbook_name, "rt", encoding='utf-8') as f_hand:
+            playbook_tasks = yaml.safe_load(f_hand)
+
+        for block in playbook_tasks:
+            block_hosts = block.get("hosts", None)
+            if not block_hosts:
+                continue
+            if not isinstance(block_hosts, list):
+                block_hosts = [block_hosts]
+            for host in block_hosts:
+                run_groups[host].append(playbook_name)
+
+    return run_groups
+
+
+def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list) -> dict:
+    '''Get the data for run ansible-playbook command
+
+       args:
+           diff_inventory: dict with groups as keys and hosts of these
+                                 groups as values
+
+           playbooks: list of filepaths to playbooks
+
+       return: dict with playbook names as keys and limits/tags as values.
+               Should be used as source for ansible-playbook command
+    '''
+    inventory_mapping = defaultdict(lambda: {"limits": set(), "tags": set()})
+    # Get dict with host/group as key and playbook as value
+    run_groups = get_run_files_groups(playbooks)
+
+    for group in diff_inventory:
+        # There can be a case when you have changed group in inventory but
+        # do not have a playbook to handle that group, we just skip them for now
+        if not group in run_groups:
+            continue
+        # For each host in current group of changed inventory
+        for host in diff_inventory[group]:
+            # For each playbook which should handle current group
+            for playbook in run_groups[group]:
+                inventory_mapping[playbook]["limits"].add(host)
+
+    return inventory_mapping
 
 
 def load_roles_lists() -> dict:
-  roles_list = {}
+    '''Get roles lists
 
-  for file in os.listdir("tools/roles_lists"):
-    with open("tools/roles_lists/"+file, "r") as fs:
-      role_src = yaml.safe_load(fs)
+       Open ./tools/roles_lists directory and iterate over all files in it. In
+       case given file is a yaml, decide that it is a role and load it into a
+       dictionary wieh filepath as key and content as value.
 
-    if role_src is not None:
-      roles_list["tools/roles_lists/"+file] = role_src
+       args: None
+       return: dictionary with filepaths and files contents
+    '''
+    roles_list = {}
 
-  return roles_list
+    for file in os.listdir("tools/roles_lists"):
+        with open("tools/roles_lists/"+file, "r", encoding='utf-8') as f_hand:
+            role_src = yaml.safe_load(f_hand)
+
+        if role_src is not None:
+            roles_list["tools/roles_lists/"+file] = role_src
+
+    return roles_list
 
 
 def match_role_name_src(roles_lists: dict, roles: list) -> set:
-  modified_roles = set()
+    '''Returns roles set which needed to be downloaded and apply
 
-  for role in roles:
-    for role_list in roles_lists:
-      for role_src in roles_lists[role_list]:
-        if role == role_src.get("name", None) or role == role_src.get("src", None):
-          modified_roles.add(role_list)
+       Gets all given roles lists which usually contain all the roles sources
+       paths. Then gets all given roles which are actually the list of roles
+       names to be applied. Then iterates over roles lists and for each source
+       in given role list check if this source name/src matches to role names
+       in roles.
 
-  return modified_roles
+       args:
+           roles_lists: dict with roles lists. Looks like:
+               [
+                "tools/roles_lists/ldap.yml":
+                  [
+                    {
+                     src: https://github.com/MikeCher/ansible-role-openldap.git
+                     version: master
+                     name: mikecher.ansible-role-openldap
+                    }
+                  ]
+               ]
+
+           roles: list with roles to apply. Looks like:
+               [
+                mikecher.ansible-role-openldap
+               ]
+
+        returns: set of roles to apply
+    '''
+    modified_roles = set()
+
+    for role in roles:
+        for role_list in roles_lists:
+            for role_src in roles_lists[role_list]:
+                if role == role_src.get("name", None) or role == role_src.get("src", None):
+                    modified_roles.add(role_list)
+
+    return modified_roles
 
 
 def generate_roles_list(run_files: list) -> list:
-  roles = []
+    '''Generate roles list based on playbooks which needs to be ran
 
-  for run_file in run_files:
-    with open(run_file, "r") as fs:
-      run_file_tasks = yaml.safe_load(fs)
+       args:
+           run_files: list of playbooks which needs to be ran
 
-    for task in run_file_tasks:
-      task_roles = task.get("roles", dict())
-      for role in task_roles:
-        if isinstance(role, str):
-          roles.append(role)
-        else:
-          roles.append(role.get("role"))
+       return: list of roles to download
+    '''
+    roles = []
 
-  roles_lists = load_roles_lists()
-  roles = match_role_name_src(roles_lists, roles)
+    # Read all given playbooks and try to get roles names from them
+    for run_file in run_files:
+        with open(run_file, "r", encoding='utf-8') as f_hand:
+            run_file_tasks = yaml.safe_load(f_hand)
 
-  return roles
+        for task in run_file_tasks:
+            task_roles = task.get("roles", {})
+            for role in task_roles:
+                if isinstance(role, str):
+                    roles.append(role)
+                else:
+                    roles.append(role.get("role"))
+
+    roles_lists = load_roles_lists()  # Just get a content of all in roles_lists directory
+    # Get roles to download by ansible-galaxy
+    roles = match_role_name_src(roles_lists, roles)
+
+    return roles
 
 
 def generate_ansible_commands(run_mapping: dict) -> list:
-  commands = []
-  for run in run_mapping.items():
-    command = './{file_name} -l {limits}'.format(
-      file_name = run[0],
-      limits = ",".join(run[1]["limits"])
-    )
+    '''Generate ansible command based on given options
 
-    if len(run[1]["tags"]) != 0:
-      command += ' -t {tags}'.format(
-        tags = ",".join(run[1]["tags"])
-      )
+       args:
+           run_mapping: dict with filenames as keys and tags/limits as values
 
-    commands.append(command)
+       return: list of ansible commands
+    '''
+    commands = []
+    for file_name, opts in run_mapping.items():
+        limits = ",".join(opts["limits"])
+        command = f'./{file_name} -l {limits}'
 
-  return commands
+        if len(opts["tags"]):
+            tags = ",".join(opts["tags"])
+            command += f' -t {tags}'
 
+        commands.append(command)
 
-def preview(target_branch: str):
-  with open('tools/ci-files-mapping.yml', "r") as fs:
-    files_mapping = yaml.safe_load(fs)
-  run_files = [file for file in glob("playbooks/**/*.yml", recursive=True)]
-  changed_files = Repo().git.diff(target_branch, r=True, pretty="format:", name_only=True).split("\n")
-  run_mapping = generate_run_mapping(files_mapping, changed_files, run_files)
-
-  not_inventory_files = ["inventory/group_vars", "inventory/host_vars", "inventory/README.md"]
-  changed_inventory = [file for file in changed_files if "inventory" in file and file not in not_inventory_files]
-  if len(changed_inventory) > 0:
-    run_mapping = {**run_mapping, **generate_run_mapping_inventory(difference_inventory(target_branch, changed_inventory), run_files)}
-
-  roles = generate_roles_list(run_mapping.keys())
-  print("This roles lists will be downloaded:")
-  print("\n".join(roles))
-
-  commands = generate_ansible_commands(run_mapping)
-  print("This commands will be execute:")
-  print("\n".join(commands))
+    return commands
 
 
-def apply(target_branch: str):
-  with open('tools/ci-files-mapping.yml', "r") as fs:
-    files_mapping = yaml.safe_load(fs)
-  run_files = [file for file in glob("playbooks/**/*.yml", recursive=True)]
-  changed_files = Repo().git.diff(target_branch, r=True, pretty="format:", name_only=True).split("\n")
-  run_mapping = generate_run_mapping(files_mapping, changed_files, run_files)
+def get_inventory_files(changed_files: str) -> list:
+    '''Get inventory files
 
-  not_inventory_files = ["inventory/group_vars", "inventory/host_vars", "inventory/README.md"]
-  changed_inventory = [file for file in changed_files if "inventory" in file and file not in not_inventory_files]
-  if len(changed_inventory) > 0:
-    run_mapping = {**run_mapping, **generate_run_mapping_inventory(difference_inventory(target_branch, changed_inventory), run_files)}
+       Try to get inventory files from the list of overall changed_files.
 
-  roles = generate_roles_list(run_mapping.keys())
-  for role in roles:
-    run_cmd(["ansible-galaxy", "install", "-f", "-r", role, "-p", "./roles/"])
-  print("This roles lists was downloaded:")
-  print("\n".join(roles))
+       args:
+         changed_files: list of str with filenames
 
-  commands = generate_ansible_commands(run_mapping)
-  print("This commands will be execute:")
-  print("\n".join(commands))
-  for command in commands:
-    run_cmd(command.split(" "))
+       return: list of changed inventory files
+    '''
+    changed_inventory = []
+    not_inventory_files = [
+        "inventory/group_vars",
+        "inventory/host_vars",
+        "inventory/README.md"
+    ]
+    for file in changed_files:
+        if file in not_inventory_files:
+            continue
+        if "inventory" in file:
+            changed_inventory.append(file)
+    return changed_inventory
+
+
+def get_files_mapping(mapping_file: str = 'tools/ci-files-mapping.yml') -> dict:
+    '''Get mappings from mapping file
+
+       Tries to import mapping file and convert it into python dictionary.
+       Mapping file should look like:
+
+           users_vault.yml:
+             playbooks/configuration/run-server-common.yml:
+               - users
+               - ssh_keys
+
+       so after loading it will be a dict of dicts.
+
+       args:
+           mapping_file: path to the file with mappings
+
+       return: dict with mappings
+    '''
+    with open(mapping_file, "rt", encoding='utf-8') as f_hand:
+        files_mapping = yaml.safe_load(f_hand)
+    return files_mapping
+
+
+def get_playbooks(search_glob: str = "playbooks/**/*.yml") -> list:
+    '''Get list of playbooks to run
+
+       args:
+           search_glob: string with directory glob to search playbooks in
+
+       return: list of playbooks which can be ran in repository
+    '''
+    return list(glob(search_glob, recursive=True))
+
+
+def get_changed_files(target_branch: str) -> list:
+    '''Get changed files to iterate over
+
+       Tries to get changed files in repository to run some playbooks based on
+       these files info.
+
+       args:
+           target_branch: reflog element, like commit hash or branch name
+
+       return: list of playbooks which can be ran in repository
+    '''
+    changed_files = Repo().git.diff(
+        target_branch, r=True, pretty="format:", name_only=True) \
+        .split("\n")
+    return changed_files
+
+
+def apply(target_branch: str, dry_run: bool = False):
+    '''Apply changes for given branch
+
+       Given target branch, apply changes implemented on it.
+
+       args:
+           target_branch: reflog element, like commit hash or branch name
+
+           dry_run: whether to really apply changes or just print what's needed
+                    to be ran
+    '''
+    files_mapping = get_files_mapping()
+    playbooks = get_playbooks()
+    changed_files = get_changed_files(target_branch)
+    run_mapping = generate_run_mapping(files_mapping, changed_files, playbooks)
+
+    changed_inventory = get_inventory_files(changed_files)
+    if changed_inventory:
+        inventory_difference = difference_inventory(
+                target_branch, changed_inventory)
+        run_mapping_inventory = generate_run_mapping_inventory(
+                inventory_difference, playbooks)
+        run_mapping.update(run_mapping_inventory)
+
+    roles = generate_roles_list(run_mapping.keys())
+    print("These roles lists will be downloaded:")
+    print("\n".join(roles))
+    if not dry_run:
+        for role in roles:
+            run_cmd(["ansible-galaxy", "install", "-f", "-r", role, "-p", "./roles/"])
+
+    commands = generate_ansible_commands(run_mapping)
+    print("These commands will be executed:")
+    print("\n".join(commands))
+    if not dry_run:
+        for command in commands:
+            run_cmd(command.split(" "))
 
 
 if __name__ == '__main__':
-  arg_parser = argparse.ArgumentParser()
-  execution_mode = arg_parser.add_mutually_exclusive_group()
+    arg_parser = argparse.ArgumentParser()
+    execution_mode = arg_parser.add_mutually_exclusive_group()
 
-  execution_mode.add_argument("--preview",
-    default=False,
-    action='store_true',
-    help="preview mode"
-  )
+    execution_mode.add_argument("--preview",
+      default=False,
+      action='store_true',
+      help="preview mode"
+    )
 
-  execution_mode.add_argument("--apply",
-    default=False,
-    action='store_true',
-    help="apply mode"
-  )
+    execution_mode.add_argument("--apply",
+      default=False,
+      action='store_true',
+      help="apply mode"
+    )
 
-  arg_parser.add_argument("--target_branch",
-    type=str,
-    required=True,
-    help="apply mode"
-  )
+    arg_parser.add_argument("--target_branch",
+      type=str,
+      required=True,
+      help="apply mode"
+    )
 
-  args = arg_parser.parse_known_args()[0]
+    arguments = arg_parser.parse_known_args()[0]
 
-  if args.preview:
-    preview(args.target_branch)
-  if args.apply:
-    apply(args.target_branch)
+    if arguments.preview:
+        apply(arguments.target_branch, dry_run=True)
+    if arguments.apply:
+        apply(arguments.target_branch)
