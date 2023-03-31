@@ -65,6 +65,21 @@
         regexp: 'Exec='
         line: 'Exec=/usr/lib/x86_64-linux-gnu/openvpn3-linux/openvpn3-service-netcfg --resolv-conf /etc/resolv.conf --state-dir "/var/lib/openvpn3"'
 
+    - name: Ensure Drop-in directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/openvpn3-autoload.service.d
+        state: "directory"
+        mode: "644"
+
+    - name: Ensure Drop-in before
+      community.general.ini_file:
+        path: /etc/systemd/system/openvpn3-autoload.service.d/before.conf
+        no_extra_spaces: true
+        section: Unit
+        option: Before
+        values: haproxy.service
+        mode: "644"
+
     - name: Collect old sessions
       shell: openvpn3 sessions-list | grep Path | awk {'print $2'}
       register: old_sessions 
