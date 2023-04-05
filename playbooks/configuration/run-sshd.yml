@@ -6,7 +6,7 @@
 #
 ---
 - name: Configure sshd
-  hosts: all
+  hosts: sshd
 
   roles:
     - { role: sorrowless.sshd, tags: ['sshd'] }

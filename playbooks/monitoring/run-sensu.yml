@@ -8,14 +8,14 @@
 # directory.
 ---
 - name: Install and configure Sensu alerting
-  hosts: "all:!same_server"
+  hosts: "sensu"
   remote_user: root
 
   roles:
     - sorrowless.sensu
 
 - name: Configure Sensu hooks
-  hosts: "all:!same_server"
+  hosts: "sensu"
   remote_user: root
   tasks:
     - name: Allow Sensu to run some hooks with sudo

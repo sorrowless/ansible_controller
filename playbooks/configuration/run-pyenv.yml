@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure pyenv on target servers
-  hosts: all
+  hosts: pyenv
   remote_user: root
 
   roles:

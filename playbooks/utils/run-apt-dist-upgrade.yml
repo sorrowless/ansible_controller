@@ -11,7 +11,7 @@
 # > ./run-apt-dist-upgrade.yml
 ---
 - name: Update and upgrade servers
-  hosts: "all:!excluded_common"
+  hosts: "dist_upgrade"
   become: yes
 
   become_user: root

@@ -6,7 +6,7 @@
 #
 ---
 - name: Configure iptables
-  hosts: all
+  hosts: iptables
 
   roles:
     - { role: sorrowless.iptables, tags: ['iptables'] }

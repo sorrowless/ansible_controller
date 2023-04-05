@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Ensure minimal passwords policy on target hosts
-  hosts: "all:!same_server"
+  hosts: "pwpolicy"
   remote_user: root
 
   roles:

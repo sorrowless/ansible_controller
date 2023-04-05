@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: all
+  hosts: refresh_ssh_host_keys
   become: yes
   become_user: root
 

@@ -6,7 +6,7 @@
 #
 ---
 - name: Setup atop
-  hosts: all
+  hosts: atop
 
   roles:
     - { role: jtprogru.install_atop, tags: ['atop'] }
