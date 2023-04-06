@@ -1,5 +1,4 @@
-[server_common:children]
-all
+[server_common]
 
 [iptables:children]
 server_common
