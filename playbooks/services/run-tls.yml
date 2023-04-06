@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: all
+  hosts: tls
   #serial: 1
   remote_user: root
 

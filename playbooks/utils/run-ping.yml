@@ -7,7 +7,7 @@
 #
 ---
 - name: Configure target servers
-  hosts: all
+  hosts: ping
   remote_user: root
 
   tasks:

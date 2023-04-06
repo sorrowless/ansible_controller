@@ -6,7 +6,7 @@
 #
 ---
 - name: Config sysctl
-  hosts: all
+  hosts: sysctl
   become: true
   roles:
     - {role: ageres210784.sysctl, tags: ['sysctl'] }

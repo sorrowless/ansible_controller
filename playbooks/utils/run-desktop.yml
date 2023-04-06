@@ -12,7 +12,7 @@
 # ansible-playbook -i 'localhost,' -c local -b -K run-desktop.yml --ask-vault-pass --tags "dotcommon"
 ---
 - name: Install needed desktop things everywhere
-  hosts: all
+  hosts: desktop
   vars_files:
    - vars/dotfiles_vars.yml
 

@@ -6,7 +6,7 @@
 #
 ---
 - name: Ensure CI prerequisites such as deployment keys
-  hosts: all
+  hosts: ci_prerequisites
   gather_facts: no
   tasks:
     - name: Ensure user ssh directory on current local CI machine

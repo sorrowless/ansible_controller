@@ -1,0 +1,17 @@
+[server_common:children]
+all
+
+[iptables:children]
+server_common
+
+[pwpolicy:children]
+server_common
+
+[sshd:children]
+server_common
+
+[sudoers:children]
+server_common
+
+[atop:children]
+server_common

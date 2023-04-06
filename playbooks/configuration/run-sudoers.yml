@@ -6,7 +6,7 @@
 #
 ---
 - name: Configure sudoers
-  hosts: all
+  hosts: sudoers
 
   roles:
     - { role: sorrowless.sudoers, tags: ['sudoers'] }

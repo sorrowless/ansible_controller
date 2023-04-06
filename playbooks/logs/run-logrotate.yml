@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Install and configure logrotate
-  hosts: all
+  hosts: logrotate
   remote_user: root
   become: yes
 

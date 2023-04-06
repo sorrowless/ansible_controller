@@ -10,7 +10,7 @@
 # > ./run-apt-update.yml
 ---
 - name: Update apt cache on servers
-  hosts: "all:!excluded_common"
+  hosts: "apt_update"
   become: yes
 
   become_user: root

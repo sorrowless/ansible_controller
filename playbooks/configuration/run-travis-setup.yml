@@ -6,7 +6,7 @@
 #
 ---
 - name: Ensure Travis-CI tasks
-  hosts: all
+  hosts: travis
   gather_facts: false
 
   tasks:

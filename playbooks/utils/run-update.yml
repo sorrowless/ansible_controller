@@ -8,7 +8,7 @@
 # Only APT-compatible distributions are supported.
 ---
 - name: Update and upgrade apt packages
-  hosts: all
+  hosts: update
   remote_user: root
   become: true
 

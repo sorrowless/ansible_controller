@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure rbenv on target servers
-  hosts: all
+  hosts: rbenv
 
   roles:
     - { role: sorrowless.rbenv, tags: ['rbenv'] }
