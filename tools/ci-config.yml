@@ -1,25 +1,34 @@
-## Example mapping file
+# Example mapping file
 # have following format:
-# changed_file_name:
-#   run-file-for-changed-conf.yml:
-#     - tag-for-run-one
+# mappings:
+#   changed_file_name:
+#     run-file-for-changed-conf.yml:
+#       priority: 10
+#       tags:
+#       - tag-for-run-one
+
+default_priority: 100
 
 mappings:
   scrape_configs_*.yml:
-    playbooks/monitoring/run-vmagent.yml: []
+    playbooks/monitoring/run-vmagent.yml: {}
 
   users_vault.yml:
     playbooks/configuration/run-server-common.yml:
-      - users
-      - ssh_keys
+      tags:
+        - users
+        - ssh_keys
 
   users.yml:
     playbooks/configuration/run-server-common.yml:
-      - users
-      - ssh_keys
-
-  nginx.yml:
-    playbooks/services/run-nginx.yml: []
+      tags:
+        - users
+        - ssh_keys
 
   tls.yml:
-    playbooks/services/run-services.yml: []
+    playbooks/services/run-tls.yml: 
+      priority: 5
+
+  nginx.yml:
+    playbooks/services/run-nginx.yml: 
+      priority: 10

@@ -60,18 +60,23 @@ def generate_run_mapping(config: dict, changed_files: list, run_files: list) -> 
             if run_file:
                 break
 
+        default_priority = config.get("default_priority")
         matched_mapping = get_mapping_by_wildcard(config, file_name)
         if matched_mapping:
-            matched_mapping = config.get(matched_mapping)
+            matched_mapping = config.get("mappings").get(matched_mapping)
             for mapping_run_file in matched_mapping:
                 if mapping_run_file not in run_mapping:
-                    run_mapping[mapping_run_file] = {"limits": set(), "tags": set()}
+                    run_mapping[mapping_run_file] = {"limits": set(), "tags": set(), "priority": default_priority}
                 run_mapping[mapping_run_file]["limits"].add(host_name)
-                run_mapping[mapping_run_file]["tags"].update(matched_mapping[mapping_run_file])
+                run_mapping[mapping_run_file]["tags"].update(matched_mapping[mapping_run_file].get("tags", []))
+                if run_mapping[mapping_run_file]["priority"] == default_priority:
+                    run_mapping[mapping_run_file]["priority"] = matched_mapping[mapping_run_file].get("priority", default_priority)
+                elif run_mapping[mapping_run_file]["priority"] > matched_mapping[mapping_run_file].get("priority", float('inf')):
+                    run_mapping[mapping_run_file]["priority"] = matched_mapping[mapping_run_file].get("priority", default_priority)
 
         elif run_file is not None:
             if run_file not in run_mapping:
-                run_mapping[run_file] = {"limits": set(), "tags": set()}
+                run_mapping[run_file] = {"limits": set(), "tags": set(), "priority": default_priority}
             run_mapping[run_file]["limits"].add(host_name)
 
     return run_mapping
@@ -295,13 +300,22 @@ def generate_ansible_commands(run_mapping: dict) -> list:
 
        return: list of ansible commands
     '''
-    commands = []
-    for file_name, opts in run_mapping.items():
-        limits = ",".join(opts["limits"])
-        command = f'./{file_name} -l {limits}'
+    sorted_run_mapping = {}
+    for run_file in run_mapping:
+        priority = run_mapping[run_file].get("priority")
+        if priority not in sorted_run_mapping:
+            sorted_run_mapping[priority] = []
+        run_mapping[run_file]["file_name"] = run_file
+        sorted_run_mapping[priority].append(run_mapping[run_file])
+    sorted_run_mapping = [mapping for priority in sorted(sorted_run_mapping) for mapping in sorted_run_mapping[priority]]
 
-        if len(opts["tags"]):
-            tags = ",".join(opts["tags"])
+    commands = []
+    for mapping in sorted_run_mapping:
+        limits = ",".join(mapping["limits"])
+        command = f'./{mapping["file_name"]} -l {limits}'
+
+        if len(mapping["tags"]):
+            tags = ",".join(mapping["tags"])
             command += f' -t {tags}'
 
         commands.append(command)
