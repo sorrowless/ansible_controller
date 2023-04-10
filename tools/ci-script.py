@@ -32,13 +32,13 @@ def run_cmd(args: list) -> str:
 
 def get_mapping_by_wildcard(files_mapping: dict, file: str) -> str:
     '''Get mapping by passing wildcard'''
-    for file_mapping in files_mapping.keys():
+    for file_mapping in files_mapping.get("mappings", {}).keys():
         if fnmatch(file, file_mapping):
             return file_mapping
     return ""
 
 
-def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: list) -> dict:
+def generate_run_mapping(config: dict, changed_files: list, run_files: list) -> dict:
     '''Generate run mapping by given changes and run playbooks'''
     run_mapping = {}
 
@@ -60,9 +60,9 @@ def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: li
             if run_file:
                 break
 
-        matched_mapping = get_mapping_by_wildcard(files_mapping, file_name)
+        matched_mapping = get_mapping_by_wildcard(config, file_name)
         if matched_mapping:
-            matched_mapping = files_mapping.get(matched_mapping)
+            matched_mapping = config.get(matched_mapping)
             for mapping_run_file in matched_mapping:
                 if mapping_run_file not in run_mapping:
                     run_mapping[mapping_run_file] = {"limits": set(), "tags": set()}
@@ -333,11 +333,11 @@ def get_inventory_files(changed_files: str) -> list:
     return changed_inventory
 
 
-def get_files_mapping(mapping_file: str = 'tools/ci-files-mapping.yml') -> dict:
-    '''Get mappings from mapping file
+def get_config(config_file: str = 'tools/ci-config.yml') -> dict:
+    '''Get configuration from config file
 
-       Tries to import mapping file and convert it into python dictionary.
-       Mapping file should look like:
+       Tries to import config file and convert it into python dictionary.
+       Config file should look like:
 
            users_vault.yml:
              playbooks/configuration/run-server-common.yml:
@@ -347,13 +347,13 @@ def get_files_mapping(mapping_file: str = 'tools/ci-files-mapping.yml') -> dict:
        so after loading it will be a dict of dicts.
 
        args:
-           mapping_file: path to the file with mappings
+           config_file: path to the file with configuration
 
        return: dict with mappings
     '''
-    with open(mapping_file, "rt", encoding='utf-8') as f_hand:
-        files_mapping = yaml.safe_load(f_hand)
-    return files_mapping
+    with open(config_file, "rt", encoding='utf-8') as f_hand:
+        confs = yaml.safe_load(f_hand)
+    return confs
 
 
 def get_playbooks(search_glob: str = "playbooks/**/*.yml") -> list:
@@ -395,10 +395,10 @@ def apply(target_branch: str, dry_run: bool = False):
            dry_run: whether to really apply changes or just print what's needed
                     to be ran
     '''
-    files_mapping = get_files_mapping()
+    config = get_config()
     playbooks = get_playbooks()
     changed_files = get_changed_files(target_branch)
-    run_mapping = generate_run_mapping(files_mapping, changed_files, playbooks)
+    run_mapping = generate_run_mapping(config, changed_files, playbooks)
 
     changed_inventory = get_inventory_files(changed_files)
     if changed_inventory:
