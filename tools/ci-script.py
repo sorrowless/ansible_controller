@@ -169,6 +169,32 @@ def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list) -> dic
     return inventory_mapping
 
 
+def generate_run_mapping_run_files(changed_files: list) -> dict:
+    '''Get the data for run ansible-playbook command
+
+       args:
+           changed_files: list of all changed files in repo
+
+       return: dict with playbook names as keys and limits/tags as values.
+               Should be used as source for ansible-playbook command
+    '''
+    run_files_mapping = defaultdict(lambda: {"limits": set(), "tags": set()})
+
+    for file in changed_files:
+        if 'playbooks' not in file:
+            continue
+
+        with open(file, "rt", encoding='utf-8') as f_hand:
+            playbook_tasks = yaml.safe_load(f_hand)
+        
+        for block in playbook_tasks: 
+            run_file_hosts = block.get("hosts", None)
+            if run_file_hosts:
+                run_files_mapping[file]["limits"].add(run_file_hosts)
+    
+    return run_files_mapping
+
+
 def load_roles_lists() -> dict:
     '''Get roles lists
 
@@ -381,6 +407,9 @@ def apply(target_branch: str, dry_run: bool = False):
         run_mapping_inventory = generate_run_mapping_inventory(
                 inventory_difference, playbooks)
         run_mapping.update(run_mapping_inventory)
+    
+    run_mapping_run_files = generate_run_mapping_run_files(changed_files)
+    run_mapping.update(run_mapping_run_files)
 
     roles = generate_roles_list(run_mapping.keys())
     print("These roles lists will be downloaded:")
