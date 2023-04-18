@@ -74,6 +74,9 @@ def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: li
                 run_mapping[run_file] = {"limits": set(), "tags": set()}
             run_mapping[run_file]["limits"].add(host_name)
 
+        else:
+            print(f"Warning! Related run file not found for {file}.")
+
     return run_mapping
 
 
@@ -159,6 +162,8 @@ def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list) -> dic
         # There can be a case when you have changed group in inventory but
         # do not have a playbook to handle that group, we just skip them for now
         if not group in run_groups:
+            if group != 'all':
+              print(f"Warning! Run file is not found for group - {group}.")
             continue
         # For each host in current group of changed inventory
         for host in diff_inventory[group]:
