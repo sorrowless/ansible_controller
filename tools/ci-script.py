@@ -32,13 +32,13 @@ def run_cmd(args: list) -> str:
 
 def get_mapping_by_wildcard(files_mapping: dict, file: str) -> str:
     '''Get mapping by passing wildcard'''
-    for file_mapping in files_mapping.keys():
+    for file_mapping in files_mapping.get("mappings", {}).keys():
         if fnmatch(file, file_mapping):
             return file_mapping
     return ""
 
 
-def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: list) -> dict:
+def generate_run_mapping(config: dict, changed_files: list, run_files: list) -> dict:
     '''Generate run mapping by given changes and run playbooks'''
     run_mapping = {}
 
@@ -60,18 +60,23 @@ def generate_run_mapping(files_mapping: dict, changed_files: list, run_files: li
             if run_file:
                 break
 
-        matched_mapping = get_mapping_by_wildcard(files_mapping, file_name)
+        default_priority = config.get("default_priority")
+        matched_mapping = get_mapping_by_wildcard(config, file_name)
         if matched_mapping:
-            matched_mapping = files_mapping.get(matched_mapping)
+            matched_mapping = config.get("mappings").get(matched_mapping)
             for mapping_run_file in matched_mapping:
                 if mapping_run_file not in run_mapping:
-                    run_mapping[mapping_run_file] = {"limits": set(), "tags": set()}
+                    run_mapping[mapping_run_file] = {"limits": set(), "tags": set(), "priority": default_priority}
                 run_mapping[mapping_run_file]["limits"].add(host_name)
-                run_mapping[mapping_run_file]["tags"].update(matched_mapping[mapping_run_file])
+                run_mapping[mapping_run_file]["tags"].update(matched_mapping[mapping_run_file].get("tags", []))
+                if run_mapping[mapping_run_file]["priority"] == default_priority:
+                    run_mapping[mapping_run_file]["priority"] = matched_mapping[mapping_run_file].get("priority", default_priority)
+                elif run_mapping[mapping_run_file]["priority"] > matched_mapping[mapping_run_file].get("priority", float('inf')):
+                    run_mapping[mapping_run_file]["priority"] = matched_mapping[mapping_run_file].get("priority", default_priority)
 
         elif run_file is not None:
             if run_file not in run_mapping:
-                run_mapping[run_file] = {"limits": set(), "tags": set()}
+                run_mapping[run_file] = {"limits": set(), "tags": set(), "priority": default_priority}
             run_mapping[run_file]["limits"].add(host_name)
 
     return run_mapping
@@ -167,6 +172,32 @@ def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list) -> dic
                 inventory_mapping[playbook]["limits"].add(host)
 
     return inventory_mapping
+
+
+def generate_run_mapping_run_files(changed_files: list) -> dict:
+    '''Get the data for run ansible-playbook command
+
+       args:
+           changed_files: list of all changed files in repo
+
+       return: dict with playbook names as keys and limits/tags as values.
+               Should be used as source for ansible-playbook command
+    '''
+    run_files_mapping = defaultdict(lambda: {"limits": set(), "tags": set()})
+
+    for file in changed_files:
+        if 'playbooks' not in file:
+            continue
+
+        with open(file, "rt", encoding='utf-8') as f_hand:
+            playbook_tasks = yaml.safe_load(f_hand)
+        
+        for block in playbook_tasks: 
+            run_file_hosts = block.get("hosts", None)
+            if run_file_hosts:
+                run_files_mapping[file]["limits"].add(run_file_hosts)
+    
+    return run_files_mapping
 
 
 def load_roles_lists() -> dict:
@@ -269,13 +300,22 @@ def generate_ansible_commands(run_mapping: dict) -> list:
 
        return: list of ansible commands
     '''
-    commands = []
-    for file_name, opts in run_mapping.items():
-        limits = ",".join(opts["limits"])
-        command = f'./{file_name} -l {limits}'
+    sorted_run_mapping = {}
+    for run_file in run_mapping:
+        priority = run_mapping[run_file].get("priority")
+        if priority not in sorted_run_mapping:
+            sorted_run_mapping[priority] = []
+        run_mapping[run_file]["file_name"] = run_file
+        sorted_run_mapping[priority].append(run_mapping[run_file])
+    sorted_run_mapping = [mapping for priority in sorted(sorted_run_mapping) for mapping in sorted_run_mapping[priority]]
 
-        if len(opts["tags"]):
-            tags = ",".join(opts["tags"])
+    commands = []
+    for mapping in sorted_run_mapping:
+        limits = ",".join(mapping["limits"])
+        command = f'./{mapping["file_name"]} -l {limits}'
+
+        if len(mapping["tags"]):
+            tags = ",".join(mapping["tags"])
             command += f' -t {tags}'
 
         commands.append(command)
@@ -307,11 +347,11 @@ def get_inventory_files(changed_files: str) -> list:
     return changed_inventory
 
 
-def get_files_mapping(mapping_file: str = 'tools/ci-files-mapping.yml') -> dict:
-    '''Get mappings from mapping file
+def get_config(config_file: str = 'tools/ci-config.yml') -> dict:
+    '''Get configuration from config file
 
-       Tries to import mapping file and convert it into python dictionary.
-       Mapping file should look like:
+       Tries to import config file and convert it into python dictionary.
+       Config file should look like:
 
            users_vault.yml:
              playbooks/configuration/run-server-common.yml:
@@ -321,13 +361,13 @@ def get_files_mapping(mapping_file: str = 'tools/ci-files-mapping.yml') -> dict:
        so after loading it will be a dict of dicts.
 
        args:
-           mapping_file: path to the file with mappings
+           config_file: path to the file with configuration
 
        return: dict with mappings
     '''
-    with open(mapping_file, "rt", encoding='utf-8') as f_hand:
-        files_mapping = yaml.safe_load(f_hand)
-    return files_mapping
+    with open(config_file, "rt", encoding='utf-8') as f_hand:
+        confs = yaml.safe_load(f_hand)
+    return confs
 
 
 def get_playbooks(search_glob: str = "playbooks/**/*.yml") -> list:
@@ -369,10 +409,10 @@ def apply(target_branch: str, dry_run: bool = False):
            dry_run: whether to really apply changes or just print what's needed
                     to be ran
     '''
-    files_mapping = get_files_mapping()
+    config = get_config()
     playbooks = get_playbooks()
     changed_files = get_changed_files(target_branch)
-    run_mapping = generate_run_mapping(files_mapping, changed_files, playbooks)
+    run_mapping = generate_run_mapping(config, changed_files, playbooks)
 
     changed_inventory = get_inventory_files(changed_files)
     if changed_inventory:
@@ -381,6 +421,9 @@ def apply(target_branch: str, dry_run: bool = False):
         run_mapping_inventory = generate_run_mapping_inventory(
                 inventory_difference, playbooks)
         run_mapping.update(run_mapping_inventory)
+    
+    run_mapping_run_files = generate_run_mapping_run_files(changed_files)
+    run_mapping.update(run_mapping_run_files)
 
     roles = generate_roles_list(run_mapping.keys())
     print("These roles lists will be downloaded:")
