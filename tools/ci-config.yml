@@ -25,10 +25,30 @@ mappings:
         - users
         - ssh_keys
 
+  docker.yml:
+    playbooks/services/run-docker.yml:
+      priority: 14
+
+  server-common.yml:
+    playbooks/configuration/run-pwpolicy.yml:
+      priority: 15
+    playbooks/configuration/run-server-common.yml:
+      priority: 16
+    playbooks/configuration/run-iptables.yml:
+      priority: 17
+    playbooks/configuration/run-sshd.yml:
+      priority: 18
+    playbooks/configuration/run-sudoers.yml:
+      priority: 19
+    playbooks/services/run-atop.yml:
+      priority: 20
+    playbooks/utils/run-restart-docker.yml:
+      priority: 21
+
   tls.yml:
     playbooks/services/run-tls.yml: 
-      priority: 5
+      priority: 22
 
   nginx.yml:
     playbooks/services/run-nginx.yml: 
-      priority: 10
+      priority: 23

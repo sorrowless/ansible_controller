@@ -79,9 +79,6 @@ def generate_run_mapping(config: dict, changed_files: list, run_files: list) -> 
                 run_mapping[run_file] = {"limits": set(), "tags": set(), "priority": default_priority}
             run_mapping[run_file]["limits"].add(host_name)
 
-        else:
-            print(f"Warning! Related run file not found for {file}.")
-
     return run_mapping
 
 
@@ -147,7 +144,7 @@ def get_run_files_groups(playbooks: list) -> dict:
     return run_groups
 
 
-def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list) -> dict:
+def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list, config: dict) -> dict:
     '''Get the data for run ansible-playbook command
 
        args:
@@ -156,10 +153,13 @@ def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list) -> dic
 
            playbooks: list of filepaths to playbooks
 
+           config: configuration dict
+
        return: dict with playbook names as keys and limits/tags as values.
                Should be used as source for ansible-playbook command
     '''
-    inventory_mapping = defaultdict(lambda: {"limits": set(), "tags": set()})
+    default_priority = config.get("default_priority")
+    inventory_mapping = defaultdict(lambda: {"limits": set(), "tags": set(), "priority": default_priority})
     # Get dict with host/group as key and playbook as value
     run_groups = get_run_files_groups(playbooks)
 
@@ -167,8 +167,6 @@ def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list) -> dic
         # There can be a case when you have changed group in inventory but
         # do not have a playbook to handle that group, we just skip them for now
         if not group in run_groups:
-            if group != 'all':
-              print(f"Warning! Run file is not found for group - {group}.")
             continue
         # For each host in current group of changed inventory
         for host in diff_inventory[group]:
@@ -400,6 +398,7 @@ def get_changed_files(target_branch: str) -> list:
     changed_files = Repo().git.diff(
         target_branch, r=True, pretty="format:", name_only=True) \
         .split("\n")
+    changed_files = [f for f in changed_files if os.path.exists(f)]
     return changed_files
 
 
@@ -425,7 +424,8 @@ def apply(target_branch: str, dry_run: bool = False):
                 target_branch, changed_inventory)
         run_mapping_inventory = generate_run_mapping_inventory(
                 inventory_difference, playbooks)
-        run_mapping.update(run_mapping_inventory)
+        run_mapping_inventory.update(run_mapping)
+        run_mapping = run_mapping_inventory
     
     run_mapping_run_files = generate_run_mapping_run_files(changed_files)
     run_mapping.update(run_mapping_run_files)
