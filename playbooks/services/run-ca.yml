@@ -2,10 +2,10 @@
 #
 # Run it like usual executable script:
 #
-# > ./run-chrony.yml
+# > ./run-ca.yml
 ---
 - name: Configure target servers
-  hosts: chrony_hosts
+  hosts: ca
   become: yes
   remote_user: root
 

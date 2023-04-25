@@ -7,7 +7,7 @@
 #       tags:
 #       - tag-for-run-one
 
-default_priority: 100
+default_priority: 1000
 
 mappings:
   scrape_configs_*.yml:
@@ -25,10 +25,30 @@ mappings:
         - users
         - ssh_keys
 
+  docker.yml:
+    playbooks/services/run-docker.yml:
+      priority: 30
+
+  server-common.yml:
+    playbooks/configuration/run-pwpolicy.yml:
+      priority: 40
+    playbooks/configuration/run-server-common.yml:
+      priority: 50
+    playbooks/configuration/run-iptables.yml:
+      priority: 60
+    playbooks/configuration/run-sshd.yml:
+      priority: 70
+    playbooks/configuration/run-sudoers.yml:
+      priority: 80
+    playbooks/services/run-atop.yml:
+      priority: 90
+    playbooks/utils/run-restart-docker.yml:
+      priority: 100
+
   tls.yml:
     playbooks/services/run-tls.yml: 
-      priority: 5
+      priority: 110
 
   nginx.yml:
     playbooks/services/run-nginx.yml: 
-      priority: 10
+      priority: 120
