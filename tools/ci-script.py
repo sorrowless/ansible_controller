@@ -423,7 +423,7 @@ def apply(target_branch: str, dry_run: bool = False):
         inventory_difference = difference_inventory(
                 target_branch, changed_inventory)
         run_mapping_inventory = generate_run_mapping_inventory(
-                inventory_difference, playbooks)
+                inventory_difference, playbooks, config)
         run_mapping_inventory.update(run_mapping)
         run_mapping = run_mapping_inventory
     
