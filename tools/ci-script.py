@@ -8,6 +8,7 @@ import argparse
 import os
 import subprocess
 import yaml
+import sys
 
 from git import Repo
 from ansible.parsing.dataloader import DataLoader
@@ -505,21 +506,16 @@ if __name__ == '__main__':
     arg_parser.add_argument("--target_branch",
       type=str,
       default="",
+      required='--apply' in sys.argv or '--preview' in sys.argv,
       help="apply mode"
     )
 
     arguments = arg_parser.parse_known_args()[0]
 
     if arguments.preview:
-        if arguments.target_branch:
-            apply(arguments.target_branch, dry_run=True)
-        else:
-            raise Exception("--target_branch must be set with --preview")
+        apply(arguments.target_branch, dry_run=True)
     if arguments.apply:
-        if arguments.target_branch:
-            apply(arguments.target_branch)
-        else:
-            raise Exception("--target_branch must be set with --apply")
+        apply(arguments.target_branch)
     if arguments.preview_manual:
         manual_apply(arguments.preview_manual, dry_run=True)
     if arguments.apply_manual:
