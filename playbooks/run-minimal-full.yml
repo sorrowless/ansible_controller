@@ -45,17 +45,6 @@
     - atop
 
 - name: Restart docker
-  hosts: docker_hosts
-  become: yes
-  remote_user: root
-
-  tasks:
-    - name: Restart docker
-      systemd:
-        name: docker
-        state: restarted
-      when:
-        - (iptables.flush_all is defined and iptables.flush_all) or (not iptables.flush_all is defined and iptables_defaults.flush_all)
-      tags:
-        - iptables
-      failed_when: false
+  import_playbook: utils/run-restart-docker.yml
+  tags:
+    - iptables
