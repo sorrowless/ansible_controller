@@ -8,6 +8,7 @@ import argparse
 import os
 import subprocess
 import yaml
+import sys
 
 from git import Repo
 from ansible.parsing.dataloader import DataLoader
@@ -445,6 +446,37 @@ def apply(target_branch: str, dry_run: bool = False):
             run_cmd(command.split(" "))
 
 
+def manual_apply(playbooks: list, dry_run: bool = False):
+    '''Manualy apply changes for given branch
+
+       Given target branch, apply changes implemented on it.
+
+       args:
+           playbooks: list of bash command with playbooks to manualy run
+                    format must be like follow:
+                    [path_to_playbook] -l [limits] -t [tags]\n
+           
+           dry_run: whether to really apply changes or just print what's needed
+                    to be ran
+    '''
+
+    playbooks = [playbook.strip() for playbook in playbooks.split('\n') if playbook.strip()] 
+    playbooks_pathes = [playbook.split(' ')[0] for playbook in playbooks]
+
+    roles = generate_roles_list(playbooks_pathes)
+    print("These roles lists will be downloaded:")
+    print("\n".join(roles))
+    if not dry_run:
+        for role in roles:
+            run_cmd(["ansible-galaxy", "install", "-f", "-r", role, "-p", "./roles/"])
+
+    print("These commands will be executed:")
+    print("\n".join(playbooks))
+    if not dry_run:
+        for playbook in playbooks:
+            run_cmd(playbook.split(" "))
+
+
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     execution_mode = arg_parser.add_mutually_exclusive_group()
@@ -461,9 +493,20 @@ if __name__ == '__main__':
       help="apply mode"
     )
 
+    execution_mode.add_argument("--apply-manual",
+      default="",
+      help="manualy apply mode"
+    )
+
+    execution_mode.add_argument("--preview-manual",
+      default="",
+      help="manualy preview mode"
+    )
+
     arg_parser.add_argument("--target_branch",
       type=str,
-      required=True,
+      default="",
+      required='--apply' in sys.argv or '--preview' in sys.argv,
       help="apply mode"
     )
 
@@ -473,3 +516,7 @@ if __name__ == '__main__':
         apply(arguments.target_branch, dry_run=True)
     if arguments.apply:
         apply(arguments.target_branch)
+    if arguments.preview_manual:
+        manual_apply(arguments.preview_manual, dry_run=True)
+    if arguments.apply_manual:
+        manual_apply(arguments.apply_manual)
