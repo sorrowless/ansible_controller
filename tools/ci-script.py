@@ -178,7 +178,7 @@ def generate_run_mapping_inventory(diff_inventory: dict, playbooks: list, config
     return inventory_mapping
 
 
-def generate_run_mapping_run_files(changed_files: list) -> dict:
+def generate_run_mapping_run_files(changed_files: list, config: dict) -> dict:
     '''Get the data for run ansible-playbook command
 
        args:
@@ -187,7 +187,8 @@ def generate_run_mapping_run_files(changed_files: list) -> dict:
        return: dict with playbook names as keys and limits/tags as values.
                Should be used as source for ansible-playbook command
     '''
-    run_files_mapping = defaultdict(lambda: {"limits": set(), "tags": set()})
+    default_priority = config.get("default_priority")
+    run_files_mapping = defaultdict(lambda: {"limits": set(), "tags": set(), "priority": default_priority})
 
     for file in changed_files:
         if 'playbooks' not in file:
@@ -428,8 +429,9 @@ def apply(target_branch: str, dry_run: bool = False):
         run_mapping_inventory.update(run_mapping)
         run_mapping = run_mapping_inventory
     
-    run_mapping_run_files = generate_run_mapping_run_files(changed_files)
-    run_mapping.update(run_mapping_run_files)
+    run_mapping_run_files = generate_run_mapping_run_files(changed_files, config)
+    run_mapping_run_files.update(run_mapping)
+    run_mapping = run_mapping_run_files
 
     roles = generate_roles_list(run_mapping.keys())
     print("These roles lists will be downloaded:")
