@@ -20,6 +20,5 @@
         job: "{{ item.job }}"
         state: "{{ item.state | default('present') }}"
         user: "{{ item.user | default('root') }}"
-      when: item.special_time is not defined
       with_items: 
         - "{{ cronjobs }}"
