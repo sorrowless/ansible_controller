@@ -1,0 +1,25 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-cronjobs.yml
+#
+---
+- name: Configure cron
+  hosts: cron_hosts
+
+  tasks:
+    - name: Configure cronjobs
+      cron:
+        name: "{{ item.name }}"
+        minute: "{{ item.minute | default('*') }}"
+        hour: "{{ item.hour | default('*') }}"
+        day: "{{ item.day | default('*') }}"
+        month: "{{ item.month | default('*') }}"
+        weekday: "{{ item.weekday | default('*') }}"
+        job: "{{ item.job }}"
+        state: "{{ item.state | default('present') }}"
+        user: "{{ item.user | default('root') }}"
+      when: item.special_time is not defined
+      with_items: 
+        - "{{ cronjobs }}"
