@@ -1,3 +1,10 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to restart docker on target nodes. Run it like usual executable
+# script:
+#
+# > ./run-minimal.yml
+#
 - name: Restart docker
   hosts: iptables
   become: yes
