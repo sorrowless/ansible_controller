@@ -1,0 +1,13 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and configure corosync pacemaker cluster.
+# Run it like regular script
+#
+# > .playbooks/services/run-corosync-pacemaker.yml
+---
+- name: Configure HA
+  hosts: corosync_pacemaker_hosts
+  remote_user: root
+
+  roles:
+    - { role: one_mind.corosync_pacemaker }
