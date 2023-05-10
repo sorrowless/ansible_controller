@@ -1,0 +1,3 @@
+---
+- src: https://github.com/one-mINd/ansible_ubuntu_corosync_pacemaker.git
+  name: one_mind.corosync_pacemaker
