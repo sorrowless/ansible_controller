@@ -65,7 +65,7 @@
         flat: yes
 
 - name: Sign clients csr's
-  hosts: ca
+  hosts: [syslog_server, syslog_client]
   become: yes
 
   tasks:
@@ -125,7 +125,7 @@
     - { role: sorrowless.syslog, tags: ['syslog'] }
 
 - name: Revoke certs
-  hosts: ca
+  hosts: [syslog_server, syslog_client]
   become: yes
   vars:
     hosts_to_revoke: []
