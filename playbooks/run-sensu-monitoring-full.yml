@@ -19,7 +19,7 @@
 # directory.
 ---
 - name: Install and configure needed python libs
-  hosts: [graphite, grafana]
+  hosts: sensu
   remote_user: root
   tasks:
     - name: Ensure pip is installed
