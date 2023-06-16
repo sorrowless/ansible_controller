@@ -4,4 +4,4 @@
   hosts: nginx_exporters
   become: yes
   roles:
-    - { role: andrewgodgivens.ansible_prometheus_nginx_exporter, tags: ["exporters"] }
+    - { role: andrewgodgivens.prometheus_nginx_exporter, tags: ["exporters", "nginx_exporter"] }

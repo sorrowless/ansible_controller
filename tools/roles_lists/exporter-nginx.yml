@@ -1,2 +1,2 @@
 ---
-- src: andrewgodgivens.ansible_prometheus_nginx_exporter
+- src: andrewgodgivens.prometheus_nginx_exporter
