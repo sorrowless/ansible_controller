@@ -1,0 +1,4 @@
+---
+- src: https://github.com/one-mINd/ansible-role-sentry.git
+  version: main
+  name: one_mind.sentry
