@@ -199,8 +199,15 @@ def generate_run_mapping_run_files(changed_files: list, config: dict) -> dict:
         
         for block in playbook_tasks: 
             run_file_hosts = block.get("hosts", None)
-            if run_file_hosts:
+            if not run_file_hosts:
+                continue
+            
+            if isinstance(run_file_hosts, str):
                 run_files_mapping[file]["limits"].add(run_file_hosts)
+            elif isinstance(run_file_hosts, list):
+                run_files_mapping[file]["limits"].update(run_file_hosts)
+            else:
+                raise Exception(f"Unknown type of hosts field in file - {file}")
     
     return run_files_mapping
 
