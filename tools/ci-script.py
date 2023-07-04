@@ -17,6 +17,7 @@ from ansible.inventory.manager import InventoryManager
 
 def run_cmd(args: list) -> str:
     '''Run given command'''
+    args = [ arg.replace("'", "").replace('"', "") for arg in args ]
     with subprocess.Popen(args, stderr=subprocess.STDOUT) as out:
         stdout, stderr = out.communicate()
 
