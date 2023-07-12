@@ -29,4 +29,4 @@ prometheus_clients_config:
         - name: Test script
           script_name: "test.sh"
           data_format: json
-          #name_override: "test_metric"
+          # name_override: "test_metric"

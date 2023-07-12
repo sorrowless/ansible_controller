@@ -19,8 +19,8 @@
         state: present
 
   roles:
-    - { role: tls, tags: ['tls', 'nginx'] }
-    - { role: nginx, tags: ['nginx'] }
+    - { role: sorrowless.tls, tags: ['tls', 'nginx'] }
+    - { role: sorrowless.nginx, tags: ['nginx'] }
 
   tasks:
     - name: Ensure needed packages

@@ -1,9 +1,0 @@
-#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
-
----
-- name: Configure backup
-  hosts: rsnapshot
-  remote_user: root
-
-  roles:
-    - rsnapshot

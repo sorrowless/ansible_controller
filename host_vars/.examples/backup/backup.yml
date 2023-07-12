@@ -17,13 +17,13 @@ iptables:
 rsnapshot:
   master: true
   backups:
-# Simple example which uses backup script
+    # Simple example which uses backup script
     - "backup_script	/usr/bin/ssh -p<ssh_port> backup@host 'echo backup'	temp_files_host/"
-# Example with backup by rsync when files on target nodes exists
+    # Example with backup by rsync when files on target nodes exists
     - "backup	backup@host:/tmp/some_file	host/	ssh_args=-p <ssh_port>"
-# Example when you need to backup DB first and then copy it
+    # Example when you need to backup DB first and then copy it
     - "backup_script	/usr/bin/ssh user@host 'MYSQL_PWD=pw mysqldump -usql_user --database db_name' > dumpname.dump	local.dir.to.store.at/"
-# The same example with postgresql
+    # The same example with postgresql
     - "backup_script	/usr/bin/ssh user@host 'PGPASSWORD=ps pg_dump -h localhost -p 5432 -U sql_user -F c -d db_name' > dumpname.dump	local.dir.to.store.at/"
 
 # Apprise notifications settings

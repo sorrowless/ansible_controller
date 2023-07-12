@@ -42,4 +42,3 @@ vault_kv_cas_required: "false"
 vault_kv_delete_version_after: 365d
 vault_log_level: "info"
 vault_store_root_token: no
-

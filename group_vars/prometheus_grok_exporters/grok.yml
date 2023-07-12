@@ -50,4 +50,3 @@ grok_exporter_configs:
       server:
         host: 127.0.0.1
         port: 9145
-
