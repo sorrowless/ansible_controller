@@ -1,7 +1,7 @@
 ---
 ansible_host: host  <-- MUST BE CHANGED
 # Example if your host cannot be accessed directly
-#ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q deployer@jumphost"'
+# ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q deployer@jumphost"'
 ansible_port: "{{ sshd_port }}"
 ansible_user: deployer
 ansible_become: true

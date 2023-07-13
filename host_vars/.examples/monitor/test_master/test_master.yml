@@ -191,5 +191,3 @@ nginx_sites:
 nginx_auth_basic_files:
   monitoring:
     - user:changeme
-
-

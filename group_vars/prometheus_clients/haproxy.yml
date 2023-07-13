@@ -22,7 +22,7 @@ haproxy_global: |
 haproxy_conf: |
   frontend blackbox_exporter
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9115 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9115 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend blackbox_exporter
 
@@ -32,10 +32,9 @@ haproxy_conf: |
       server blackbox-exporter 127.0.0.1:9115
 
 
-
   frontend domain_exporter
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9222 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9222 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend domain_exporter
 
@@ -45,10 +44,9 @@ haproxy_conf: |
       server domain-exporter 127.0.0.1:9222
 
 
-
   frontend grok_exporter_auth
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9144 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9144 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend grok_exporter_auth
 
@@ -59,7 +57,7 @@ haproxy_conf: |
 
   frontend grok_exporter_nginx
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9145 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9145 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend grok_exporter_nginx
 
@@ -69,10 +67,9 @@ haproxy_conf: |
       server grok-exporter-nginx 127.0.0.1:9145
 
 
-
   frontend mysqld_exporter
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9104 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9104 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend mysqld_exporter
 
@@ -82,10 +79,9 @@ haproxy_conf: |
       server mysqld-exporter 127.0.0.1:9104
 
 
-
   frontend node_exporter
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9100 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9100 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend node_exporter
 
@@ -95,10 +91,9 @@ haproxy_conf: |
       server node-exporter 127.0.0.1:9100
 
 
-
   frontend postgres_exporter
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9187 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9187 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend postgres_exporter
 
@@ -108,10 +103,9 @@ haproxy_conf: |
       server postgres-exporter 127.0.0.1:9187
 
 
-
   frontend scripts_exporter
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9273 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9273 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend scripts_exporter
 
@@ -121,10 +115,9 @@ haproxy_conf: |
       server scripts-exporter 127.0.0.1:9273
 
 
-
   frontend statsd_exporter
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9102 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9102 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend statsd_exporter
 
@@ -134,10 +127,9 @@ haproxy_conf: |
       server statsd-exporter 127.0.0.1:9102
 
 
-
   frontend cadvisor_exporter
       mode http
-      bind {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:9080 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
+      bind {{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:9080 ssl crt /etc/ssl_certs/{{ ansible_host }}/bundle.pem
       http-request redirect scheme https unless { ssl_fc }
       default_backend cadvisor_exporter
 
