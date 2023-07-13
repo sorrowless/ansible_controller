@@ -4,7 +4,7 @@
 # Common part
 #
 - name: Configure Iptables
-  import_playbook: services/run-iptables.yml
+  import_playbook: configuration/run-iptables.yml
   tags:
     - common
     - iptables

@@ -1,0 +1,13 @@
+---
+# .ansible-lint
+
+exclude_paths:
+  - roles
+  - playbooks
+  - tools
+
+skip_list:
+  - yaml[line-length]
+  - yaml[truthy]
+  - yaml[document-start]
+  - var-naming[pattern]

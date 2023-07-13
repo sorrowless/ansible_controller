@@ -13,7 +13,8 @@ preview:
   variables:
     GIT_STRATEGY: clone
     GIT_DEPTH: "0"
-  script: 
+  script:
+    - ansible-lint --exclude tools --exclude roles --exclude playbooks
     - python3 tools/ci-script.py --preview --target_branch origin/master
 
 apply:
@@ -31,7 +32,7 @@ apply:
       mkdir ~/.ssh
       eval "$(ssh-agent -s)"
       echo $TARGET_HOST_SSH_PRIVATE_KEY | base64 -d > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-add ~/.ssh/id_rsa
-  script: 
+  script:
     - python3 tools/ci-script.py --apply --target_branch $CI_COMMIT_BEFORE_SHA
 
 manual_apply:
@@ -49,7 +50,7 @@ manual_apply:
       mkdir ~/.ssh
       eval "$(ssh-agent -s)"
       echo $TARGET_HOST_SSH_PRIVATE_KEY | base64 -d > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-add ~/.ssh/id_rsa
-  script: 
+  script:
     - python3 tools/ci-script.py --apply-manual "$MANUAL_PLAYBOOKS"
 
 trigger-job:
