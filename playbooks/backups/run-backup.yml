@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run backup for arbitrary data.
+# Run it like usual executable script:
+#
+# > ./run-backup-files.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Configure target servers
+  hosts: all
+  become: yes
+  become_user: root
+
+  roles:
+    - {role: andrewgodgivens.backup_universal}
