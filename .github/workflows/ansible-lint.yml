@@ -1,0 +1,14 @@
+name: Ansible Lint
+run-name: Linting ansible-controller in github
+on: [push]
+jobs:
+  ansible-lint:
+    runs-on: ubuntu-latest
+    container:
+      image: lyricistmarbling/ansible-ci-image:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - run: |
+          for role in $(ls tools/roles_lists) ; do ./tools/get-roles.sh $role ; done
+          ansible-lint --exclude tools --exclude roles
