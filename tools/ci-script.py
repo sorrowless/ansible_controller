@@ -10,7 +10,7 @@ import subprocess
 import yaml
 import sys
 
-from git import Repo
+from git import Repo, exc
 from ansible.parsing.dataloader import DataLoader
 from ansible.inventory.manager import InventoryManager
 
@@ -99,7 +99,12 @@ def difference_inventory(target_branch: str, changed_inventory: list) -> dict:
         new_inventory = InventoryManager(loader = DataLoader(), sources=inventory)
         new_inventory = new_inventory.get_groups_dict()
 
-        old_file = Repo().git.show(target_branch+":"+inventory)
+        try:
+            old_file = Repo().git.show(target_branch+":"+inventory)
+        except exc.GitCommandError:
+            print(f"Git diff failed for inventory-file {inventory}")
+            continue
+
         with open("tmp", "w", encoding='utf-8') as f_hand:
             f_hand.write(old_file)
         old_file = InventoryManager(loader = DataLoader(), sources="tmp")
