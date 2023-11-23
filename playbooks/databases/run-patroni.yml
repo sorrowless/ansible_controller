@@ -14,4 +14,4 @@
   become: yes
 
   roles:
-    - ansible_patroni_cluster
+    - patroni

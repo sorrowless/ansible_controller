@@ -1,4 +1,4 @@
 ---
 - src: https://github.com/AndrewGodGivens/ansible_patroni_cluster.git
-  version: master
+  version: main
   name: patroni
