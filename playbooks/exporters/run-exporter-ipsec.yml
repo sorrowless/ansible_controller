@@ -23,7 +23,6 @@
               container_name: "{{ exporter_ipsec_container_name | default('ipsec-exporter') }}"
               ports:
                 - "{{ exporter_ipsec_host_port | default('127.0.0.1:9903') }}:9903"
-                - "127.0.0.1:9903:9903"
               volumes:
                 - "/var/run/charon.pid:/var/run/charon.pid"
                 - "/var/run/charon.ctl:/var/run/charon.ctl"
