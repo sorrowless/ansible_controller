@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run mongodb.
+# Run it like usual executable script:
+#
+# > ./run-mongodb.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Configure target servers
+  hosts: mongodb_servers
+  become: yes
+  become_user: root
+
+  roles:
+    - { role: one_mind.mongodb, tags: ['mongodb'] }

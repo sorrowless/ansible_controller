@@ -1,0 +1,4 @@
+---
+- src: git@github.com:one-mINd/ansible_role_mongodb.git
+  version: main
+  name: one_mind.mongodb
