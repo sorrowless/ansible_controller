@@ -1,2 +1,4 @@
 ---
-- src: sorrowless.prometheus_alertmanager
+- src: https://github.com/sorrowless/ansible_prometheus_alertmanager.git
+  version: master
+  name: sorrowless.prometheus_alertmanager
