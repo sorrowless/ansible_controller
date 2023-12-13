@@ -1,2 +1,4 @@
 ---
-- src: sorrowless.prometheus_blackbox_exporter
+- src: https://github.com/sorrowless/ansible_prometheus_blackbox_exporter.git
+  version: master
+  name: sorrowless.prometheus_blackbox_exporter
