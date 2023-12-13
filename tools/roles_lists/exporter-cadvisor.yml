@@ -1,2 +1,4 @@
 ---
-- src: sorrowless.cadvisor
+- src: https://github.com/sorrowless/ansible_cadvisor.git
+  version: main
+  name: sorrowless.cadvisor
