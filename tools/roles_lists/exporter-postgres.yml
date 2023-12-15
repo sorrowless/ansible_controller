@@ -1,2 +1,4 @@
 ---
-- src: sorrowless.prometheus_postgres_exporter
+- src: https://github.com/sorrowless/ansible_prometheus_postgres_exporter.git
+  version: master
+  name: sorrowless.prometheus_postgres_exporter
