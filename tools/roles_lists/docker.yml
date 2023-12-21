@@ -1,2 +1,4 @@
 ---
-- src: sorrowless.docker
+- src: https://github.com/sorrowless/ansible-role-docker.git
+  version: master
+  name: sorrowless.docker
