@@ -1,0 +1,74 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run backup reporter or collector in cron job
+#
+# > ./run-backup-reporter.yml
+---
+- name: Install and configure backup reporter
+  hosts: backup_reporter
+  remote_user: root
+  tasks:
+    - name: Ensure config directory 
+      file:
+        path: "{{ backup_reporter_config_dir }}"
+        state: directory
+        mode: '0744'
+
+    - name: Ensure pip is installed
+      package:
+        name:
+         - python3-pip
+         - python3-venv
+         - python3-virtualenv
+        state: present
+
+    - name: Ensure pip3 is latest version and required packages installed
+      pip:
+        executable: pip3
+        name: pip
+        state: latest
+    
+    - name: Ensure virtualenv
+      shell:
+        cmd: python3 -m venv backup_reporter
+      args:
+        chdir: "{{ backup_reporter_config_dir }}"
+        creates: "{{ backup_reporter_config_dir }}/backup_reporter"
+
+    - name: Ensure backup-reporter python package
+      pip:
+        virtualenv: "{{ backup_reporter_config_dir }}/backup_reporter"
+        name: backup-reporter
+
+    - name: set google credentials json
+      copy:
+        dest: "{{ backup_reporter_config_dir }}/google_creds.yml"
+        content: "{{ backup_reporter_google_spreadsheet_credentials }}"
+        mode: '0700'
+      register: backup_reporter_google_spreadsheet_credentials_path
+      when: backup_reporter_google_spreadsheet_credentials is defined
+
+    - name: Set config file
+      copy:
+        dest: "{{ backup_reporter_config_dir }}/backup_reporter_config.yml"
+        content: |
+          docker_postgres: {{ backup_reporter_docker_postgres | default(False)  }} 
+          container_name: {{ backup_reporter_container_name | default('None')  }}
+
+          collector: {{ backup_reporter_collector | default(False) }}
+
+          sheet_owner: {{ backup_reporter_sheet_owner | default('None')  }}
+          google_spreadsheet_credentials_path: {{ backup_reporter_google_spreadsheet_credentials_path.dest | default('None')  }}
+          spreadsheet_name: {{ backup_reporter_spreadsheet_name | default('None')  }}
+          worksheet_name: {{ backup_reporter_worksheet_name | default('None')  }}
+
+          bucket: 
+          {{ backup_reporter_bucket | default('{}') | to_nice_yaml }}
+        mode: '0700'
+
+    - name: Set daily cron-job with reporter
+      ansible.builtin.cron:
+        name: "Backup report"
+        minute: "0"
+        hour: "1"
+        job: "{{ backup_reporter_config_dir }}/backup_reporter/bin/backup-reporter --config {{ backup_reporter_config_dir }}/backup_reporter_config.yml"
