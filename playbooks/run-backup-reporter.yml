@@ -19,6 +19,9 @@
         backup_reporter_spreadsheet_name: "{{ backup_reporter_spreadsheet_name | default('None') }}"
         backup_reporter_worksheet_name: "{{ backup_reporter_worksheet_name | default('None') }}"
         backup_reporter_bucket: "{{ backup_reporter_bucket | default('[]') }}"
+        backup_reporter_python_executable: "{{ backup_reporter_python_executable | default('python3') }}"
+        backup_reporter_customer: "{{ backup_reporter_customer | default('') }}"
+        backup_reporter_supposed_backups_count: "{{ backup_reporter_supposed_backups_count | default('') }}"
 
     - name: Ensure config directory
       ansible.builtin.file:
@@ -42,7 +45,7 @@
 
     - name: Ensure virtualenv
       ansible.builtin.shell:
-        cmd: python3 -m venv backup_reporter
+        cmd: "{{ backup_reporter_python_executable }} -m venv backup_reporter"
       args:
         chdir: "/opt"
         creates: "/opt/backup_reporter"
@@ -51,6 +54,7 @@
       ansible.builtin.pip:
         virtualenv: "/opt/backup_reporter"
         name: backup-reporter
+        state: latest
 
     - name: Set google credentials json
       ansible.builtin.copy:
@@ -73,6 +77,8 @@
           google_spreadsheet_credentials_path: {{ backup_reporter_config_dir }}/google_creds.yml
           spreadsheet_name: {{ backup_reporter_spreadsheet_name }}
           worksheet_name: {{ backup_reporter_worksheet_name }}
+          customer: "{{ backup_reporter_customer | default('') }}"
+          supposed_backups_count: "{{ backup_reporter_supposed_backups_count | default('') }}"
 
           bucket:
           {{ backup_reporter_bucket | to_nice_yaml }}
@@ -84,3 +90,10 @@
         minute: "0"
         hour: "1"
         job: "/opt/backup_reporter/bin/backup-reporter --config {{ backup_reporter_config_dir }}/backup_reporter_config.yml"
+
+    - name: Explicitly run report command
+      ansible.builtin.shell:
+        cmd: "/opt/backup_reporter/bin/backup-reporter --config {{ backup_reporter_config_dir }}/backup_reporter_config.yml"
+      tags:
+        - never
+        - report
