@@ -22,6 +22,7 @@
         backup_reporter_python_executable: "{{ backup_reporter_python_executable | default('python3') }}"
         backup_reporter_customer: "{{ backup_reporter_customer | default('') }}"
         backup_reporter_supposed_backups_count: "{{ backup_reporter_supposed_backups_count | default('') }}"
+        backup_reporter_description: "{{ backup_reporter_description | default('') }}"
 
     - name: Ensure config directory
       ansible.builtin.file:
@@ -79,6 +80,7 @@
           worksheet_name: {{ backup_reporter_worksheet_name }}
           customer: "{{ backup_reporter_customer | default('') }}"
           supposed_backups_count: "{{ backup_reporter_supposed_backups_count | default('') }}"
+          description: "{{ backup_reporter_description }}"
 
           bucket:
           {{ backup_reporter_bucket | to_nice_yaml }}
