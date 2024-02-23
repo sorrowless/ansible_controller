@@ -23,6 +23,8 @@
         backup_reporter_customer: "{{ backup_reporter_customer | default('') }}"
         backup_reporter_supposed_backups_count: "{{ backup_reporter_supposed_backups_count | default('') }}"
         backup_reporter_description: "{{ backup_reporter_description | default('') }}"
+      tags:
+        - always
 
     - name: Ensure config directory
       ansible.builtin.file:
