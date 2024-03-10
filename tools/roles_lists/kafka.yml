@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Ageres210784/kafka.git
+  version: master
+  name: kafka
