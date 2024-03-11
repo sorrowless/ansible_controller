@@ -13,6 +13,7 @@
 
   tasks:
     - name: Restart docker
+      become: yes
       systemd:
         name: docker
         state: restarted
@@ -20,4 +21,5 @@
         - (iptables.flush_all is defined and iptables.flush_all) or (not iptables.flush_all is defined and iptables_defaults.flush_all)
       tags:
         - iptables
-      failed_when: false
+      register: result_restart_docker
+      failed_when: "result_restart_docker is failed and 'Could not find the requested service' not in result_restart_docker.msg"
