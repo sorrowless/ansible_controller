@@ -1,0 +1,95 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+#
+# Playbook for creation postgres replica. Warning!!! Playbook is not idempotent! Use only for first creation!
+# executable script:
+#
+# > ./run-postgres-replica.yml
+#
+---
+- name: Install postgres-replica container
+  hosts: postgresql_servers
+  become: yes
+  become_user: root
+  vars:
+    replica_backup_command: "docker exec -i {{ replica_container_name }} pg_basebackup --host={{ replica_origin_ip }} --port={{ replica_origin_port }} --username={{ vault_replica_username }} --pgdata=/tmp/ --wal-method=stream --write-recovery-conf"
+  tasks:
+    - name: Run postgres-replica container
+      docker_compose:
+        state: present
+        project_name: "{{ replica_project_name }}"
+        definition:
+          version: '2'
+          services:
+            cadvisor:
+              image: "{{ replica_image }}"
+              container_name: "{{ replica_container_name }}"
+              volumes:
+                - "{{ replica_host_pgdata }}:/tmp"
+              restart: always
+              environment:
+                POSTGRES_USER: "{{ replica_postgres_user }}"
+                POSTGRES_PASSWORD: "{{ REPLICA_POSTGRES_PASSWORD }}"
+                POSTGRES_DB: "{{ replica_postgres_db }}"
+                PGDATA: "/patroni_db/postgresql/data/"
+                ARCHIVE_MODE: 'OFF'
+                PGUSER: "{{ replica_pguser }}"
+                PGPASSWORD: "{{ vault_replica_password }}"
+                PGHOST: '/var/run/postgresql'
+                PGDATABASE: "{{ replica_pgdatabase }}"
+                RECOVERY_WALG: 'false'
+
+    - name: Create backup for replication
+      ansible.builtin.shell:
+        cmd: "{{ replica_backup_command }}"
+
+    - name: Remove container
+      community.docker.docker_container:
+        name: "{{ replica_container_name }}"
+        state: absent
+
+    - name: Creating a file for adding to conf
+      copy:
+        dest: "{{ replica_host_pgdata }}/00server.conf"
+        content: |
+          primary_slot_name = ''
+          archive_mode = always
+          archive_command = 'archive.sh wal-push %p'
+          archive_timeout = 30
+
+    - name: Create backup for replication
+      ansible.builtin.shell:
+        cmd: echo "include '00server.conf'" >> {{ replica_host_pgdata }}/postgresql.conf
+
+    - name: Run postgres-replica container
+      docker_compose:
+        state: present
+        project_name: "{{ replica_project_name }}"
+        definition:
+          version: '2'
+          services:
+            cadvisor:
+              image: "registry.nalitek.com/library/postgres_with_walg_replica:14.1"
+              container_name: "{{ replica_container_name }}"
+              volumes:
+                - "{{ replica_host_pgdata }}:/patroni_db/postgresql/data/"
+              restart: always
+              environment:
+                POSTGRES_USER: "{{ replica_postgres_user }}"
+                POSTGRES_PASSWORD: "{{ REPLICA_POSTGRES_PASSWORD }}"
+                POSTGRES_DB: "{{ replica_postgres_db }}"
+                PGDATA: "/patroni_db/postgresql/data/"
+                ARCHIVE_MODE: 'ON'
+                ARCHIVE_TIMEOUT: 30
+                AWS_ACCESS_KEY_ID: "{{ REPLICA_AWS_ACCESS_KEY_ID }}"
+                AWS_REGION: "{{ replica_aws_region }}"
+                AWS_SECRET_ACCESS_KEY: "{{ REPLICA_AWS_SECRET_ACCESS_KEY }}"
+                PGUSER: "{{ replica_pguser }}"
+                PGPASSWORD: "{{ REPLICA_POSTGRES_PASSWORD }}"
+                WALG_S3_PREFIX: "{{ replica_walg_s3_prefix }}"
+                PGHOST: "{{ replica_pg_host }}"
+                PGDATABASE: "{{ replica_pgdatabase }}"
+                AWS_ENDPOINT: "{{ replica_aws_endpoint }}"
+                TRIGGER_FILE: '/trigger'
+                RECOVERY_WALG: 'false'
+                APPRISE_TARGET: "{{ REPLICA_APPRISE_TARGET }}"

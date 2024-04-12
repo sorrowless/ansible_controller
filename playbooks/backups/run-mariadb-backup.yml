@@ -1,0 +1,25 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to make cron job to create bakcup for mariadb
+# executable script:
+#
+# > ./run-mariadb-backup.yml.yml
+#
+---
+- name: Configure target servers
+  hosts: mariadb_servers
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Ensure backup db
+      cron:
+        name: "Backup mariadb"
+        user: "root"
+        minute: "0"
+        hour: "2"
+        job: "/usr/bin/docker exec -i {{ mariadb_backup_container_name }} oom-mariabackup create -i {{ number_of_inc_backups }} -r {{ number_of_retain_backups }} >> {{ mariadb_backup_logfile }} 2>&1"
+        state: present
+      tags:
+        - backup
+        - crontab
