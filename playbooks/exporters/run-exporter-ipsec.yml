@@ -1,0 +1,37 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to setup docker container with ipsec exporter 
+# Run it like usual executable script:
+#
+# > ./run-exporter-ipsec.yml
+---
+- name: Setup ipsec exporter
+  hosts: ipsec_exporters
+  become: yes
+  tasks:
+
+    - name: Start ipsec exporter docker container
+      community.docker.docker_compose:
+        state: present
+        project_name: ipsec_exporter
+        definition:
+          version: '2'
+          services:
+            ipsec-exporter:
+              image: "{{ exporter_ipsec_image }}"
+              command: "./ipsec_exporter --collector=ipsec --ipsec.command='/usr/sbin/ipsec stroke statusall'"
+              container_name: "{{ exporter_ipsec_container_name | default('ipsec-exporter') }}"
+              ports:
+                - "{{ exporter_ipsec_host_port | default('127.0.0.1:9903') }}:9903"
+              volumes:
+                - "/var/run/charon.pid:/var/run/charon.pid"
+                - "/var/run/charon.ctl:/var/run/charon.ctl"
+              restart: always
+          networks:
+            default:
+              external:
+                name: "{{ ipsec_exporter_network_name | default('prom_network')}}"
+
+      tags:
+        - exporters
+        - ipsec_exporter
