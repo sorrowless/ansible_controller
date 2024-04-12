@@ -1,5 +1,11 @@
 #!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
 #
+#
+# Playbook for creation postgres replica. Warning!!! Playbook is not idempotent! Use only for first creation!
+# executable script:
+#
+# > ./run-postgres-replica.yml
+#
 ---
 - name: Install postgres-replica container
   hosts: postgresql_servers

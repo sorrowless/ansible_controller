@@ -1,12 +1,10 @@
 #!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
 #
-# Playbook to install and run docker on target nodes. Run it like usual
+# Playbook to make cron job to create bakcup for mariadb
 # executable script:
 #
-# > ./run-docker.yml
+# > ./run-mariadb-backup.yml.yml
 #
-# For configuration vars look at roles variables or host_vars/.example
-# directory.
 ---
 - name: Configure target servers
   hosts: mariadb_servers
@@ -25,4 +23,3 @@
       tags:
         - backup
         - crontab
-
