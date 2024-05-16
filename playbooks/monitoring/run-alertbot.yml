@@ -11,6 +11,15 @@
   become: yes
   become_user: root
   tasks:
+    - name: Set defaults
+      set_fact:
+        alertbot_core_additional_confs_dir: "{{ alertbot_core_additional_confs_dir | default('/var/lib/alertbot_core') }}"
+        alertbot_telegram_additional_confs_dir: "{{ alertbot_telegram_additional_confs_dir | default('/var/lib/alertbot_telegram') }}"
+        alertbot_core_additional_confs: "{{ alertbot_core_additional_confs | default({}) }}"
+        alertbot_telegram_additional_confs: "{{ alertbot_telegram_additional_confs | default({}) }}"
+        alertbot_core_listening_addr: "{{ alertbot_core_listening_addr | default('8000') }}"
+        alertbot_telegram_listening_addr: "{{ alertbot_telegram_listening_addr | default('8800') }}"
+
     - name: Ensure additional configurations
       file:
         path: "{{ item }}"
@@ -76,7 +85,7 @@
               volumes:
                 - "{{ alertbot_telegram_additional_confs_dir }}:/app/additional_confs"
               ports:
-                - "{{ alertbot_telegram_bot_listening_addr }}:8000"
+                - "{{ alertbot_telegram_listening_addr }}:8000"
 
           networks:
             default:
@@ -84,4 +93,4 @@
               external: true
 
       tags:
-        - nextcloud
+        - alertbot
