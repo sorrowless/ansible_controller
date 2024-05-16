@@ -1,0 +1,87 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run alertbot container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-alertbot.yml
+
+---
+- name: Configure target servers
+  hosts: alert_bot_cluster
+  become: yes
+  become_user: root
+  tasks:
+    - name: Ensure additional configurations
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - "{{ alertbot_core_additional_confs_dir }}"
+        - "{{ alertbot_telegram_additional_confs_dir }}"
+
+    - name: Send additional configurations for alertbot core
+      copy:
+        content: "{{ alertbot_core_additional_confs | to_nice_yaml }}"
+        dest: "{{ alertbot_core_additional_confs_dir }}/conf.yml"
+
+    - name: Send additional configurations for alertbot telegram
+      copy:
+        content: "{{ alertbot_telegram_additional_confs | to_nice_yaml }}"
+        dest: "{{ alertbot_telegram_additional_confs_dir }}/conf.yml"
+
+    - name: Start alertbot containers
+      docker_compose:
+        state: present
+        project_name: alertbot
+        definition:
+          version: "2.1"
+          services:
+            core:
+              container_name: alert_bot_core
+              image: "{{ alertbot_core_image }}"
+              restart: always
+              environment:
+                - "ALERTMANAGER_URL={{ alertbot_core_alertmanager_url }}"
+                - "REDIS_HOST={{ alertbot_core_redis_host }}"
+                - "REDIS_PORT={{ alertbot_core_redis_port }}"
+                - "REDIS_DB={{ alertbot_core_redis_db }}"
+                - "REDIS_DNS_DB={{ alertbot_core_redis_dns_db }}"
+                - "REDIS_PASSWORD={{ alertbot_core_redis_password }}"
+                - "REMEDIATION_URL={{ alertbot_core_remediation_url }}"
+                - "REMEDIATION={{ alertbot_core_remediation }}"
+                - "LOG_BOT_TOKEN={{ alertbot_core_log_bot_token }}"
+                - "LOG_BOT_CHAT_ID={{ alertbot_core_log_bot_chat_id }}"
+              volumes:
+                - "{{ alertbot_core_additional_confs_dir }}:/app/additional_confs"
+              ports:
+                - "{{ alertbot_core_listening_addr }}:8000"
+
+            telegram_bot:
+              container_name: alert_bot_telegram
+              image: "{{ alertbot_telegram_image }}"
+              restart: always
+              environment:
+                - "CORE_URL={{ alertbot_telegram_core_url }}"
+                - "API_ID={{ alertbot_telegram_api_id }}"
+                - "API_HASH={{ alertbot_telegram_api_hash }}"
+                - "BOT_TOKEN={{ alertbot_telegram_bot_token }}"
+                - "LOG_BOT_TOKEN={{ alertbot_telegram_log_bot_token }}"
+                - "LOG_BOT_CHAT_ID={{ alertbot_telegram_log_bot_chat_id }}"
+                - "DATE_FORMAT={{ alertbot_telegram_date_format }}"
+                - "REDIS_HOST={{ alertbot_telegram_redis_host }}"
+                - "REDIS_PORT={{ alertbot_telegram_redis_port }}"
+                - "REDIS_DB={{ alertbot_telegram_redis_db }}"
+                - "REDIS_PASSWORD={{ alertbot_telegram_redis_password }}"
+                - "CACHE_EXPIRE={{ alertbot_telegram_cache_expire }}"
+              volumes:
+                - "{{ alertbot_telegram_additional_confs_dir }}:/app/additional_confs"
+              ports:
+                - "{{ alertbot_telegram_bot_listening_addr }}:8000"
+
+          networks:
+            default:
+              name: "{{ alertbot_core_core_docker_network }}"
+              external: true
+
+      tags:
+        - nextcloud
