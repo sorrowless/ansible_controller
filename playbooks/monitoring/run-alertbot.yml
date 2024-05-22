@@ -27,18 +27,24 @@
       loop:
         - "{{ alertbot_core_additional_confs_dir }}"
         - "{{ alertbot_telegram_additional_confs_dir }}"
+      tags:
+        - additional_confs
 
     - name: Send additional configurations for alertbot core
       copy:
         content: "{{ alertbot_core_additional_confs | to_nice_yaml }}"
         dest: "{{ alertbot_core_additional_confs_dir }}/conf.yml"
+      tags:
+        - additional_confs
 
     - name: Send additional configurations for alertbot telegram
       copy:
         content: "{{ alertbot_telegram_additional_confs | to_nice_yaml }}"
         dest: "{{ alertbot_telegram_additional_confs_dir }}/conf.yml"
+      tags:
+        - additional_confs
 
-    - name: Start alertbot containers
+    - name: Start alertbot core
       docker_compose:
         state: present
         project_name: alertbot
@@ -65,6 +71,21 @@
               ports:
                 - "{{ alertbot_core_listening_addr }}:8000"
 
+          networks:
+            default:
+              name: "{{ alertbot_core_core_docker_network }}"
+              external: true
+
+      tags:
+        - alertbot_core
+
+    - name: Start alertbot telegram
+      docker_compose:
+        state: present
+        project_name: alertbot
+        definition:
+          version: "2.1"
+          services:
             telegram_bot:
               container_name: alert_bot_telegram
               image: "{{ alertbot_telegram_image }}"
@@ -85,7 +106,7 @@
               volumes:
                 - "{{ alertbot_telegram_additional_confs_dir }}:/app/additional_confs"
               ports:
-                - "{{ alertbot_telegram_listening_addr }}:8000"
+                - "{{ alertbot_telegram_bot_listening_addr }}:8000"
 
           networks:
             default:
@@ -93,4 +114,4 @@
               external: true
 
       tags:
-        - alertbot
+        - alertbot_telegram
