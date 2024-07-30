@@ -1,2 +1,4 @@
 ---
-- src: sorrowless.tls
+- src: https://github.com/sorrowless/ansible_tls.git
+  version: master
+  name: sorrowless.tls
