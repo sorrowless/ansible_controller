@@ -1,0 +1,38 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install turborepo remote cache
+  hosts: turborepo_servers
+  become: yes
+  become_user: root
+  vars:
+    turborepo_env:
+      NODE_ENV: production
+      PORT: "{{ turborepo_port | default('3000') }}"
+      TURBO_TOKEN: "{{ turborepo_token }}"
+      LOG_LEVEL: "{{ turborepo_log_level | default('info') }}"
+      STORAGE_PROVIDER: "{{ turborepo_storage_provider | default('local') }}"
+      STORAGE_PATH: "{{ turborepo_storage_path | default('turborepo-remote-cache') }}"
+      AWS_ACCESS_KEY_ID: "{{ turporepo_aws_access_key_id | default('') }}"
+      AWS_SECRET_ACCESS_KEY: "{{ turporepo_aws_secret_access_key | default('') }}"
+      AWS_REGION: "{{ turporepo_aws_region | default('us-east-1') }}"
+      S3_ENDPOINT: "{{ turborepo_s3_endpoint | default('') }}"
+  tasks:
+    - name: Start turborepo remote cache container
+      docker_compose:
+        state: present
+        project_name: turborepo
+        definition:
+          version: '2'
+          volumes:
+            cache-data:
+          services:
+            remote-cache:
+              image: ducktors/turborepo-remote-cache:2.2.1
+              container_name: remote-cache
+              ports:
+                - "127.0.0.1:{{ turborepo_env.PORT }}:3000"
+              environment: "{{ turborepo_env }}"
+              restart: unless-stopped
+              volumes:
+                - cache-data:/tmp/{{ turborepo_env.STORAGE_PATH }}
