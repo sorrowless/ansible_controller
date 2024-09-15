@@ -1,0 +1,8 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Configure netbox on target hosts
+  hosts: all
+  remote_user: root
+  become: yes
+  roles:
+    - one_mind.netbox

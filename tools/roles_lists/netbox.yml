@@ -1,0 +1,4 @@
+---
+- src: https://github.com/one-mINd/ansible-netbox.git
+  version: master
+  name: one_mind.netbox
