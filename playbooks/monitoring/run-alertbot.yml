@@ -24,7 +24,7 @@
           {{ alertbot_chats | to_nice_yaml }}
 
           acl: 
-          {{ alertbot_acl | to_nice_yaml }}
+          {{ alertbot_acl | to_nice_yaml | indent( width=2, first=True) }}
 
           {% if alertbot_alert_template is defined %}
           alert_template: |
