@@ -11,19 +11,13 @@
   become: yes
   become_user: root
   tasks:
-    - name: Remove alertbot service
-      docker_stack:
-        state: absent
-        name: alert-stack
-
-    - name: Create alertbot config file
-      docker_config:
-        name: alertbot_config
-        data: |
-          chats: 
+    - name: Generate config file
+      set_fact:
+        alertbot_config: |
+          chats:
           {{ alertbot_chats | to_nice_yaml }}
 
-          acl: 
+          acl:
           {{ alertbot_acl | to_nice_yaml | indent( width=2, first=True) }}
 
           {% if alertbot_alert_template is defined %}
@@ -35,6 +29,25 @@
           resolve_template: |
           {{ alertbot_resolve_template | indent( width=2, first=True) }}
           {% endif %}
+
+    - name: Check if config-file has changes
+      check_mode: yes
+      register: config_changes
+      docker_config:
+        name: alertbot_config
+        data: "{{ alertbot_config }}"
+
+    - name: Remove alertbot service
+      docker_stack:
+        state: absent
+        name: alert-stack
+      when: config_changes.changed
+
+    - name: Update alertbot config
+      docker_config:
+        name: alertbot_config
+        data: "{{ alertbot_config }}"
+      when: config_changes.changed
 
     - name: Setup alertbot
       docker_stack:
