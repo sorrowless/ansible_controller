@@ -11,107 +11,69 @@
   become: yes
   become_user: root
   tasks:
-    - name: Set defaults
+    - name: Generate config file
       set_fact:
-        alertbot_core_additional_confs_dir: "{{ alertbot_core_additional_confs_dir | default('/var/lib/alertbot_core') }}"
-        alertbot_telegram_additional_confs_dir: "{{ alertbot_telegram_additional_confs_dir | default('/var/lib/alertbot_telegram') }}"
-        alertbot_core_additional_confs: "{{ alertbot_core_additional_confs | default({}) }}"
-        alertbot_telegram_additional_confs: "{{ alertbot_telegram_additional_confs | default({}) }}"
-        alertbot_core_listening_addr: "{{ alertbot_core_listening_addr | default('8000') }}"
-        alertbot_telegram_listening_addr: "{{ alertbot_telegram_listening_addr | default('8800') }}"
+        alertbot_config: |
+          chats:
+          {{ alertbot_chats | to_nice_yaml }}
 
-    - name: Ensure additional configurations
-      file:
-        path: "{{ item }}"
-        state: directory
-      loop:
-        - "{{ alertbot_core_additional_confs_dir }}"
-        - "{{ alertbot_telegram_additional_confs_dir }}"
-      tags:
-        - additional_confs
+          acl:
+          {{ alertbot_acl | to_nice_yaml | indent( width=2, first=True) }}
 
-    - name: Send additional configurations for alertbot core
-      copy:
-        content: "{{ alertbot_core_additional_confs | to_nice_yaml }}"
-        dest: "{{ alertbot_core_additional_confs_dir }}/conf.yml"
-      tags:
-        - additional_confs
+          {% if alertbot_alert_template is defined %}
+          alert_template: |
+          {{ alertbot_alert_template | indent( width=2, first=True) }}
+          {% endif %}
 
-    - name: Send additional configurations for alertbot telegram
-      copy:
-        content: "{{ alertbot_telegram_additional_confs | to_nice_yaml }}"
-        dest: "{{ alertbot_telegram_additional_confs_dir }}/conf.yml"
-      tags:
-        - additional_confs
+          {% if alertbot_resolve_template is defined %}
+          resolve_template: |
+          {{ alertbot_resolve_template | indent( width=2, first=True) }}
+          {% endif %}
 
-    - name: Start alertbot core
-      docker_compose:
+    - name: Check if config-file has changes
+      check_mode: yes
+      register: config_changes
+      docker_config:
+        name: alertbot_config
+        data: "{{ alertbot_config }}"
+
+    - name: Remove alertbot service
+      docker_stack:
+        state: absent
+        name: alert-stack
+      when: config_changes.changed
+
+    - name: Update alertbot config
+      docker_config:
+        name: alertbot_config
+        data: "{{ alertbot_config }}"
+      when: config_changes.changed
+
+    - name: Setup alertbot
+      docker_stack:
         state: present
-        project_name: alertbot
-        definition:
-          version: "2.1"
-          services:
-            core:
-              container_name: alert_bot_core
-              image: "{{ alertbot_core_image }}"
-              restart: always
-              environment:
-                - "ALERTMANAGER_URL={{ alertbot_core_alertmanager_url }}"
-                - "REDIS_HOST={{ alertbot_core_redis_host }}"
-                - "REDIS_PORT={{ alertbot_core_redis_port }}"
-                - "REDIS_DB={{ alertbot_core_redis_db }}"
-                - "REDIS_DNS_DB={{ alertbot_core_redis_dns_db }}"
-                - "REDIS_PASSWORD={{ alertbot_core_redis_password }}"
-                - "REMEDIATION_URL={{ alertbot_core_remediation_url }}"
-                - "REMEDIATION={{ alertbot_core_remediation }}"
-                - "LOG_BOT_TOKEN={{ alertbot_core_log_bot_token }}"
-                - "LOG_BOT_CHAT_ID={{ alertbot_core_log_bot_chat_id }}"
-              volumes:
-                - "{{ alertbot_core_additional_confs_dir }}:/app/additional_confs"
-              ports:
-                - "{{ alertbot_core_listening_addr }}:8000"
-
-          networks:
-            default:
-              name: "{{ alertbot_core_core_docker_network }}"
-              external: true
-
-      tags:
-        - alertbot_core
-
-    - name: Start alertbot telegram
-      docker_compose:
-        state: present
-        project_name: alertbot
-        definition:
-          version: "2.1"
-          services:
-            telegram_bot:
-              container_name: alert_bot_telegram
-              image: "{{ alertbot_telegram_image }}"
-              restart: always
-              environment:
-                - "CORE_URL={{ alertbot_telegram_core_url }}"
-                - "API_ID={{ alertbot_telegram_api_id }}"
-                - "API_HASH={{ alertbot_telegram_api_hash }}"
-                - "BOT_TOKEN={{ alertbot_telegram_bot_token }}"
-                - "LOG_BOT_TOKEN={{ alertbot_telegram_log_bot_token }}"
-                - "LOG_BOT_CHAT_ID={{ alertbot_telegram_log_bot_chat_id }}"
-                - "DATE_FORMAT={{ alertbot_telegram_date_format }}"
-                - "REDIS_HOST={{ alertbot_telegram_redis_host }}"
-                - "REDIS_PORT={{ alertbot_telegram_redis_port }}"
-                - "REDIS_DB={{ alertbot_telegram_redis_db }}"
-                - "REDIS_PASSWORD={{ alertbot_telegram_redis_password }}"
-                - "CACHE_EXPIRE={{ alertbot_telegram_cache_expire }}"
-              volumes:
-                - "{{ alertbot_telegram_additional_confs_dir }}:/app/additional_confs"
-              ports:
-                - "{{ alertbot_telegram_bot_listening_addr }}:8000"
-
-          networks:
-            default:
-              name: "{{ alertbot_core_core_docker_network }}"
-              external: true
-
-      tags:
-        - alertbot_telegram
+        name: alert-stack
+        compose:
+          - version: "3.8"
+            services:
+              alertmanager_tgbot:
+                image: "onemind914/alertmanager-tgbot:{{ alertbot_image_tag | default('latest') }}"
+                environment:
+                  API_ID: "{{ alertbot_api_id }}"
+                  API_HASH: "{{ alertbot_api_hash }}"
+                  PHONE_NUMBER: "{{ alertbot_phone_number }}"
+                  CLIENT_NAME: "{{ alertbot_client_name }}"
+                  ALERTMANAGER_ADDRESS: "{{ alertbot_alertmanager_address }}"
+                  GRAFANA_AUTH_TOKEN: "{{ alertbot_grafana_auth_token }}"
+                volumes:
+                  - "{{ alertbot_conf_dir }}:/app/conf"
+                ports:
+                  - "{{ alertbot_listening_addr | default('8000') }}:8000"
+                configs:
+                  - source: alertbot_config
+                    target: /app/conf/conf.yml
+                networks: "{{ alertbot_docker_networks.keys() | list }}"
+            networks: "{{ alertbot_docker_networks }}"
+            configs:
+              alertbot_config:
+                external: true
