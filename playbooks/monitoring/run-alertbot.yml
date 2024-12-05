@@ -51,6 +51,7 @@
                   PHONE_NUMBER: "{{ alertbot_phone_number }}"
                   CLIENT_NAME: "{{ alertbot_client_name }}"
                   ALERTMANAGER_ADDRESS: "{{ alertbot_alertmanager_address }}"
+                  GRAFANA_AUTH_TOKEN: "{{ alertbot_grafana_auth_token }}"
                 volumes:
                   - "{{ alertbot_conf_dir }}:/app/conf"
                 ports:
