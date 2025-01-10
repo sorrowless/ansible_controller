@@ -1,0 +1,38 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Install docker-exporter
+  hosts: prometheus_cadvisor_exporters
+  become: yes
+  become_user: root
+  gather_facts: False
+  run_once: true
+  tasks:
+    - name: Start docker-exporter service
+      community.docker.docker_stack:
+        state: present
+        name: monitoring
+        with_registry_auth: true
+        compose:
+          - services:
+              docker-exporter:
+                image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.1.1') }}"
+                environment:
+                  EXPORTER_MODE: swarm
+                ports:
+                  - "{{ docker_exporter_host_port | default('9080') }}:8000"
+                volumes:
+                  - /var/run/docker.sock:/var/run/docker.sock:ro
+                deploy:
+                  mode: replicated
+                  replicas: 1
+                  placement:
+                    constraints:
+                      - node.role==manager
+                  restart_policy:
+                    condition: any
+                  update_config:
+                    order: start-first
+      tags:
+        - exporters
+        - docker_exporter
