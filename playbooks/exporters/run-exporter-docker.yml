@@ -6,40 +6,96 @@
   become: yes
   become_user: root
   tasks:
-    - name: Stop docker cadvisor container
-      docker_compose:
-        state: absent
-        project_name: cadvisor
-        definition:
-          version: '2'
-          services:
-            cadvisor:
-              image: "gcr.io/cadvisor/cadvisor:v0.40.0"
-              container_name: "cadvisor_exporter"
-      tags:
-        - exporters
-        - docker_exporter
-      when: cadvisor_install is undefined
+    - block:
+      - name: Stop docker cadvisor container
+        community.docker.docker_compose_v2:
+          state: absent
+          project_name: cadvisor
+          definition:
+            services:
+              cadvisor:
+                image: "gcr.io/cadvisor/cadvisor:v0.40.0"
+                container_name: "cadvisor_exporter"
 
-    - name: Start docker-exporter container
-      docker_compose:
-        state: present
-        project_name: docker-exporter
-        definition:
-          version: '2'
-          services:
-            cadvisor:
-              image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.0.4') }}"
-              container_name: docker_exporter
-              ports:
-                - "{{ docker_exporter_host_port | default('127.0.0.1:9080') }}:8000"
-              volumes:
-                - /var/run/docker.sock:/var/run/docker.sock:ro
-              restart: always
-          networks:
-            default:
-              external:
+      - block:
+        - name: Esure directory for hard link to docker.sock
+          ansible.builtin.file:
+            path: /var/run/docker.run
+            state: directory
+            owner: root
+            group: root
+            mode: u=rwx,g=rx,o=rx
+
+        - name: Ensure hard link to docker.sock
+          ansible.builtin.file:
+            src: /var/run/docker.sock
+            path: /var/run/docker.run/docker.sock
+            state: hard
+            owner: root
+            group: docker
+            mode: u=rw,g=rw,o-rwx
+
+        - name: Add creating a hard link when starting docker.sock
+          community.general.ini_file:
+            path: /etc/systemd/system/docker.socket.d/override.conf
+            section: Socket
+            option: ExecStartPost
+            value: /bin/ln -f /var/run/docker.sock /var/run/docker.run/docker.sock
+            no_extra_spaces: true
+            owner: root
+            group: root
+            mode: u=rw,g=r,o=r
+
+        - name: Force systemd to reread configs
+          ansible.builtin.systemd_service:
+            daemon_reload: true
+
+        - name: Start docker-exporter container mount directory
+          community.docker.docker_compose_v2:
+            state: present
+            project_name: docker-exporter
+            definition:
+              services:
+                cadvisor:
+                  image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.2.0') }}"
+                  container_name: docker_exporter
+                  environment:
+                    DOCKER_HOST: unix:///var/run/docker.run/docker.sock
+                    SCRAPE_DELAY: "{{ docker_exporter_scrape_delay | default(10) }}"
+                  ports:
+                    - "{{ docker_exporter_host_port | default('127.0.0.1:9080') }}:8000"
+                  volumes:
+                    - /var/run/docker.run:/var/run/docker.run:ro
+                  restart: always
+              networks:
+                default:
+                  name: "{{ docker_exporter_network_name | default('prom_network')}}"
+                  external: true
+        when:
+          - docker_exporter_set_sock | default(false)
+
+      - name: Start docker-exporter container mount socket
+        community.docker.docker_compose_v2:
+          state: present
+          project_name: docker-exporter
+          definition:
+            services:
+              cadvisor:
+                image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.2.0') }}"
+                container_name: docker_exporter
+                environment:
+                  SCRAPE_DELAY: "{{ docker_exporter_scrape_delay | default(10) }}"
+                ports:
+                  - "{{ docker_exporter_host_port | default('127.0.0.1:9080') }}:8000"
+                volumes:
+                  - /var/run/docker.sock:/var/run/docker.sock:ro
+                restart: always
+            networks:
+              default:
                 name: "{{ docker_exporter_network_name | default('prom_network')}}"
+                external: true
+        when:
+          - not docker_exporter_set_sock | default(false)
       tags:
         - exporters
         - docker_exporter
