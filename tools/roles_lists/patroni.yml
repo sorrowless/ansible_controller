@@ -1,4 +1,4 @@
 ---
-- src: https://github.com/AndrewGodGivens/ansible_patroni_cluster.git
+- src: https://github.com/sorrowless/ansible_patroni_cluster.git
   version: main
-  name: patroni
+  name: sorrowless.patroni

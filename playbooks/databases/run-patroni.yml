@@ -14,4 +14,4 @@
   become: yes
 
   roles:
-    - patroni
+    - sorrowless.patroni
