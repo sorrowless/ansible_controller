@@ -1,0 +1,56 @@
+#!/usr/bin/env -S ansible-playbook 
+#
+# Playbook to install and run vpn-bot container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-vpn-bot.yml
+
+---
+- name: Configure target servers
+  hosts: vpn_bot_servers
+  become: yes
+  become_user: root
+
+  tasks:  
+    - name: Ensure config directory exists
+      ansible.builtin.file:
+        path: "{{ vpn_bot_conf_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Create conf-file
+      copy:
+        dest: "{{ vpn_bot_conf_dir }}/conf.yml"
+        content: "{{ vpn_bot_conf }}"
+      register: confile
+
+    - name: Start vpn-bot container
+      community.docker.docker_compose_v2:
+        state: present
+        project_name: vpn-bot
+        definition:
+          version: '3.8'
+          services:
+            vpn-tgbot:
+              container_name: vpn-tgbot
+              image: "{{ vpn_bot_image }}"
+              restart: always
+              environment:
+                - "API_ID={{ vpn_bot_api_id }}"
+                - "API_HASH={{ vpn_bot_api_hash }}"
+                - "CLIENT_NAME={{ vpn_bot_client_name }}"
+                - "BOT_TOKEN={{ vpn_bot_token }}"
+              volumes:
+                - "{{ vpn_bot_conf_dir }}:/app/conf"
+              ports:
+                - "{{ vpn_bot_listen_address }}:8000"
+
+    - name: Restart images
+      docker_container:
+        name: vpn-tgbot
+        state: started
+        restart: yes
+      when: confile.changed
+
+      tags:
+        - vpn-bot
