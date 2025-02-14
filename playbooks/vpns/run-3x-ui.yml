@@ -1,0 +1,46 @@
+#!/usr/bin/env -S ansible-playbook 
+#
+# Playbook to install and run 3x-ui container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-3x-ui.yml
+
+---
+- name: Configure target servers
+  hosts: 3x-ui-servers
+  become: yes
+  become_user: root
+
+  tasks:  
+    - name: Start 3x-ui container
+      community.docker.docker_compose_v2:
+        state: present
+        project_name: 3x-ui
+        definition:
+          version: '3'
+          services:
+            3x-ui:
+              image: "ghcr.io/mhsanaei/3x-ui:{{ ui3x_image_tag | default('v2.5.2') }}"
+              container_name: "{{ ui3x_container_name | default('3x-ui') }}"
+              hostname: 3x-ui
+              volumes:
+                - "{{ ui3x_data_dir | default('/var/lib/3x-ui') }}:/etc/x-ui/"
+                - "{{ ui3x_certs_dir | default('/etc/ssl_certs') }}:/root/cert/"
+              environment:
+                XRAY_VMESS_AEAD_FORCED: "false"
+              tty: true
+              restart: unless-stopped
+              ports: "{{ ui3x_ports }}"
+              entrypoint: > 
+                bash -c "
+                  apk add socat && 
+                  socat tcp-listen:62790,reuseaddr,fork tcp:localhost:62789 & disown &&
+                  exec /app/x-ui
+                "
+          networks:
+            default:
+              external:
+                name: "{{ ui3x_network_name | default('prom_network')}}"
+
+      tags:
+        - 3x-ui

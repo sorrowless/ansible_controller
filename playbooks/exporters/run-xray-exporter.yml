@@ -1,0 +1,34 @@
+#!/usr/bin/env -S ansible-playbook 
+#
+# Playbook to install and run xray-exporter container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-xray-exporter.yml
+
+---
+- name: Configure target servers
+  hosts: xray_exporters
+  become: yes
+  become_user: root
+
+  tasks:  
+    - name: Start xray-exporter container
+      community.docker.docker_compose_v2:
+        state: present
+        project_name: xray-exporter
+        definition:
+          version: '3.8'
+          services:
+            xray-exporter:
+              image: "wi1dcard/v2ray-exporter:{{ xray_exporter_image_tag | default('v0.6.0') }}"
+              container_name: xray-exporter
+              restart: unless-stopped
+              command: v2ray-exporter --v2ray-endpoint '{{ xray_exporter_target_endpoint | default('3x-ui:62790') }}'
+              ports:
+                - 127.0.0.1:9550:9550
+          networks:
+            default:
+              external:
+                name: "{{ ui3x_network_name | default('prom_network')}}"
+      tags:
+        - xray-exporter
