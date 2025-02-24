@@ -11,7 +11,7 @@
   tasks:
     - name: Ensure Nexus data directory exists
       file:
-        path: /nexus-data
+        path: /opt/nexus-data
         state: directory
         owner: 200
         group: 200
