@@ -1,2 +1,4 @@
 ---
-- src: andrewgodgivens.prometheus_nginx_exporter
+- src: https://github.com/Jony321/prometheus_nginx_exporter.git
+  version: main
+  name: jony321.prometheus_nginx_exporter

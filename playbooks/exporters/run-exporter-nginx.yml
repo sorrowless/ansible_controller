@@ -1,7 +1,7 @@
 #!/usr/bin/env ansible-playbook
 ---
 - name: Setup Nginx Exporter
-  hosts: nginx_exporters
+  hosts: prometheus_nginx_exporters
   become: yes
   roles:
-    - { role: andrewgodgivens.prometheus_nginx_exporter, tags: ["exporters", "nginx_exporter"] }
+    - { role: jony321.prometheus_nginx_exporter, tags: ["exporters", "nginx_exporter"] }
