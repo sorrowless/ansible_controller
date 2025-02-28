@@ -1,0 +1,53 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Deploy Nexus Repository in Docker
+  hosts: nexus
+  become: yes
+  vars:
+    nexus_env:
+      NEXUS_ADMIN_PASSWORD: "{{ nexus_admin_pass }}"
+  
+  tasks:
+    - name: Ensure Nexus data directory exists
+      file:
+        path: /opt/nexus-data
+        state: directory
+        owner: 200
+        group: 200
+        mode: '0755'
+
+    - name: Set custom Nexus admin password
+      copy:
+        dest: /opt/nexus-data/admin.password
+        content: "{{ nexus_env.NEXUS_ADMIN_PASSWORD }}"
+        owner: 200
+        group: 200
+        mode: '0600'
+
+    - name: Deploy Nexus container
+      community.docker.docker_compose_v2:
+        project_name: nexus
+        definition:
+          name: nexus
+          services:
+            nexus:
+              image: sonatype/nexus3:3.77.1
+              container_name: nexus
+              ports:
+                - "8081:8081"
+              volumes:
+                - /ops/nexus-data:/nexus-data
+              environment:
+                - NEXUS_SECURITY_RANDOMPASSWORD=false
+              restart: always
+
+    - name: Wait for Nexus to be ready
+      uri:
+        url: http://localhost:8081
+        method: GET
+        status_code: 200
+      register: nexus_status
+      until: nexus_status.status == 200
+      retries: 30
+      delay: 10
