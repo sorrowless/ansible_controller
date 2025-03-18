@@ -1,2 +1,3 @@
 ---
-- src: frzk.chrony 
+- src: https://github.com/Frzk/ansible-role-chrony.git
+  name: frzk.chrony
