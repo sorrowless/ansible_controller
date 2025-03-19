@@ -1,4 +1,4 @@
-#!/usr/bin/env -S ansible-playbook 
+#!/usr/bin/env -S ansible-playbook
 #
 # Playbook to install and run 3x-ui container on
 # target nodes. Run it like usual executable script:
@@ -11,7 +11,18 @@
   become: yes
   become_user: root
 
-  tasks:  
+  tasks:
+    - name: 3x-ui | Create host config directory
+      ansible.builtin.file:
+        dest: "{{ item }}"
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+      with_items:
+        - "{{ ui3x_data_dir | default('/var/lib/3x-ui') }}"
+        - "{{ ui3x_certs_dir | default('/etc/ssl_certs') }}"
+
     - name: Start 3x-ui container
       community.docker.docker_compose_v2:
         state: present
@@ -31,9 +42,9 @@
               tty: true
               restart: unless-stopped
               ports: "{{ ui3x_ports }}"
-              entrypoint: > 
+              entrypoint: >
                 bash -c "
-                  apk add socat && 
+                  apk add socat &&
                   socat tcp-listen:62790,reuseaddr,fork tcp:localhost:62789 & disown &&
                   exec /app/x-ui
                 "
@@ -41,6 +52,38 @@
             default:
               external:
                 name: "{{ ui3x_network_name | default('prom_network')}}"
+      when:
+        - ui3x_swarm_deploy is not defined
+
+    - name: Deploy 3x-ui container in swarm
+      community.docker.docker_stack:
+        state: present
+        name: "{{ ui3x_container_name | default('3x-ui') }}"
+        with_registry_auth: true
+        compose:
+          - services:
+              3x-ui:
+                image: "ghcr.io/mhsanaei/3x-ui:{{ ui3x_image_tag | default('v2.5.2') }}"
+                volumes:
+                  - "{{ ui3x_data_dir | default('/var/lib/3x-ui') }}:/etc/x-ui/"
+                environment:
+                  XRAY_VMESS_AEAD_FORCED: "false"
+                tty: true
+                ports: "{{ ui3x_ports }}"
+                entrypoint: >
+                  bash -c "
+                    apk add socat &&
+                    socat tcp-listen:62790,reuseaddr,fork tcp:localhost:62789 & disown &&
+                    exec /app/x-ui
+                  "
+                deploy: "{{ ui3x_swarm_deploy }}"
+            networks:
+              default:
+                external:
+                  name: "{{ ui3x_docker_network_name | default('tf_net')}}"
+      run_once: true
+      when:
+        - ui3x_swarm_deploy is defined
 
       tags:
         - 3x-ui
