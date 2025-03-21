@@ -6,7 +6,6 @@
   become: yes
   become_user: root
   gather_facts: False
-  run_once: true
   tasks:
     - name: Start docker-exporter service
       community.docker.docker_stack:
@@ -16,13 +15,17 @@
         compose:
           - services:
               docker-exporter:
-                image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.1.1') }}"
+                image: "ageres210784/docker-exporter:{{ docker_exporter_version | default('v0.2.0') }}"
                 environment:
                   EXPORTER_MODE: swarm
-                ports:
-                  - "{{ docker_exporter_host_port | default('9080') }}:8000"
+                  SCRAPE_DELAY: "{{ docker_exporter_scrape_delay | default(10) }}"
+                ports: |
+                  {{
+                    ([ (docker_exporter_host_port | default(9080)) ~ ':8000' ] if (docker_exporter_host_port | default(true)) else [])
+                  }}
                 volumes:
                   - /var/run/docker.sock:/var/run/docker.sock:ro
+                labels: "{{ docker_exporter_labels | default([]) }}"
                 deploy:
                   mode: replicated
                   replicas: 1
@@ -33,6 +36,11 @@
                     condition: any
                   update_config:
                     order: start-first
+            networks:
+              default:
+                name: "{{ docker_exporter_network_name | default('prom_network') }}"
+                external: true
+      run_once: true
       tags:
         - exporters
         - docker_exporter
