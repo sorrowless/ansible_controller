@@ -19,10 +19,13 @@
                 environment:
                   EXPORTER_MODE: swarm
                   SCRAPE_DELAY: "{{ docker_exporter_scrape_delay | default(10) }}"
-                ports:
-                  - "{{ docker_exporter_host_port | default('9080') }}:8000"
+                ports: |
+                  {{
+                    ([ (docker_exporter_host_port | default(9080)) ~ ':8000' ] if (docker_exporter_host_port | default(true)) else [])
+                  }}
                 volumes:
                   - /var/run/docker.sock:/var/run/docker.sock:ro
+                labels: "{{ docker_exporter_labels | default([]) }}"
                 deploy:
                   mode: replicated
                   replicas: 1
@@ -33,6 +36,10 @@
                     condition: any
                   update_config:
                     order: start-first
+            networks:
+              default:
+                name: "{{ docker_exporter_network_name | default('prom_network') }}"
+                external: true
       run_once: true
       tags:
         - exporters
