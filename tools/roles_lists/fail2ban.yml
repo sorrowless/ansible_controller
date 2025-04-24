@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Ageres210784/ansible-role-fail2ban.git
+  version: master
+  name: ageres210784.fail2ban

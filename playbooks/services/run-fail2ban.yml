@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook
+---
+- name: Configure target servers
+  hosts: fail2ban
+  become: true
+
+  roles:
+    - { role: ageres210784.fail2ban, tags: ['fail2ban'] }
