@@ -1,0 +1,114 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run wikijs container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-wikijs.yml
+
+---
+- name: Configure target servers
+  hosts: wikijs-servers
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Create DB folders
+      ansible.builtin.file:
+        dest: "{{ item.dest }}"
+        state: directory
+        mode: "{{ item.mode }}"
+      loop:
+        - { dest: "{{ wikijs_db_data | default('/var/wikijs/db/data') }}", mode: '0700' }
+        - { dest: "{{ wikijs_db_init_user_db_dir | default('/var/wikijs/db/init') }}", mode: '0755' }
+
+    # This task will copy script to create DB during container initialization.
+    # More info - https://github.com/docker-library/docs/blob/master/postgres/README.md#initialization-scripts
+    - name: Copy init_user_db script to {{ wikijs_db_init_user_db_dir | default('/var/wikijs/db/init') }}
+      ansible.builtin.copy:
+        content: |
+          #!/bin/bash
+          set -e
+          psql -v ON_ERROR_STOP=1 --username postgres --dbname postgres <<-EOSQL
+              CREATE DATABASE {{ wikijs_db_name | default('wikijs') }};
+              CREATE USER {{ wikijs_db_user | default('wikijs') }} WITH ENCRYPTED PASSWORD '{{ wikijs_db_pass | default('wikijs') }}';
+              GRANT all privileges ON database vaultwarden TO {{ wikijs_db_user | default('wikijs') }};
+          EOSQL
+        dest: "{{ wikijs_db_init_user_db_dir | default('/var/wikijs/db/init') }}/create_db.sh"
+        mode: 0755
+
+    - name: Deploy wikjs container in swarm
+      community.docker.docker_stack:
+        state: present
+        name: "{{ wikijs_container_name | default('wikijs') }}"
+        with_registry_auth: true
+        compose:
+          - services:
+              wikijs:
+                image: "ghcr.io/requarks/wiki:{{ wikijs_image_tag | default('2') }}"
+                environment:
+                  DB_TYPE: "postgres"
+                  DB_HOST: "wikijs-db"
+                  DB_PORT: 5432
+                  DB_NAME: "{{ wikijs_db_name | default('wikijs') }}"
+                  DB_USER: "{{ wikijs_db_user | default('wikijs') }}"
+                  DB_PASS: "{{ wikijs_db_pass | default('wikijs') }}"
+                tty: true
+                ports: "{{ wikijs_ports | default([]) }}"
+                deploy: "{{ wikijs_swarm_deploy }}"
+                        # How does look wikijs_swarm_deploy:
+                        # wikijs_swarm_deploy:
+                        #   labels:
+                        #     - "traefik.enable=true"
+                        #     - "traefik.docker.network={{ traefik_docker_network_name }}"
+                        #     - "traefik.http.routers.wikijs.rule=Host(`{{ wikijs_web_host }}`)"
+                        #     - "traefik.http.routers.wikijs.tls=true"
+                        #     - "traefik.http.routers.wikijs.tls.certResolver=acmeDNS"
+                        #     - "traefik.http.services.wikijs.loadbalancer.server.port=3000"
+                        #     #- "traefik.http.middlewares.ssl-headers.headers.sslProxyHeaders=true"
+              wikijs-db:
+                image: "{{ wikijs_db_image | default('postgres:11')}}"
+                restart: always
+                volumes:
+                  - "{{ wikijs_db_data | default('/var/wikijs/db/data') }}:/var/lib/postgresql/data"
+                  - "{{ wikijs_db_init_user_db_dir | default('/var/wikijs/db/init') }}:/docker-entrypoint-initdb.d"
+                environment:
+                  PGUSER: "{{ wikijs_db_user | default('wikijs') }}"
+                  POSTGRES_PASSWORD: "{{ wikijs_db_pass | default('wikijs') }}"
+                  POSTGRES_DB: "{{ wikijs_db_name | default('wikijs') }}"
+                  POSTGRES_USER: "{{ wikijs_db_user | default('wikijs') }}"
+                  ARCHIVE_MODE: "on"
+                  ARCHIVE_TIMEOUT: 3600
+                  AWS_ACCESS_KEY_ID: "{{ wikijs_pg_aws_key | default('') }}"
+                  AWS_REGION: "{{ wikijs_pg_aws_region | default('') }}"
+                  AWS_ENDPOINT: "{{ wikijs_pg_aws_endpoint | default('') }}"
+                  AWS_SECRET_ACCESS_KEY: "{{ wikijs_pg_aws_secre | default('') }}"
+                  WALG_S3_PREFIX: "{{ wikijs_pg_s3_bucket | default('') }}"
+                  PGDATABASE: "{{ wikijs_db_name | default('wikijs') }}"
+                  PGPASSWORD: "{{ wikijs_db_pass | default('wikijs') }}"
+                  PGHOST: /var/run/postgresql
+                  PGDATA: /var/lib/postgresql/data
+                  WALG_COMPRESSION_METHOD: brotli
+                  WALG_DELTA_MAX_STEPS: 6
+                  APPRISE_TARGET: "{{ wikijs_pg_aprise_target | default('') }}"
+                  # RECOVERY_TARGET_ACTION: ${RECOVERY_TARGET_ACTION}
+                  # RECOVERY_TARGET_TIME: ${RECOVERY_TARGET_TIME}
+                  # RECOVERY_TARGET_TIMELINE: ${RECOVERY_TARGET_TIMELINE}
+                  # RECOVERY_WALG: ${RECOVERY_WALG}
+                  # WALG_RESTORE_NAME: ${WALG_RESTORE_NAME}
+                container_name: "{{ wikijs_db_container_name | default('wikijs-db') }}"
+                healthcheck:
+                  test: ["CMD-SHELL", "pg_isready -d {{ wikijs_db_name | default('wikijs') }} -U {{ wikijs_db_user | default('wikijs') }}"]
+                  # start_period: 300s
+                  interval: 20s
+                  timeout: 30s
+                  retries: 3
+            networks:
+              default:
+                external:
+                  name: "{{ _docker_network_name | default('tf_net') }}"
+      run_once: true
+      when:
+        - wikijs_swarm_deploy is defined
+
+      tags:
+        - wikijs
