@@ -10,5 +10,6 @@
 - name: Install and configure tempo
   hosts: tempo
   remote_user: root
+  become: yes
   roles:
     - sorrowless.tempo
