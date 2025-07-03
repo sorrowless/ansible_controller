@@ -14,6 +14,10 @@
         backup_reporter_google_spreadsheet_credentials: "{{ backup_reporter_google_spreadsheet_credentials | default('') }}"
         backup_reporter_docker_postgres: "{{ backup_reporter_docker_postgres | default(False) }}"
         backup_reporter_container_name: "{{ backup_reporter_container_name | default('None') }}"
+        backup_reporter_files_bucket: "{{ backup_reporter_files_bucket | default(False) }}"
+        backup_reporter_files: "{{ backup_reporter_files | default(False) }}"
+        backup_reporter_files_mask: "{{ backup_reporter_files_mask | default('*.tar.gz') }}"
+        backup_reporter_backups_dir: "{{ backup_reporter_backups_dir | default('/var/backups') }}"
         backup_reporter_collector: "{{ backup_reporter_collector | default(False) }}"
         backup_reporter_sheet_owner: "{{ backup_reporter_sheet_owner | default('None') }}"
         backup_reporter_spreadsheet_name: "{{ backup_reporter_spreadsheet_name | default('None') }}"
@@ -72,14 +76,18 @@
         dest: "{{ backup_reporter_config_dir }}/backup_reporter_config.yml"
         content: |
           docker_postgres: {{ backup_reporter_docker_postgres }}
-          container_name: {{ backup_reporter_container_name }}
+          container_name: "{{ backup_reporter_container_name }}"
+          files_bucket: {{ backup_reporter_files_bucket }}
+          files: {{ backup_reporter_files }}
+          files_mask: "{{ backup_reporter_files_mask }}"
+          backups_dir: "{{ backup_reporter_backups_dir }}"
 
           collector: {{ backup_reporter_collector }}
 
-          sheet_owner: {{ backup_reporter_sheet_owner }}
-          google_spreadsheet_credentials_path: {{ backup_reporter_config_dir }}/google_creds.yml
-          spreadsheet_name: {{ backup_reporter_spreadsheet_name }}
-          worksheet_name: {{ backup_reporter_worksheet_name }}
+          sheet_owner: "{{ backup_reporter_sheet_owner }}"
+          google_spreadsheet_credentials_path: "{{ backup_reporter_config_dir }}/google_creds.yml"
+          spreadsheet_name: "{{ backup_reporter_spreadsheet_name }}"
+          worksheet_name: "{{ backup_reporter_worksheet_name }}"
           customer: "{{ backup_reporter_customer | default('') }}"
           supposed_backups_count: "{{ backup_reporter_supposed_backups_count | default('') }}"
           description: "{{ backup_reporter_description }}"
