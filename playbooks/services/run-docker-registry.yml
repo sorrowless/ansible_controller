@@ -51,11 +51,10 @@
 
     - name: Ensure registry docker container
       # Look for overall configuration at https://docs.docker.com/registry/deploying/
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         state: present
         project_name: registry
         definition:
-          version: '2'
           services:
             registry:
               # Look for versions at https://hub.docker.com/_/registry
@@ -72,8 +71,8 @@
                 - registry
           networks:
             default:
-              external:
-                name: ext_network
+              name: ext_network
+              external: true
       tags:
         - docker
         - registry

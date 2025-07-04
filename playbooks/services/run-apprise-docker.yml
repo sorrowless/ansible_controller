@@ -16,11 +16,10 @@
   remote_user: root
   tasks:
     - name: Start apprise container
-      docker_compose:
+      community.docker.docker_compose_v2:
         state: "{{ apprise_state | default('present') }}"
         project_name: "{{ apprise_project_name | default('apprise') }}"
         definition:
-          version: '2'
           services:
             apprise:
               image: "caronc/apprise:{{ apprise_version | default('latest') }}"

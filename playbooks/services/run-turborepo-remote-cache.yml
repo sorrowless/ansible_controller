@@ -19,11 +19,10 @@
       S3_ENDPOINT: "{{ turborepo_s3_endpoint | default('') }}"
   tasks:
     - name: Start turborepo remote cache container
-      docker_compose:
+      community.docker.docker_compose_v2:
         state: present
         project_name: turborepo
         definition:
-          version: '2'
           volumes:
             cache-data:
           services:
