@@ -90,11 +90,10 @@
         - youtrack
 
     - name: Ensure youtrack docker container
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         state: present
         project_name: youtrack
         definition:
-          version: '2'
           services:
             youtrack:
               # Look for versions at https://hub.docker.com/r/jetbrains/youtrack/tags/
@@ -114,8 +113,8 @@
                 - youtrack
           networks:
             default:
-              external:
-                name: ext_network
+              name: ext_network
+              external: true
       tags:
         - docker
         - youtrack

@@ -18,11 +18,10 @@
       - /var/data/elasticsearch/data
 
   - name: Start ElasticSearch service
-    docker_compose:
+    community.docker.docker_compose_v2:
       state: present
       project_name: elasticsearch
       definition:
-        version: '2'
         services:
           elasticsearch:
             container_name: elastic

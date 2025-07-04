@@ -1,6 +1,6 @@
 #!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
 #
-# Playbook to setup docker container with ipsec exporter 
+# Playbook to setup docker container with ipsec exporter
 # Run it like usual executable script:
 #
 # > ./run-exporter-ipsec.yml
@@ -11,11 +11,10 @@
   tasks:
 
     - name: Start ipsec exporter docker container
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         state: present
         project_name: ipsec_exporter
         definition:
-          version: '2'
           services:
             ipsec-exporter:
               image: "{{ exporter_ipsec_image }}"
@@ -29,8 +28,8 @@
               restart: always
           networks:
             default:
-              external:
-                name: "{{ ipsec_exporter_network_name | default('prom_network')}}"
+              name: "{{ ipsec_exporter_network_name | default('prom_network')}}"
+              external: true
 
       tags:
         - exporters
