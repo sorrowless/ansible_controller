@@ -1,0 +1,36 @@
+#!/usr/bin/env -S ansible-playbook 
+#
+# Playbook to install and run swarm-cron (https://crazymax.dev/swarm-cronjob) container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-swarm-cron.yml
+
+---
+- name: Configure target servers
+  hosts: swarm_cron_servers
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Start swarm-cron container
+      community.docker.docker_compose_v2:
+        state: present
+        project_name: swarm-cron
+        definition:
+          version: '3.5'
+          services:
+            swarm-cronjob:
+              image: "crazymax/swarm-cronjob:{{ swarm_cron_tag | default('1') }}"
+              volumes:
+                - "/var/run/docker.sock:/var/run/docker.sock"
+              environment:
+                - "TZ={{ swarm_cron_tag | default('Europe/Moscow') }}"
+                - "LOG_LEVEL={{ swarm_cron_tag | default('info') }}"
+                - "LOG_JSON={{ swarm_cron_tag | default('false') }}"
+              deploy:
+                placement:
+                  constraints:
+                    - node.role == manager
+
+      tags:
+        - swarm-cron
