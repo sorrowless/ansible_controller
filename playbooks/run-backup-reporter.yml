@@ -8,25 +8,34 @@
   hosts: backup_reporters, backup_collectors
   remote_user: root
   tasks:
-    - name: Ensure variables
+    - name: Ensure defaults
       ansible.builtin.set_fact:
         backup_reporter_config_dir: "{{ backup_reporter_config_dir | default('/etc/backup-reporter') }}"
-        backup_reporter_google_spreadsheet_credentials: "{{ backup_reporter_google_spreadsheet_credentials | default('') }}"
-        backup_reporter_docker_postgres: "{{ backup_reporter_docker_postgres | default(False) }}"
-        backup_reporter_container_name: "{{ backup_reporter_container_name | default('None') }}"
-        backup_reporter_files_bucket: "{{ backup_reporter_files_bucket | default(False) }}"
-        backup_reporter_files: "{{ backup_reporter_files | default(False) }}"
-        backup_reporter_files_mask: "{{ backup_reporter_files_mask | default('*.tar.gz') }}"
-        backup_reporter_backups_dir: "{{ backup_reporter_backups_dir | default('/var/backups') }}"
-        backup_reporter_collector: "{{ backup_reporter_collector | default(False) }}"
-        backup_reporter_sheet_owner: "{{ backup_reporter_sheet_owner | default('None') }}"
-        backup_reporter_spreadsheet_name: "{{ backup_reporter_spreadsheet_name | default('None') }}"
-        backup_reporter_worksheet_name: "{{ backup_reporter_worksheet_name | default('None') }}"
-        backup_reporter_bucket: "{{ backup_reporter_bucket | default('[]') }}"
         backup_reporter_python_executable: "{{ backup_reporter_python_executable | default('python3') }}"
-        backup_reporter_customer: "{{ backup_reporter_customer | default('') }}"
-        backup_reporter_supposed_backups_count: "{{ backup_reporter_supposed_backups_count | default('') }}"
-        backup_reporter_description: "{{ backup_reporter_description | default('') }}"
+        backup_reporter_defaults:
+          backup_reporter_config_name: 'backup_reporter_config.yml'
+          backup_reporter_google_spreadsheet_credentials: ''
+          backup_reporter_docker_postgres: False
+          backup_reporter_container_name: 'None'
+          backup_reporter_files_bucket: False
+          backup_reporter_files: False
+          backup_reporter_files_mask: '*.tar.gz'
+          backup_reporter_backups_dir: '/var/backups'
+          backup_reporter_collector: False
+          backup_reporter_sheet_owner: 'None'
+          backup_reporter_spreadsheet_name: 'None'
+          backup_reporter_worksheet_name: 'None'
+          backup_reporter_bucket: []
+          backup_reporter_customer: ''
+          backup_reporter_supposed_backups_count: ''
+          backup_reporter_description: ''
+      tags:
+        - always
+
+    - name: Ensure variables
+      ansible.builtin.set_fact:
+        backup_reporter_list: "{{ backup_reporter_list | default([]) + [ backup_reporter_defaults | combine(item) ] }}"
+      loop: "{{ backup_reporters }}"
       tags:
         - always
 
@@ -65,47 +74,53 @@
 
     - name: Set google credentials json
       ansible.builtin.copy:
-        dest: "{{ backup_reporter_config_dir }}/google_creds.yml"
-        content: "{{ backup_reporter_google_spreadsheet_credentials }}"
+        dest: "{{ backup_reporter_config_dir }}/google_creds_{{ item.backup_reporter_config_name }}"
+        content: "{{ item.backup_reporter_google_spreadsheet_credentials }}"
         mode: '0700'
-      register: backup_reporter_google_spreadsheet_credentials_path
-      when: backup_reporter_google_spreadsheet_credentials is defined
+      loop: "{{ backup_reporter_list }}"
+      when: backup_reporter_list | length > 0
 
     - name: Set config file
       ansible.builtin.copy:
-        dest: "{{ backup_reporter_config_dir }}/backup_reporter_config.yml"
+        dest: "{{ backup_reporter_config_dir }}/{{ item.backup_reporter_config_name }}"
         content: |
-          docker_postgres: {{ backup_reporter_docker_postgres }}
-          container_name: "{{ backup_reporter_container_name }}"
-          files_bucket: {{ backup_reporter_files_bucket }}
-          files: {{ backup_reporter_files }}
-          files_mask: "{{ backup_reporter_files_mask }}"
-          backups_dir: "{{ backup_reporter_backups_dir }}"
+          docker_postgres: {{ item.backup_reporter_docker_postgres }}
+          container_name: "{{ item.backup_reporter_container_name }}"
+          files_bucket: {{ item.backup_reporter_files_bucket }}
+          files: {{ item.backup_reporter_files }}
+          files_mask: "{{ item.backup_reporter_files_mask }}"
+          backups_dir: "{{ item.backup_reporter_backups_dir }}"
 
-          collector: {{ backup_reporter_collector }}
+          collector: {{ item.backup_reporter_collector }}
 
-          sheet_owner: "{{ backup_reporter_sheet_owner }}"
-          google_spreadsheet_credentials_path: "{{ backup_reporter_config_dir }}/google_creds.yml"
-          spreadsheet_name: "{{ backup_reporter_spreadsheet_name }}"
-          worksheet_name: "{{ backup_reporter_worksheet_name }}"
-          customer: "{{ backup_reporter_customer | default('') }}"
-          supposed_backups_count: "{{ backup_reporter_supposed_backups_count | default('') }}"
-          description: "{{ backup_reporter_description }}"
+          sheet_owner: "{{ item.backup_reporter_sheet_owner }}"
+          google_spreadsheet_credentials_path: "{{ backup_reporter_config_dir }}/google_creds_{{ item.backup_reporter_config_name }}"
+          spreadsheet_name: "{{ item.backup_reporter_spreadsheet_name }}"
+          worksheet_name: "{{ item.backup_reporter_worksheet_name }}"
+          customer: "{{ item.backup_reporter_customer | default('') }}"
+          supposed_backups_count: "{{ item.backup_reporter_supposed_backups_count | default('') }}"
+          description: "{{ item.backup_reporter_description }}"
 
           bucket:
-          {{ backup_reporter_bucket | to_nice_yaml }}
+          {{ item.backup_reporter_bucket | to_nice_yaml }}
         mode: '0700'
+      loop: "{{ backup_reporter_list }}"
+      when: backup_reporter_list | length > 0
 
     - name: Set daily cron-job with reporter
       ansible.builtin.cron:
-        name: "Backup report"
+        name: "Backup report {{ item.backup_reporter_config_name }}"
         minute: "0"
         hour: "1"
-        job: "/opt/backup_reporter/bin/backup-reporter --config {{ backup_reporter_config_dir }}/backup_reporter_config.yml"
+        job: "/opt/backup_reporter/bin/backup-reporter --config {{ backup_reporter_config_dir }}/{{ item.backup_reporter_config_name }}"
+      loop: "{{ backup_reporter_list }}"
+      when: backup_reporter_list | length > 0
 
     - name: Explicitly run report command
       ansible.builtin.shell:
-        cmd: "/opt/backup_reporter/bin/backup-reporter --config {{ backup_reporter_config_dir }}/backup_reporter_config.yml"
+        cmd: "/opt/backup_reporter/bin/backup-reporter --config {{ backup_reporter_config_dir }}/{{ item.backup_reporter_config_name }}"
+      loop: "{{ backup_reporter_list }}"
+      when: backup_reporter_list | length > 0
       tags:
         - never
         - report
