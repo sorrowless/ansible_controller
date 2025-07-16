@@ -1,0 +1,39 @@
+#!/usr/bin/env -S ansible-playbook 
+#
+# Playbook to install and run openvas container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-openvas.yml
+
+---
+- name: Configure target servers
+  hosts: openvas_servers
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Ensure openvas directory
+      ansible.builtin.file:
+        path: "{{ openvas_dir | default('/etc/openvas') }}"
+        state: directory
+        mode: '0755'
+
+    - name: Download openvas compose
+      ansible.builtin.get_url:
+        url: https://greenbone.github.io/docs/latest/_static/docker-compose.yml
+        dest: "{{ openvas_dir | default('/etc/openvas') }}/docker-compose.yml"
+        mode: '0666'
+
+    - name: Start openvas services
+      community.docker.docker_compose_v2:
+        project_src: "{{ openvas_dir | default('/etc/openvas') }}"
+
+    - name: Set new password for admin
+      community.docker.docker_compose_v2_exec:
+        project_src: "{{ openvas_dir | default('/etc/openvas') }}"
+        service: gvmd
+        user: gvmd
+        command: "gvmd gvmd --user=admin --new-password='{{ openvas_admin_password | default('OVpass84143') }}'"
+
+      tags:
+        - openvas
