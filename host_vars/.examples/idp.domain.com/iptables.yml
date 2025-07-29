@@ -1,0 +1,6 @@
+---
+iptables:
+  host_allowed_tcp_ports: []
+  group_allowed_tcp_ports: []
+  default_allowed_tcp_ports: []
+  flush_all: true

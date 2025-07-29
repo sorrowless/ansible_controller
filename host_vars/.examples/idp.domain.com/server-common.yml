@@ -1,0 +1,11 @@
+---
+ansible_host: 46.21.255.118
+ansible_ip: 46.21.255.118
+ansible_host_domain: idp.domain.com
+ansible_port: 22
+ansible_user: "{{ ansible_common_user }}"
+ansible_become: true
+sshd_port: 22
+# Hosts name
+server_common_host:
+  dns_hostname: "idp.domain.com"
