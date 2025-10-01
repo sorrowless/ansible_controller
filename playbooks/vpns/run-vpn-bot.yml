@@ -40,10 +40,18 @@
                 - "API_HASH={{ vpn_bot_api_hash }}"
                 - "CLIENT_NAME={{ vpn_bot_client_name }}"
                 - "BOT_TOKEN={{ vpn_bot_token }}"
+                - "DB_HOST={{ vpn_bot_redis_addr }}"
+                - "DB_PORT={{ vpn_bot_redis_port }}"
+                - "DB_PASSWORD={{ vpn_bot_redis_password }}"
               volumes:
                 - "{{ vpn_bot_conf_dir }}:/app/conf"
               ports:
                 - "{{ vpn_bot_listen_address }}:8000"
+
+          networks:
+            default:
+              external: true
+              name: "{{ vpn_bot_network }}"
 
     - name: Restart images
       docker_container:

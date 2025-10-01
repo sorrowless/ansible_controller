@@ -1,0 +1,22 @@
+#!/usr/bin/env -S ansible-playbook 
+#
+# Playbook to install and run vpn-bot container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-vpn-bot-full.yml
+
+---
+- name: Setup Docker
+  import_playbook: services/run-docker.yml
+  tags:
+    - docker
+
+- name: Setup Redis
+  import_playbook: databases/run-redis.yml
+  tags:
+    - redis
+
+- name: Setup VPNBot
+  import_playbook: vpns/run-vpn-bot.yml
+  tags:
+    - vpnbot
