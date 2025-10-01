@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Ageres210784/ansible_dump_postgres_db.git
+  version: master
+  name: ageres210784.dump_postgres_db

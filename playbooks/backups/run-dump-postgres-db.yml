@@ -1,0 +1,16 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+#
+# Playbook for copying postgres dump database script, and config crontab for it.
+# executable script:
+#
+# > ./run-dump-postgres-db.yml
+#
+---
+- name: Install a script for backup database
+  hosts: backup_hosts
+  become: true
+  become_user: root
+
+  roles:
+    - {role: ageres210784.dump_postgres_db}
