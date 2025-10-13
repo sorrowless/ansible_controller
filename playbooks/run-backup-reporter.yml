@@ -26,6 +26,7 @@
           backup_reporter_spreadsheet_name: 'None'
           backup_reporter_worksheet_name: 'None'
           backup_reporter_bucket: []
+          backup_reporter_destination: []
           backup_reporter_customer: ''
           backup_reporter_supposed_backups_count: ''
           backup_reporter_description: ''
@@ -103,6 +104,8 @@
 
           bucket:
           {{ item.backup_reporter_bucket | to_nice_yaml }}
+          destination:
+          {{ item.backup_reporter_destination | to_nice_yaml }}
         mode: '0700'
       loop: "{{ backup_reporter_list }}"
       when: backup_reporter_list | length > 0
@@ -124,3 +127,4 @@
       tags:
         - never
         - report
+        
