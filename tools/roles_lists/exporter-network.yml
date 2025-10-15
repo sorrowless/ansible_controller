@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Ageres210784/ansible_network_exporter.git
+  version: master
+  name: ageres210784.prometheus_network_exporter

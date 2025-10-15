@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Network Exporter
+  hosts: prometheus_network_exporters
+  become: yes
+  roles:
+    - { role: ageres210784.prometheus_network_exporter }
