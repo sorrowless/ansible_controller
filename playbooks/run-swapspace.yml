@@ -11,7 +11,7 @@
     - name: Swapspace | Clone repo
       git:
         repo: https://github.com/Tookmund/Swapspace.git
-        dest: /opt/
+        dest: /opt/Swapspace
         clone: yes
 
     - name: Swapspace | Ensure required packages are installed
