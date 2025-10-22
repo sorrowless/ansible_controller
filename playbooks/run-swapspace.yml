@@ -17,7 +17,7 @@
     - name: Swapspace | Ensure required packages are installed
       apt:
         update_cache: yes
-        name: autoreconf
+        name: autoconf
         state: present
 
     - name: Swapspace | Set up conf for Swapspace
