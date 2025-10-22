@@ -27,7 +27,7 @@
 
     - name: Swapspace | Build swapspace package
       shell:
-        cmd: "configure && make && make install"
+        cmd: "./configure && make && make install"
         chdir: "/opt/Swapspace/"
 
     - name: Swapspace | Clean temporary files
