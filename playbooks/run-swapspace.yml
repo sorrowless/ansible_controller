@@ -1,0 +1,52 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run Swapspace package for dynamic swap managed
+#
+# > ./run-swapspace.yml
+---
+- name: Install Swapspace
+  hosts: swap_hosts
+  remote_user: root
+  tasks:
+    - name: Swapspace | Clone repo
+      git:
+        repo: https://github.com/Tookmund/Swapspace.git
+        dest: /opt/
+        clone: yes
+
+    - name: Swapspace | Ensure required packages are installed
+      apt:
+        update_cache: yes
+        name: autoreconf
+        state: present
+
+    - name: Swapspace | Set up conf for Swapspace
+      command: 
+        cmd: "autoreconf -i"
+        chdir: "/opt/Swapspace/"
+
+    - name: Swapspace | Build swapspace package
+      shell:
+        cmd: "configure && make && make install"
+        chdir: "/opt/Swapspace/"
+
+    - name: Swapspace | Clean temporary files
+      shell:
+        cmd: "make clean & make distclean"
+        chdir: "/opt/Swapspace/"
+
+    - name: Swapspace | Move swapspace.service to systemd
+      copy:
+        remote_src: true
+        src: "/opt/Swapspace/swapspace.service"
+        dest: "/etc/systemd/system/swapspace.service"
+
+    - name: Swapspace | Reload systemd
+      systemd:
+        daemon_reload: true
+
+    - name: Swapspace | Enable Swapspace
+      systemd:
+        name: swapspace.service
+        enabled: true
+        state: started
