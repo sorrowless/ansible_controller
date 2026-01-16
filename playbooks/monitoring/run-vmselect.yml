@@ -5,4 +5,4 @@
   hosts: monitoring_servers
   become: yes
   roles:
-    - { role: sorrowless.vminsert, tags: ["server", "vm", "vmselect"] }
+    - { role: sorrowless.vmselect, tags: ["server", "vm", "vmselect"] }
