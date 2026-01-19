@@ -5,7 +5,7 @@ traefik_environment_vars:
   - CF_API_KEY={{ vault_tls_host.acme_ch_dns_vars.CF_Key }}
 
 traefik_docker_network_name: tf_net
-traefik_docker_networks: 
+traefik_docker_networks:
   tf_net:
     name: "tf_net"
     external: false
@@ -53,22 +53,22 @@ traefik_config:
         email: s@sbog.org
         storage: /etc/traefik/ssl-certs/acme.json
         tlsChallenge: true
-        #caserver: https://acme-v02.api.letsencrypt.org/directory
+        # caserver: https://acme-v02.api.letsencrypt.org/directory
     acmeDNS:
       acme:
         email: s@sbog.org
         storage: /etc/traefik/ssl-certs/acme.json
+        # caserver: https://acme-v02.api.letsencrypt.org/directory
         dnsChallenge:
           provider: cloudflare
           resolvers:
             - 1.1.1.1:53
             - 8.8.8.8:53
-        #caserver: https://acme-v02.api.letsencrypt.org/directory
 
   # Providers configuration
   providers:
     swarm:
-      #endpoint: "tcp://{{ hostvars[inventory_hostname]['ansible_ens18']['ipv4']['address'] }}:2377"
+      # endpoint: "tcp://{{ hostvars[inventory_hostname]['ansible_ens18']['ipv4']['address'] }}:2377"
       endpoint: unix:///var/run/docker.sock
       watch: true
       exposedbydefault: false
@@ -99,7 +99,7 @@ traefik_ports:
     published: 80
     protocol: tcp
     mode: host
-  - target: 443 
-    published: 443 
+  - target: 443
+    published: 443
     protocol: tcp
     mode: host
