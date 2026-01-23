@@ -1,0 +1,3 @@
+---
+# System variables
+ansible_managed: "This file is managed by Ansible, do not change it manually"
