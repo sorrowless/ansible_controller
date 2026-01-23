@@ -1,2 +1,4 @@
 ---
-- src: sorrowless.prometheus_grok_exporter
+- src: https://github.com/sorrowless/ansible_prometheus_grok_exporter.git
+  version: master
+  name: sorrowless.grok_exporter
