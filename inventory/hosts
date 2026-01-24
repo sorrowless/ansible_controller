@@ -1,4 +1,8 @@
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+
 [server_common]
+monitor.akh.oom.ag
 
 [iptables:children]
 server_common
@@ -14,3 +18,31 @@ server_common
 
 [atop:children]
 server_common
+
+[docker_hosts]
+monitor.akh.oom.ag
+vpn-test-01.akh.oom.ag
+vpn-test-02.akh.oom.ag
+
+[monitoring_servers]
+monitor.akh.oom.ag
+vpn-test-01.akh.oom.ag
+vpn-test-02.akh.oom.ag
+
+[grafana]
+monitor.akh.oom.ag
+
+[prometheus_node_exporters]
+monitor.akh.oom.ag
+vpn-test-01.akh.oom.ag
+vpn-test-02.akh.oom.ag
+
+[prometheus_grok_exporters]
+vpn-test-01.akh.oom.ag
+vpn-test-02.akh.oom.ag
+
+[traefik]
+monitor.akh.oom.ag
+
+[xray_checker_servers]
+monitor.akh.oom.ag

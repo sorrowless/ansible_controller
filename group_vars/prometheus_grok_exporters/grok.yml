@@ -1,8 +1,12 @@
 ---
 grok_exporter_config_dir: /var/lib/grok_exporter
 grok_exporter_patterns_dir: "{{ grok_exporter_config_dir }}/patterns"
+grok_exporter_groups:
+  - adm
+  - nogroup
+grok_exporter_host_address: 10.10.10.1
 grok_exporter_configs:
-  - name: auth_access
+  - name: xray_access
     # For config example look at https://github.com/fstab/grok_exporter/blob/master/example/config.yml
     config:
       global:
@@ -10,43 +14,31 @@ grok_exporter_configs:
         retention_check_interval: 53s
       input:
         type: file
-        path: /var/log/auth.log
+        path: /var/log/xray/access.log
         readall: false
       imports:
         - type: grok_patterns
           dir: "{{ grok_exporter_patterns_dir }}"
-      grok_patterns: []
+      grok_patterns:
+        - 'XRAY_DATETIME %{YEAR}/%{MONTHNUM}/%{MONTHDAY} %{HOUR}:%{MINUTE}:%{SECOND}'
+        - 'XRAY_TYPE [a-zA-Z0-9._-]+'
       metrics:
         - type: counter
-          name: auth_commands
-          help: Total number of auth access log commands splitted by error
-          match: '%{AUTH_LOG}'
+          name: xray_access
+          help: Total number of requests according access log splitted by labels
+          # log examples
+          # 2026/01/07 00:02:01.598956 from 127.0.0.1:35626 accepted tcp:firebaselogging.googleapis.com:443 [block] email: 7495156806 91a437d6
+          # 2026/01/07 00:02:02.037306 from 127.0.0.1:35648 accepted tcp:firebaselogging.googleapis.com:443 [block] email: 7495156806 91a437d6
+          # base patterns: https://github.com/logstash-plugins/logstash-patterns-core/blob/main/patterns/ecs-v1/grok-patterns
+          #match: '%{XRAY_DATETIME} from %{IP:host}:%{NUMBER:port} accepted %{URIPROTO:protocol}:%{IPORHOST:domain}:%{POSINT} %{XRAY_TYPE:type} email: %{NUMBER:telegram_id}.*'
+          match: '%{XRAY_DATETIME} from %{IP:host}:%{NUMBER:port} accepted %{URIPROTO:protocol}:%{IPORHOST:domain}:%{POSINT} \[%{XRAY_TYPE:type} [>-]> %{WORD:action}\] email: %{NUMBER:telegram_id}.*'
           labels:
-            error: !unsafe '{{.sudo_error}}'
+            host: !unsafe '{{.host}}'
+            protocol: !unsafe '{{.protocol}}'
+            domain: !unsafe '{{.domain}}'
+            type: !unsafe '{{.type}}'
+            action: !unsafe '{{.action}}'
+            telegram_id: !unsafe '{{.telegram_id}}'
       server:
-        host: 127.0.0.1
+        host: "{{ grok_exporter_host_address }}"
         port: 9144
-  - name: nginx_access
-    # For config example look at https://github.com/fstab/grok_exporter/blob/master/example/config.yml
-    config:
-      global:
-        config_version: 3
-        retention_check_interval: 53s
-      input:
-        type: file
-        path: /var/log/nginx/access.log
-        readall: false
-      imports:
-        - type: grok_patterns
-          dir: "{{ grok_exporter_patterns_dir }}"
-      grok_patterns: []
-      metrics:
-        - type: counter
-          name: nginx_access
-          help: Total number of requests according access log splitted by status codes
-          match: '%{NGINX_ACCESS}'
-          labels:
-            status_code: !unsafe '{{.status}}'
-      server:
-        host: 127.0.0.1
-        port: 9145

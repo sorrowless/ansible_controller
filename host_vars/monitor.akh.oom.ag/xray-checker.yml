@@ -1,0 +1,19 @@
+---
+xray_checker_web_host: "checker.akh.oom.ag"
+xray_checker_subscription_url: "https://www.sigmalink.org/check"
+xray_checker_docker_network_name: "prom_network"
+xray_checker_swarm_manager: monitor.akh.oom.ag
+
+xray_checker_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []
+  labels:
+    - "traefik.enable=true"
+    - "traefik.swarm.network={{ xray_checker_docker_network_name }}"
+    - "traefik.http.routers.xray-checker.rule=Host(`{{ xray_checker_web_host }}`)"
+    - "traefik.http.routers.xray-checker.middlewares=basic-auth@file"
+    - "traefik.http.routers.xray-checker.tls=true"
+    - "traefik.http.routers.xray-checker.tls.certResolver=acmeDNS"
+    - "traefik.http.services.xray-checker.loadbalancer.server.port=2112"

@@ -1,0 +1,10 @@
+---
+metainfo:
+  placement: AKH
+  company: AKH
+ansible_ip: 94.131.113.89
+ansible_domainname: monitor.akh.oom.ag
+ansible_host: "{{ ansible_domainname }}"
+ansible_port: "{{ sshd_port }}"
+ansible_user: sbog
+ansible_become: true

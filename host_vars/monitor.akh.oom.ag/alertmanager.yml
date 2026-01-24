@@ -1,0 +1,134 @@
+---
+# Alertmanager config
+alertmanager_docker_network_name: prom_network
+alertmanager_config_dir: /var/lib/alertmanager
+alertmanager_container_name: alertmanager
+alertmanager_command:
+- '--config.file=/etc/alertmanager/alertmanager.yml'
+- '--storage.path=/alertmanager'
+# High Availability
+# - '--cluster.peer={{ vmalertmanager_neighbor_node_01 }}:9094'
+# - '--cluster.advertise-address={{ ansible_ip }}:9094'
+# - '--cluster.gossip-interval=100ms'
+# - '--cluster.pushpull-interval=30s'
+alertmanager_config:
+  global:
+    resolve_timeout: 5m
+  templates:
+  - '/etc/alertmanager/template/*.tmpl'
+  route:
+    group_by: ['alertname', 'project']
+    group_wait: 2m30s
+    group_interval: 5m
+    repeat_interval: 60m
+    # Default receiver
+    receiver: Telegram-oom-alert-bot
+    routes:
+    - receiver: Telegram-Unitpay
+      matchers:
+      - env = production
+      - project = unitpay
+    - receiver: Telegram-production-story
+      matchers:
+      - env = production
+    - receiver: Telegram-staging-story
+      matchers:
+      - env = staging
+    - receiver: blackhole
+      matchers:
+      - alertname="PostgreSQLCacheHitRatio"
+    - receiver: Telegram-oom-alert-bot
+      matchers:
+      - alertname="FullnodeVersionDiff"
+      repeat_interval: 1d
+    - receiver: Telegram-NL-production
+      match:
+        project: nalitek
+      repeat_interval: 10m
+    - receiver: Telegram-OOMag-production
+      matchers:
+      - is_alert_bot_status="True"
+    - receiver: Telegram-KA-production
+      matchers:
+      - env = prod
+      - project = corona
+  inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname']
+  - source_matchers:
+    - alertname=~"HypervisorIsDown|HostIsDown|CloudHostIsDown"
+    target_matchers:
+    - alertname=~"ExporterDown|PortIsClosed|ContainerIsDown|ScrapeTargetIsUnavailable"
+    equal: ['dns_hostname']
+  - source_match:
+      alertname: HypervisorIsDown
+    target_matchers:
+    - alertname = HostIsDown
+    - hypervisor_type = virtual_machine
+    equal: ['hypervisor_name']
+  receivers:
+  - name: blackhole
+  - name: Telegram-OOMag-production
+    telegram_configs:
+    - send_resolved: true
+      api_url: "https://api.telegram.org"
+      bot_token: "{{ vault_alertmanager_bot_token }}"
+      chat_id: -1001942578108
+      message: !unsafe '{{ template "telegram.default" . }}'
+      parse_mode: HTML
+  - name: Telegram-OOMag-staging
+    telegram_configs:
+    - send_resolved: true
+      api_url: "https://api.telegram.org"
+      bot_token: "{{ vault_alertmanager_bot_token }}"
+      chat_id: -1001569562170
+      message: !unsafe '{{ template "telegram.default" . }}'
+      parse_mode: HTML
+  - name: Telegram-oom-alert-bot
+    webhook_configs:
+    - send_resolved: true
+      url: "http://alertmanager_tgbot:8000/v1/alert"
+      max_alerts: 0
+  - name: Telegram-production-story
+    telegram_configs:
+    - send_resolved: true
+      api_url: "https://api.telegram.org"
+      bot_token: "{{ vault_alertbot_token }}"
+      chat_id: -1001762979388
+      message: !unsafe '{{ template "telegram.default" . }}'
+      parse_mode: HTML
+  - name: Telegram-staging-story
+    telegram_configs:
+    - send_resolved: true
+      api_url: "https://api.telegram.org"
+      bot_token: "{{ vault_alertbot_token }}"
+      chat_id: -1001956173729
+      message: !unsafe '{{ template "telegram.default" . }}'
+      parse_mode: HTML
+  - name: Telegram-KA-production
+    telegram_configs:
+    - send_resolved: true
+      api_url: "https://api.telegram.org"
+      bot_token: "{{ vault_alertmanager_bot_token }}"
+      chat_id: -4172116409
+      message: !unsafe '{{ template "telegram.default" . }}'
+      parse_mode: HTML
+  - name: Telegram-NL-production
+    telegram_configs:
+    - send_resolved: true
+      api_url: https://api.telegram.org
+      bot_token: "{{ vault_alertmanager_NL_bot_token }}"
+      chat_id: -4089695350
+      message: !unsafe '{{ template "telegram.default" . }}'
+      parse_mode: HTML
+  - name: Telegram-Unitpay
+    telegram_configs:
+    - send_resolved: true
+      api_url: "https://api.telegram.org"
+      bot_token: "{{ vault_alertmanager_unitpay_alerts_bot_token }}"
+      chat_id: -1002509162946
+      message: !unsafe '{{ template "telegram.default" . }}'
+      parse_mode: HTML

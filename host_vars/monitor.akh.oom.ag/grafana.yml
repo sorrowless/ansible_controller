@@ -1,0 +1,34 @@
+---
+grafana_web_host: grafana.akh.oom.ag
+grafana:
+  admin_user: admin
+  admin_password: admin
+grafana_docker_network_name: prom_network
+grafana_url: "https://{{ grafana_web_host }}/"
+grafana_datasources:
+  - name: VictoriaMetrics
+    url: http://{{ vmselect_container_name  }}:8481/select/0/prometheus
+    type: prometheus
+    access: proxy
+    isDefault: true
+
+grafana_provisioning_dashboards:
+  - 'Overall hosts availability.json'
+  - 'Node Exporter for VictoriaMetrics Dashboard.json'
+  - 'Versions.json'
+grafana_ports: []
+grafana_stack_name: victoriametrics
+grafana_swarm_cluster: true
+grafana_swarm_manager: monitor.akh.oom.ag
+grafana_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []
+  labels:
+    - "traefik.enable=true"
+    - "traefik.swarm.network={{ grafana_docker_network_name }}"
+    - "traefik.http.routers.grafana.rule=Host(`{{ grafana_web_host }}`)"
+    - "traefik.http.routers.grafana.tls=true"
+    - "traefik.http.routers.grafana.tls.certResolver=acmeDNS"
+    - "traefik.http.services.grafana.loadbalancer.server.port=3000"

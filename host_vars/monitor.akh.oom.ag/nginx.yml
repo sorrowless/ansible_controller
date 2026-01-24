@@ -1,0 +1,210 @@
+---
+main_site: monitor.akh.oom.ag
+grafana_site: grafana.akh.oom.ag
+alertmanager_site: alertmanager.akh.oom.ag
+alertsraw_site: alertsraw.akh.oom.ag
+vminsert_site: vminsert.akh.oom.ag
+
+# Nginx vars
+nginx_sites:
+  akh.infra.oom.ag_http:
+  - listen 80
+  - server_name {{ alertmanager_site }}
+  - return 301 https://$host$request_uri
+  alertmanager.infra.oom.ag_https:
+  - listen 443 ssl
+  - server_name {{ alertmanager_site }}
+  - gzip on
+  - gzip_types *
+  - ssl_certificate /etc/ssl_certs/{{ alertmanager_site }}/fullchain.pem
+  - ssl_certificate_key /etc/ssl_certs/{{ alertmanager_site }}/private.pem
+  - auth_request /ldap-auth
+  - |
+    location = /ldap-auth {
+    {{ nginx_ldap_auth_location }}
+      proxy_set_header X-Ldap-Template "(&(memberOf=cn=nginx.alertmanagers,ou=authgroups,dc=oom,dc=ag)(uid=%(username)s))";
+    }
+  - |
+    location / {
+      proxy_pass http://127.0.0.1:9093/;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+
+      proxy_set_header   Host              $host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_request_buffering    off;
+    }
+  alertsraw.infra.oom.ag_http:
+  - listen 80
+  - server_name {{ alertsraw_site }}
+  - return 301 https://$host$request_uri
+  alertsraw.infra.oom.ag_https:
+  - listen 443 ssl
+  - server_name {{ alertsraw_site }}
+  - gzip on
+  - gzip_types *
+  - ssl_certificate /etc/ssl_certs/{{ alertsraw_site }}/fullchain.pem
+  - ssl_certificate_key /etc/ssl_certs/{{ alertsraw_site }}/private.pem
+  - auth_request /ldap-auth
+  - |
+    location = /ldap-auth {
+    {{ nginx_ldap_auth_location }}
+      proxy_set_header X-Ldap-Template "(&(memberOf=cn=nginx.alertmanagers,ou=authgroups,dc=oom,dc=ag)(uid=%(username)s))";
+    }
+  - |
+    location / {
+      proxy_pass http://127.0.0.1:8880/api/v1/alerts;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+
+      proxy_set_header   Host              $host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_request_buffering    off;
+    }
+  grafana.infra.oom.ag_http:
+  - listen 80
+  - server_name {{ grafana_site }}
+  - return 301 https://$host$request_uri
+  grafana.infra.oom.ag_https:
+  - listen 443 ssl
+  - server_name {{ grafana_site }}
+  - gzip on
+  - gzip_types *
+  - ssl_certificate /etc/ssl_certs/{{ grafana_site }}/fullchain.pem
+  - ssl_certificate_key /etc/ssl_certs/{{ grafana_site }}/private.pem
+  - |
+    location / {
+      proxy_pass http://127.0.0.1:3000/;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+
+      proxy_set_header   Host              $host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_request_buffering    off;
+    }
+  local_site_https:
+  - listen 443 default_server
+  - server_name _
+  - ssl_certificate /etc/ssl_certs/site.local/fullchain.pem
+  - ssl_certificate_key /etc/ssl_certs/site.local/private.pem
+  - |
+    location / {
+      return 404;
+    }
+  - |
+    location /grafanahealth {
+      proxy_pass http://127.0.0.1:3000/login;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+      proxy_set_header   Host              $host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_request_buffering    off;
+    }
+  - |
+    location /vmalerthealth {
+      proxy_pass http://127.0.0.1:8880/health;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+      proxy_set_header   Host              $host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_request_buffering    off;
+    }
+  - |-
+    location /alertmanagerhealth {
+      proxy_pass http://127.0.0.1:9093/-/healthy;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+      proxy_set_header   Host              $host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_request_buffering    off;
+    }
+  vminsert.infra.oom.ag_http:
+  - listen 80
+  - server_name {{ vminsert_site }}
+  - return 301 https://$host$request_uri
+  vminsert.infra.oom.ag_https:
+  - listen 443 ssl
+  - server_name {{ vminsert_site }}
+  - gzip on
+  - gzip_types *
+  - ssl_certificate /etc/ssl_certs/{{ vminsert_site }}/fullchain.pem
+  - ssl_certificate_key /etc/ssl_certs/{{ vminsert_site }}/private.pem
+  - auth_basic "Restricted"
+  - auth_basic_user_file auth_basic/vminsert
+  - allow 3.29.139.43/32
+  - allow 3.28.187.7/32
+  - deny all
+  - |
+    location / {
+      proxy_pass http://127.0.0.1:8480/;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+
+      proxy_set_header   Host              $host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_request_buffering    off;
+    }

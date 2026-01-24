@@ -1,0 +1,23 @@
+---
+vminsert_web_host: vminsert.akh.oom.ag
+vminsert_container_name: vminsert
+vminsert_docker_network_name: prom_network
+vminsert_command:
+  - '--storageNode={{ vmstorage_container_name }}:8400'
+
+vminsert_stack_name: victoriametrics
+vminsert_swarm_cluster: true
+vm_swarm_manager: monitor.akh.oom.ag
+vminsert_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []
+  labels:
+    - "traefik.enable=true"
+    - "traefik.swarm.network={{ vminsert_docker_network_name }}"
+    - "traefik.http.routers.vminsert.rule=Host(`{{ vminsert_web_host }}`)"
+    - "traefik.http.routers.vminsert.middlewares=basic-auth@file"
+    - "traefik.http.routers.vminsert.tls=true"
+    - "traefik.http.routers.vminsert.tls.certResolver=acmeDNS"
+    - "traefik.http.services.vminsert.loadbalancer.server.port=8480"

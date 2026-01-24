@@ -1,6 +1,7 @@
 ---
-node_exporter_run_in_docker: false
-node_exporter_docker_networkname: prom_network
+node_exporter_run_in_docker: true
+node_exporter_version: '1.4.0'
+node_exporter_docker_network_name: prom_network
 node_exporter_container_name: node_exporter
-node_exporter_docker_image: "quay.io/prometheus/node-exporter:1.1.2"
 node_exporter_additional_cmd_args: "--collector.ntp"
+node_exporter_host_address: 10.10.10.1

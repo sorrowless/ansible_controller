@@ -1,0 +1,21 @@
+---
+vmagent_docker_network_name: prom_network
+vmagent_container_name: vmagent
+vmagent_docker_image: "victoriametrics/vmagent:v1.113.0"
+vmagent_ports: []
+
+vmagent_config_dir: /var/lib/vmagent
+vmagent_extra_hosts:
+- "{{ ansible_host }}:{{ ansible_ip }}"
+
+vmagent_additional_configs:
+  - "{{ sc_monitor_akh_oom_ag }}"
+
+vmagent_stack_name: victoriametrics
+vmagent_swarm_cluster: true
+vm_swarm_manager: monitor.akh.oom.ag
+vmagent_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []

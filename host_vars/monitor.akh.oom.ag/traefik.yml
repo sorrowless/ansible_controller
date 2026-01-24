@@ -1,0 +1,18 @@
+---
+traefik_environment_vars:
+  - CF_API_EMAIL=cf@oom.ag
+  - CF_DNS_API_TOKEN={{ vault_group_cf_oomag_token }}
+
+traefik_docker_tag: v3.6.6
+traefik_docker_network_name: 'prom_network'
+traefik_docker_networks:
+  prom_network:
+    name: "prom_network"
+    external: true
+traefik_swarm_cluster: true
+# traefik_swarm_manager value is inventory/hosts name, not actual DNS one
+traefik_swarm_manager: monitor.akh.oom.ag
+traefik_web_host: monitor.akh.oom.ag
+
+traefik_dynamic_confs:
+  global_basicauth.yml: "{{ vault_traefik_global_basicauth }}"

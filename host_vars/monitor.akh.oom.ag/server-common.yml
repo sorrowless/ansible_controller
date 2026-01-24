@@ -1,0 +1,4 @@
+---
+# Hosts name
+server_common_host:
+  dns_hostname: "monitor.akh.oom.ag"

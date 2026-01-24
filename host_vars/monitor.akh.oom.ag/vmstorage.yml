@@ -1,0 +1,17 @@
+---
+vmstorage_container_name: vmstorage
+vmstorage_docker_network_name: prom_network
+vmstorage_command:
+- '--storageDataPath=/storage'
+- '--retentionPeriod=5d'
+- '--dedup.minScrapeInterval=10s'
+
+vmstorage_ports: []
+vmstorage_stack_name: victoriametrics
+vmstorage_swarm_cluster: true
+vm_swarm_manager: monitor.akh.oom.ag
+vmstorage_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []

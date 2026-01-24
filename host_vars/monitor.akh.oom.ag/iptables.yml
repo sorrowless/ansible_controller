@@ -1,0 +1,8 @@
+---
+# Iptables rules
+iptables:
+  default_allowed_tcp_ports: [22, 909]
+  raw_rules:
+  - "-A INPUT -p tcp -m multiport --dports 80,443 -s 213.171.24.21/32 -j ACCEPT -m comment --comment 'BS-RU-01-XTLS-cloud'"
+  - "-A INPUT -p tcp -m multiport --dports 80,443 -s 107.173.111.72/32 -j ACCEPT -m comment --comment 'BS-US-03-XTLS-racknerd'"
+  - "-A INPUT -s 10.10.10.0/24 -j ACCEPT -m comment --comment 'docker-prom_network'"
