@@ -1,3 +1,18 @@
+[all]
+monitor.akh.oom.ag
+vpn-test-01.akh.oom.ag
+vpn-test-02.akh.oom.ag
+141.98.188.254 ansible_ip=141.98.188.254 ansible_domainname=141.98.188.254
+45.84.1.56 ansible_ip=45.84.1.56 ansible_domainname=45.84.1.56
+5.180.46.30 ansible_ip=5.180.46.30 ansible_domainname=5.180.46.30
+5.180.46.61 ansible_ip=5.180.46.61 ansible_domainname=5.180.46.61
+2.56.177.33 ansible_ip=2.56.177.33 ansible_domainname=2.56.177.33
+2.56.177.42 ansible_ip=2.56.177.42 ansible_domainname=2.56.177.42
+213.165.54.103 ansible_ip=213.165.54.103 ansible_domainname=213.165.54.103
+213.165.54.104 ansible_ip=213.165.54.104 ansible_domainname=213.165.54.104
+213.165.60.134 ansible_ip=213.165.60.134 ansible_domainname=213.165.60.134
+213.165.60.137 ansible_ip=213.165.60.137 ansible_domainname=213.165.60.137
+
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 
@@ -19,27 +34,48 @@ server_common
 [atop:children]
 server_common
 
-[docker_hosts]
-monitor.akh.oom.ag
-vpn-test-01.akh.oom.ag
-vpn-test-02.akh.oom.ag
+[apt_update:children]
+partial_monitoring_clients
 
 [monitoring_servers]
 monitor.akh.oom.ag
 vpn-test-01.akh.oom.ag
 vpn-test-02.akh.oom.ag
 
+[xray_monitoring_clients]
+vpn-test-01.akh.oom.ag
+vpn-test-02.akh.oom.ag
+
+[partial_monitoring_clients]
+141.98.188.254
+5.180.46.30
+5.180.46.61
+2.56.177.33
+2.56.177.42
+213.165.54.103
+213.165.54.104
+213.165.60.134
+213.165.60.137
+
+[monitoring_clients:children]
+xray_monitoring_clients
+partial_monitoring_clients
+
+[docker_hosts:children]
+monitoring_servers
+xray_monitoring_clients
+partial_monitoring_clients
+
 [grafana]
 monitor.akh.oom.ag
 
-[prometheus_node_exporters]
-monitor.akh.oom.ag
-vpn-test-01.akh.oom.ag
-vpn-test-02.akh.oom.ag
+[prometheus_node_exporters:children]
+monitoring_servers
+xray_monitoring_clients
+partial_monitoring_clients
 
-[prometheus_grok_exporters]
-vpn-test-01.akh.oom.ag
-vpn-test-02.akh.oom.ag
+[prometheus_grok_exporters:children]
+xray_monitoring_clients
 
 [traefik]
 monitor.akh.oom.ag

@@ -14,17 +14,3 @@ host_scrape_configs:
           targets:
             - '{{ node_exporter_host_address }}:9100'
     filename: '{{ ansible_domainname }}-node-exporter.yml'
-  - data:
-    - job_name: '{{ ansible_domainname }}-grok-exporter'
-      scheme: http
-      static_configs:
-        - labels:
-            dns_hostname: '{{ ansible_domainname }}'
-            domainname: '{{ ansible_domainname }}'
-            env: production
-            ipaddress: '{{ ansible_ip }}'
-            project: akh
-            scrape_type: grok_exporter
-          targets:
-            - '{{ grok_exporter_host_address }}:9144'
-    filename: '{{ ansible_domainname }}-grok-exporter.yml'

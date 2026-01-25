@@ -20,7 +20,7 @@
       apt:
         update_cache: yes
         force: yes
-        upgrade: no
+        upgrade: true
         cache_valid_time: 3600
       register: apt_update
       until: apt_update is not failed
