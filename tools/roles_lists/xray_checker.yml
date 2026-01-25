@@ -1,0 +1,4 @@
+---
+- src: https://github.com/sorrowless/ansible_xray_checker.git
+  version: master
+  name: sorrowless.xray_checker
