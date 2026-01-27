@@ -12,6 +12,7 @@ vpn-test-02.akh.oom.ag
 213.165.54.104 ansible_ip=213.165.54.104 ansible_domainname=213.165.54.104
 213.165.60.134 ansible_ip=213.165.60.134 ansible_domainname=213.165.60.134
 213.165.60.137 ansible_ip=213.165.60.137 ansible_domainname=213.165.60.137
+45.12.114.217 ansible_ip=45.12.114.217 ansible_domainname=45.12.114.217
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -56,6 +57,7 @@ vpn-test-02.akh.oom.ag
 213.165.54.104
 213.165.60.134
 213.165.60.137
+45.12.114.217
 
 [monitoring_clients:children]
 xray_monitoring_clients
