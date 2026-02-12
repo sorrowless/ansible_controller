@@ -1,15 +1,17 @@
 ---
 vmstorage_container_name: vmstorage
+vmstorage_docker_image: "victoriametrics/vmstorage:v1.113.0-cluster"
 vmstorage_docker_network_name: prom_network
 vmstorage_command:
-- '--storageDataPath=/storage'
-- '--retentionPeriod=5d'
-- '--dedup.minScrapeInterval=10s'
+- '-storageDataPath=/storage'
+- '-retentionPeriod=1d'
+- '-dedup.minScrapeInterval=30s'
+- '-search.maxUniqueTimeseries=5000000'
 
 vmstorage_ports: []
 vmstorage_stack_name: victoriametrics
 vmstorage_swarm_cluster: true
-vm_swarm_manager: monitor.akh.oom.ag
+vm_swarm_manager: monitor.openworld.bot
 vmstorage_swarm_deploy:
   mode: replicated
   replicas: 1

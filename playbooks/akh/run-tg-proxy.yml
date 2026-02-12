@@ -1,0 +1,17 @@
+#!/usr/bin/env -S ansible-playbook
+#
+---
+- name: Setup Docker
+  import_playbook: ../services/run-docker.yml
+  tags:
+    - docker
+
+- name: Setup Node Exporter
+  import_playbook: ../exporters/run-exporter-node.yml
+  tags:
+    - exporters
+
+- name: Setup VMagent
+  import_playbook: ../monitoring/run-vmagent.yml
+  tags:
+    - vmagent

@@ -5,7 +5,7 @@ xray_checker_configurations:
     envvars:
       SUBSCRIPTION_URL: "{{ vault_checker.nld }}"
     docker_network_name: 'prom_network'
-    swarm_manager_name: 'monitor.akh.oom.ag'
+    swarm_manager_name: 'monitor.openworld.bot'
     swarm_deploy:
       mode: replicated
       replicas: 1
@@ -16,7 +16,7 @@ xray_checker_configurations:
         # Change network name here accordingly
         - "traefik.swarm.network=prom_network"
         # Ensure proper host name here
-        - "traefik.http.routers.xray-checker-nld.rule=Host(`nld.checker.akh.oom.ag`)"
+        - "traefik.http.routers.xray-checker-nld.rule=Host(`nld.checker.openworld.bot`)"
         - "traefik.http.routers.xray-checker-nld.middlewares=basic-auth@file"
         - "traefik.http.routers.xray-checker-nld.tls=true"
         - "traefik.http.routers.xray-checker-nld.tls.certResolver=acmeDNS"
@@ -26,7 +26,7 @@ xray_checker_configurations:
     envvars:
       SUBSCRIPTION_URL: "{{ vault_checker.rus }}"
     docker_network_name: 'prom_network'
-    swarm_manager_name: 'monitor.akh.oom.ag'
+    swarm_manager_name: 'monitor.openworld.bot'
     swarm_deploy:
       mode: replicated
       replicas: 1
@@ -37,7 +37,7 @@ xray_checker_configurations:
         # Change network name here accordingly
         - "traefik.swarm.network=prom_network"
         # Ensure proper host name here
-        - "traefik.http.routers.xray-checker-rus.rule=Host(`rus.checker.akh.oom.ag`)"
+        - "traefik.http.routers.xray-checker-rus.rule=Host(`rus.checker.openworld.bot`)"
         - "traefik.http.routers.xray-checker-rus.middlewares=basic-auth@file"
         - "traefik.http.routers.xray-checker-rus.tls=true"
         - "traefik.http.routers.xray-checker-rus.tls.certResolver=acmeDNS"
@@ -47,7 +47,7 @@ xray_checker_configurations:
     envvars:
       SUBSCRIPTION_URL: "{{ vault_checker.eng }}"
     docker_network_name: 'prom_network'
-    swarm_manager_name: 'monitor.akh.oom.ag'
+    swarm_manager_name: 'monitor.openworld.bot'
     swarm_deploy:
       mode: replicated
       replicas: 1
@@ -58,7 +58,7 @@ xray_checker_configurations:
         # Change network name here accordingly
         - "traefik.swarm.network=prom_network"
         # Ensure proper host name here
-        - "traefik.http.routers.xray-checker-eng.rule=Host(`eng.checker.akh.oom.ag`)"
+        - "traefik.http.routers.xray-checker-eng.rule=Host(`eng.checker.openworld.bot`)"
         - "traefik.http.routers.xray-checker-eng.middlewares=basic-auth@file"
         - "traefik.http.routers.xray-checker-eng.tls=true"
         - "traefik.http.routers.xray-checker-eng.tls.certResolver=acmeDNS"
@@ -68,7 +68,7 @@ xray_checker_configurations:
     envvars:
       SUBSCRIPTION_URL: "{{ vault_checker.usa }}"
     docker_network_name: 'prom_network'
-    swarm_manager_name: 'monitor.akh.oom.ag'
+    swarm_manager_name: 'monitor.openworld.bot'
     swarm_deploy:
       mode: replicated
       replicas: 1
@@ -79,7 +79,7 @@ xray_checker_configurations:
         # Change network name here accordingly
         - "traefik.swarm.network=prom_network"
         # Ensure proper host name here
-        - "traefik.http.routers.xray-checker-usa.rule=Host(`usa.checker.akh.oom.ag`)"
+        - "traefik.http.routers.xray-checker-usa.rule=Host(`usa.checker.openworld.bot`)"
         - "traefik.http.routers.xray-checker-usa.middlewares=basic-auth@file"
         - "traefik.http.routers.xray-checker-usa.tls=true"
         - "traefik.http.routers.xray-checker-usa.tls.certResolver=acmeDNS"

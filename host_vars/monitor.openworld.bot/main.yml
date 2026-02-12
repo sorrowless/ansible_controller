@@ -1,0 +1,10 @@
+---
+metainfo:
+  placement: AKH
+  company: AKH
+ansible_ip: 45.12.114.217
+ansible_domainname: monitor.openworld.bot
+ansible_host: "{{ ansible_domainname }}"
+ansible_port: "{{ sshd_port }}"
+ansible_user: root
+ansible_become: true

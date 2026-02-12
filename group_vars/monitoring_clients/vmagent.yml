@@ -9,7 +9,7 @@ vmagent_extra_hosts:
 
 vmagent_swarm_cluster: false
 
-vmagent_remotewrite_address: "https://vminsert.akh.oom.ag"
+vmagent_remotewrite_address: "https://insert.openworld.bot"
 vmagent_log_level: INFO
 vmagent_command:
   - '-promscrape.config=/etc/prometheus/prometheus.yml'

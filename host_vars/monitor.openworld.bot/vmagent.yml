@@ -9,11 +9,11 @@ vmagent_extra_hosts:
 - "{{ ansible_host }}:{{ ansible_ip }}"
 
 vmagent_additional_configs:
-  - "{{ sc_monitor_akh_oom_ag }}"
+  - "{{ sc_monitor_openworld.bot }}"
 
 vmagent_stack_name: victoriametrics
 vmagent_swarm_cluster: true
-vm_swarm_manager: monitor.akh.oom.ag
+vm_swarm_manager: monitor.openworld.bot
 vmagent_swarm_deploy:
   mode: replicated
   replicas: 1

@@ -1,5 +1,5 @@
 ---
-vminsert_web_host: vminsert.akh.oom.ag
+vminsert_web_host: "{{ ansible_domainname }}"
 vminsert_container_name: vminsert
 vminsert_docker_network_name: prom_network
 vminsert_command:
@@ -7,7 +7,7 @@ vminsert_command:
 
 vminsert_stack_name: victoriametrics
 vminsert_swarm_cluster: true
-vm_swarm_manager: monitor.akh.oom.ag
+vm_swarm_manager: "{{ ansible_domainname }}"
 vminsert_swarm_deploy:
   mode: replicated
   replicas: 1

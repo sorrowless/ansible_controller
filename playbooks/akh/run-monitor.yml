@@ -1,0 +1,47 @@
+#!/usr/bin/env -S ansible-playbook
+#
+---
+- name: Setup common tasks
+  import_playbook: ../configuration/run-server-common.yml
+  tags:
+    - common
+
+- name: Setup Docker
+  import_playbook: ../services/run-docker.yml
+  tags:
+    - docker
+
+- name: Setup Traefik
+  import_playbook: ../services/run-traefik.yml
+  tags:
+    - traefik
+
+- name: Setup VM Storage
+  import_playbook: ../monitoring/run-vmstorage.yml
+  tags:
+    - vmstorage
+
+- name: Setup VM Select
+  import_playbook: ../monitoring/run-vmselect.yml
+  tags:
+    - vmselect
+
+- name: Setup VM Insert
+  import_playbook: ../monitoring/run-vminsert.yml
+  tags:
+    - vminsert
+
+- name: Setup VM Alert
+  import_playbook: ../monitoring/run-vmalert.yml
+  tags:
+    - vmalert
+
+- name: Setup VM Agent
+  import_playbook: ../monitoring/run-vmagent.yml
+  tags:
+    - vmagent
+
+- name: Setup Node Exporter
+  import_playbook: ../exporters/run-exporter-node.yml
+  tags:
+    - exporters

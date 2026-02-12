@@ -1,5 +1,5 @@
 ---
-sc_monitor_akh_oom_ag:
+sc_monitor_openworld.bot:
   - data:
     - job_name: '{{ ansible_domainname }}-node-exporter'
       scheme: https

@@ -1,5 +1,5 @@
 ---
-grafana_web_host: grafana.akh.oom.ag
+grafana_web_host: grafana.openworld.bot
 grafana:
   admin_user: admin
   admin_password: admin
@@ -12,14 +12,11 @@ grafana_datasources:
     access: proxy
     isDefault: true
 
-grafana_provisioning_dashboards:
-  - 'Overall hosts availability.json'
-  - 'Node Exporter for VictoriaMetrics Dashboard.json'
-  - 'Versions.json'
+grafana_provisioning_dashboards: []
 grafana_ports: []
 grafana_stack_name: victoriametrics
 grafana_swarm_cluster: true
-grafana_swarm_manager: monitor.akh.oom.ag
+grafana_swarm_manager: monitor.openworld.bot
 grafana_swarm_deploy:
   mode: replicated
   replicas: 1

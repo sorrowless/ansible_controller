@@ -1,7 +1,14 @@
 [all]
-monitor.akh.oom.ag
-vpn-test-01.akh.oom.ag
-vpn-test-02.akh.oom.ag
+monitor.openworld.bot
+rus01.vminsert.openworld.bot
+45.12.114.191 ansible_ip=45.12.114.191 ansible_domainname=45.12.114.191
+141.98.189.27 ansible_ip=141.98.189.27 ansible_domainname=141.98.189.27
+141.98.189.117 ansible_ip=141.98.189.117 ansible_domainname=141.98.189.117
+141.98.189.108 ansible_ip=141.98.189.108 ansible_domainname=141.98.189.108
+141.98.189.116 ansible_ip=141.98.189.116 ansible_domainname=141.98.189.116
+141.98.189.106 ansible_ip=141.98.189.106 ansible_domainname=141.98.189.106
+141.98.189.118 ansible_ip=141.98.189.118 ansible_domainname=141.98.189.118
+
 141.98.188.254 ansible_ip=141.98.188.254 ansible_domainname=141.98.188.254
 45.84.1.56 ansible_ip=45.84.1.56 ansible_domainname=45.84.1.56
 5.180.46.30 ansible_ip=5.180.46.30 ansible_domainname=5.180.46.30
@@ -12,13 +19,23 @@ vpn-test-02.akh.oom.ag
 213.165.54.104 ansible_ip=213.165.54.104 ansible_domainname=213.165.54.104
 213.165.60.134 ansible_ip=213.165.60.134 ansible_domainname=213.165.60.134
 213.165.60.137 ansible_ip=213.165.60.137 ansible_domainname=213.165.60.137
-45.12.114.217 ansible_ip=45.12.114.217 ansible_domainname=45.12.114.217
+45.144.30.69 ansible_ip=45.144.30.69 ansible_domainname=45.144.30.69
+
+141.98.190.36 ansible_ip=141.98.190.36 ansible_domainname=141.98.190.36
+141.98.190.33 ansible_ip=141.98.190.33 ansible_domainname=141.98.190.33
+141.98.190.34 ansible_ip=141.98.190.34 ansible_domainname=141.98.190.34
+141.98.190.35 ansible_ip=141.98.190.35 ansible_domainname=141.98.190.35
+141.98.190.37 ansible_ip=141.98.190.37 ansible_domainname=141.98.190.37
+185.179.189.143 ansible_ip=185.179.189.143 ansible_domainname=185.179.189.143
+185.179.190.65 ansible_ip=185.179.190.65 ansible_domainname=185.179.190.65
+185.179.190.78 ansible_ip=185.179.190.78 ansible_domainname=185.179.190.78
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 
 [server_common]
-monitor.akh.oom.ag
+monitor.openworld.bot
+rus01.vminsert.openworld.bot
 
 [iptables:children]
 server_common
@@ -36,51 +53,59 @@ server_common
 server_common
 
 [apt_update:children]
-partial_monitoring_clients
+tg_proxy_hosts
+tg_proxy_hosts_v2
 
 [monitoring_servers]
-monitor.akh.oom.ag
-vpn-test-01.akh.oom.ag
-vpn-test-02.akh.oom.ag
+monitor.openworld.bot
+rus01.vminsert.openworld.bot
 
 [xray_monitoring_clients]
-vpn-test-01.akh.oom.ag
-vpn-test-02.akh.oom.ag
 
-[partial_monitoring_clients]
-141.98.188.254
-5.180.46.30
-5.180.46.61
-2.56.177.33
-2.56.177.42
-213.165.54.103
-213.165.54.104
-213.165.60.134
-213.165.60.137
-45.12.114.217
+[tg_proxy_hosts]
+45.12.114.191
+141.98.189.27
+141.98.189.117
+141.98.189.108
+141.98.189.116
+141.98.189.106
+141.98.189.118
+
+[tg_proxy_hosts_v2]
+141.98.190.36
+141.98.190.33
+141.98.190.34
+141.98.190.35
+141.98.190.37
+185.179.189.143
+185.179.190.65
+185.179.190.78
 
 [monitoring_clients:children]
 xray_monitoring_clients
-partial_monitoring_clients
+tg_proxy_hosts
+tg_proxy_hosts_v2
 
 [docker_hosts:children]
 monitoring_servers
 xray_monitoring_clients
-partial_monitoring_clients
+tg_proxy_hosts
+tg_proxy_hosts_v2
 
 [grafana]
-monitor.akh.oom.ag
+monitor.openworld.bot
 
 [prometheus_node_exporters:children]
 monitoring_servers
 xray_monitoring_clients
-partial_monitoring_clients
+tg_proxy_hosts
+tg_proxy_hosts_v2
 
 [prometheus_grok_exporters:children]
 xray_monitoring_clients
 
-[traefik]
-monitor.akh.oom.ag
+[traefik:children]
+monitoring_servers
 
 [xray_checker_servers]
-monitor.akh.oom.ag
+monitor.openworld.bot

@@ -1,9 +1,9 @@
 ---
-main_site: monitor.akh.oom.ag
-grafana_site: grafana.akh.oom.ag
-alertmanager_site: alertmanager.akh.oom.ag
-alertsraw_site: alertsraw.akh.oom.ag
-vminsert_site: vminsert.akh.oom.ag
+main_site: monitor.openworld.bot
+grafana_site: grafana.openworld.bot
+alertmanager_site: alertmanager.openworld.bot
+alertsraw_site: alertsraw.openworld.bot
+vminsert_site: vminsert.openworld.bot
 
 # Nginx vars
 nginx_sites:
