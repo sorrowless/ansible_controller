@@ -16,7 +16,7 @@ vmstorage_ports:
     mode: host
 vmstorage_stack_name: victoriametrics
 vmstorage_swarm_cluster: true
-vmstorage_web_host: rus01.vmstorage.openworld.bot
+vmstorage_web_host: deu02.vmstorage.openworld.bot
 vm_swarm_manager: "{{ ansible_domainname }}"
 vmstorage_swarm_deploy:
   mode: replicated

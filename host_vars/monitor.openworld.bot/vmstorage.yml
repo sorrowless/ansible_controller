@@ -6,7 +6,7 @@ vmstorage_command:
 - '-storageDataPath=/storage'
 - '-retentionPeriod=1d'
 - '-dedup.minScrapeInterval=30s'
-- '-search.maxUniqueTimeseries=5000000'
+- '-search.maxUniqueTimeseries=15000000'
 
 vmstorage_ports: []
 vmstorage_stack_name: victoriametrics

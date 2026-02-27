@@ -1,0 +1,10 @@
+---
+metainfo:
+  placement: ENG, the hosting
+  company: AKH
+ansible_ip: 45.159.248.235
+ansible_domainname: eng01.vminsert.openworld.bot
+ansible_host: "{{ ansible_domainname }}"
+ansible_port: "{{ sshd_port }}"
+ansible_user: root
+ansible_become: true

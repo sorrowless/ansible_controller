@@ -1,16 +1,15 @@
 ---
-vminsert_web_host: insert.openworld.bot
-vminsert_web_host2: monitor.openworld.bot
+vminsert_web_host: "{{ ansible_domainname }}"
 vminsert_container_name: vminsert
 vminsert_docker_network_name: prom_network
 vminsert_docker_image: "victoriametrics/vminsert:v1.113.0-cluster"
 vminsert_command:
   - '--storageNode={{ vmstorage_container_name }}:8400'
-  - '-maxConcurrentInserts=96'
+  - '-maxConcurrentInserts=48'
 
 vminsert_stack_name: victoriametrics
 vminsert_swarm_cluster: true
-vm_swarm_manager: monitor.openworld.bot
+vm_swarm_manager: "{{ ansible_domainname }}"
 vminsert_swarm_deploy:
   mode: replicated
   replicas: 1
@@ -19,7 +18,7 @@ vminsert_swarm_deploy:
   labels:
     - "traefik.enable=true"
     - "traefik.swarm.network={{ vminsert_docker_network_name }}"
-    - "traefik.http.routers.vminsert.rule=Host(`{{ vminsert_web_host }}`) || Host(`{{ vminsert_web_host2 }}`)"
+    - "traefik.http.routers.vminsert.rule=Host(`{{ vminsert_web_host }}`)"
     - "traefik.http.routers.vminsert.middlewares=basic-auth@file"
     - "traefik.http.routers.vminsert.tls=true"
     - "traefik.http.routers.vminsert.tls.certResolver=acmeDNS"

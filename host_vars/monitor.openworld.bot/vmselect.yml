@@ -4,8 +4,15 @@ vmselect_docker_image: "victoriametrics/vmselect:v1.113.0-cluster"
 vmselect_docker_network_name: prom_network
 vmselect_command:
 - '-storageNode={{ vmstorage_container_name }}:8401'
-- '-search.maxSamplesPerSeries=1000000'
-- '-search.maxSeries=5000000'
+- '-storageNode=rus01.vmstorage.openworld.bot:8401'
+- '-storageNode=nld01.vmstorage.openworld.bot:8401'
+- '-storageNode=usa01.vmstorage.openworld.bot:8401'
+- '-storageNode=usa02.vmstorage.openworld.bot:8401'
+- '-storageNode=eng01.vmstorage.openworld.bot:8401'
+- '-storageNode=deu01.vmstorage.openworld.bot:8401'
+- '-storageNode=deu02.vmstorage.openworld.bot:8401'
+- '-search.maxSamplesPerSeries=3000000'
+- '-search.maxSeries=10000000'
 # High Availability
 # - '--storageNode={{ vmstorage_neighbor_node_01 }}:8401'
 # - '--replicationFactor=2'

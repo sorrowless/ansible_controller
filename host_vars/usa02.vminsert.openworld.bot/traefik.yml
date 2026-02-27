@@ -1,5 +1,6 @@
 ---
-traefik_environment_vars: "{{ vault_traefik_environment_vars }}"
+traefik_environment_vars:
+  - CF_DNS_API_TOKEN=IxhtY0R_SaUslq4fGrZ3oOtBFUOK2DMV3U_gAj9Z
 
 traefik_docker_tag: v3.6.6
 traefik_docker_network_name: 'prom_network'
