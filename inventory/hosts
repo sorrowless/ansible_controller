@@ -6,6 +6,11 @@ usa01.vminsert.openworld.bot
 usa02.vminsert.openworld.bot
 deu01.vminsert.openworld.bot
 deu02.vminsert.openworld.bot
+deu03.vminsert.openworld.bot
+deu04.vminsert.openworld.bot
+deu05.vminsert.openworld.bot
+deu06.vminsert.openworld.bot
+deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
 
 45.12.114.191 ansible_ip=45.12.114.191 ansible_domainname=45.12.114.191
@@ -54,6 +59,11 @@ usa01.vminsert.openworld.bot
 usa02.vminsert.openworld.bot
 deu01.vminsert.openworld.bot
 deu02.vminsert.openworld.bot
+deu03.vminsert.openworld.bot
+deu04.vminsert.openworld.bot
+deu05.vminsert.openworld.bot
+deu06.vminsert.openworld.bot
+deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
 
 [iptables:children]
@@ -83,6 +93,11 @@ usa01.vminsert.openworld.bot
 usa02.vminsert.openworld.bot
 deu01.vminsert.openworld.bot
 deu02.vminsert.openworld.bot
+deu03.vminsert.openworld.bot
+deu04.vminsert.openworld.bot
+deu05.vminsert.openworld.bot
+deu06.vminsert.openworld.bot
+deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
 
 [xray_monitoring_clients]
