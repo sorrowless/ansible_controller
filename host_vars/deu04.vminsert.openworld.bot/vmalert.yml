@@ -62,7 +62,7 @@ vmalert_additional_alerts:
               sum by (
                 domainname
               ) (
-                xray_access[5m]
+                xray_access[1m]
               )
             labels:
               aggregation: domains
@@ -72,7 +72,7 @@ vmalert_additional_alerts:
               sum by (
                 provider
               ) (
-                xray_access[5m]
+                xray_access[1m]
               )
             labels:
               aggregation: providers
@@ -82,7 +82,7 @@ vmalert_additional_alerts:
               sum by (
                 country
               ) (
-                xray_access[5m]
+                xray_access[1m]
               )
             labels:
               aggregation: countries
@@ -95,7 +95,7 @@ vmalert_additional_alerts:
                 ipaddress,
                 server_type
               ) (
-                xray_access[5m]
+                xray_access[1m]
               )
             labels:
               aggregation: common
@@ -109,7 +109,7 @@ vmalert_additional_alerts:
                 telegram_id,
                 host
               ) (
-                xray_access[5m]
+                xray_access[1m]
               )
             labels:
               aggregation: user_connections
