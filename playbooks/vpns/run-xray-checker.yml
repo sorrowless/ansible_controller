@@ -1,0 +1,15 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run xray-checker in swarm on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-xray-checker.yml
+
+---
+- name: Configure target servers
+  hosts: xray_checker_servers
+  become: yes
+  become_user: root
+  roles:
+    - sorrowless.xray_checker
+

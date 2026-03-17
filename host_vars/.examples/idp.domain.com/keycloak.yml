@@ -1,0 +1,30 @@
+---
+# we're using custom keycloak image due to using custom multifactor provider
+# doc: https://multifactor.ru/docs/keycloak-2fa26/
+keycloak_image: "registry.domain.com/library/keycloak-nalitek:26.3.1"
+keycloak_web_host: idp.domain.com
+keycloak_docker_network_name: keycloak_net
+keycloak_hostname: "https://{{ keycloak_web_host }}"
+keycloak_db_password: "{{ vault_keycloak_db_password }}"
+keycloak_bootstrap_admin_password: "{{ vault_bootstrap_admin_password }}"
+keycloak_db_url: "jdbc:postgresql://192.168.1.114:6432/keycloak"
+keycloak_command: "start"
+keycloak_swarm_deploy:
+  labels:
+    - "traefik.enable=true"
+    - "traefik.swarm.network={{ keycloak_docker_network_name }}"
+    - "traefik.http.services.keycloak.loadbalancer.server.port=8080"   # the port keycloak actually listen in its container
+    # Close all urls by default
+    - "traefik.http.routers.keycloak.tls=true"
+    - "traefik.http.routers.keycloak.tls.certResolver=acmeDNS"
+    - "traefik.http.routers.keycloak.rule=Host(`{{ keycloak_web_host }}`)"
+    - "traefik.http.routers.keycloak.priority=1"  # bigger number has higher priority
+    - "traefik.http.middlewares.keycloak.ipallowlist.sourcerange=127.0.0.1/32, 192.168.1.0/24"
+    - "traefik.http.routers.keycloak.middlewares=keycloak"
+    - "traefik.http.routers.keycloak.service=keycloak"
+    # Open some urls to allow IDP work correctly for external clients
+    - "traefik.http.routers.keycloak-public.tls=true"
+    - "traefik.http.routers.keycloak-public.tls.certResolver=acmeDNS"
+    - "traefik.http.routers.keycloak-public.rule=Host(`{{ keycloak_web_host }}`) && (PathPrefix(`/realms`) || PathPrefix(`/resources`))"
+    - "traefik.http.routers.keycloak-public.priority=2"  # bigger number has higher priority
+    - "traefik.http.routers.keycloak-public.service=keycloak"

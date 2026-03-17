@@ -1,0 +1,87 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run keycloak container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-keycloak.yml
+
+---
+- name: Configure target servers
+  hosts: keycloak
+  become: yes
+  become_user: root
+  tasks:
+    - name: Check if keycloak_swarm_deploy is not defined
+      ansible.builtin.fail:
+        msg: |
+          'keycloak_swarm_deploy' variable is not defined. For traefik it should look like:
+          keycloak_swarm_deploy:
+            labels:
+              - "traefik.enable=true"
+              - "traefik.docker.network=\{\{ traefik_docker_network_name }}"
+              - "traefik.http.routers.keycloak.rule=Host(`\{\{ keycloak_web_host }}`)"
+              - "traefik.http.routers.keycloak.tls=true"
+              - "traefik.http.routers.keycloak.tls.certResolver=acmeDNS"
+              - "traefik.http.services.keycloak.loadbalancer.server.port=2053"
+              #- "traefik.http.middlewares.ssl-headers.headers.sslProxyHeaders=true"
+      when:
+        - keycloak_swarm_deploy is not defined
+
+    - name: Check if keycloak hostname is defined
+      ansible.builtin.assert:
+        that: keycloak_hostname is defined
+        fail_msg: |
+          'keycloak_hostname' variable is not defined. Check the documentation and set it properly:
+          https://www.keycloak.org/server/hostname
+
+    - name: Check if keycloak db password is defined
+      ansible.builtin.assert:
+        that: keycloak_db_password is defined
+        fail_msg: |
+          'keycloak_db_password' variable is not defined. Check the documentation and set it properly:
+          https://www.keycloak.org/server/db#_configuring_a_database
+
+    - name: Check if keycloak db host is defined
+      ansible.builtin.assert:
+        that: keycloak_db_url is defined
+        fail_msg: |
+          'keycloak_db_url' variable is not defined. Check the documentation and set it properly:
+          https://www.keycloak.org/server/db#_configuring_a_database. Overall it should look like:
+          "jdbc:postgresql://keycloak-postgres:5432/keycloak".
+
+    - name: Ensure jsondiff package
+      ansible.builtin.package:
+        name: python3-jsondiff
+        state: present
+
+    - name: Setup keycloak
+      docker_stack:
+        state: present
+        name: keycloak
+        compose:
+          - version: "3.8"
+            services:
+              keycloak:
+                image: "{{ keycloak_image | default('quay.io/keycloak/keycloak:26.3.1') }}"
+                command: "{{ keycloak_command | default('start-dev') }}"
+                environment:
+                  KC_BOOTSTRAP_ADMIN_USERNAME: "{{ keycloak_bootstrap_admin_username | default('admin') }}"
+                  KC_BOOTSTRAP_ADMIN_PASSWORD: "{{ keycloak_bootstrap_admin_password | default('admin') }}"
+                  KC_PROXY_HEADERS: xforwarded
+                  KC_HOSTNAME: "{{ keycloak_hostname }}"
+                  KC_HTTP_ENABLED: "true"
+                  KC_DB: postgres
+                  KC_DB_USERNAME: keycloak
+                  KC_DB_PASSWORD: "{{ keycloak_db_password }}"
+                  KC_DB_URL: "{{ keycloak_db_url }}"
+                  JAVA_OPTS_APPEND: "-Djava.net.preferIPv4Stack=true"
+                #volumes:
+                #  - "{{ keycloak_conf_dir | default('/etc/keycloak') }}:/keycloak"
+                ports:
+                  - "{{ keycloak_listening_addr | default('8080') }}:8080"
+                networks:
+                  - keycloak_net
+                deploy: "{{ keycloak_swarm_deploy }}"
+            networks:
+              keycloak_net:
+                name: keycloak_net

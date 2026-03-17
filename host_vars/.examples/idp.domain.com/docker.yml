@@ -1,0 +1,15 @@
+---
+docker_version: ''
+docker_additional_networks:
+  - name: tf_net
+    bridge_name: tf_bridge
+    subnet: 10.210.0.0/16
+    gateway: 10.210.0.1
+    iprange: 10.210.128.0/17
+
+docker_live_restore: false
+docker_swarm_manager: true
+docker_swarm_configure: true
+
+docker_swarm_node_labels:
+  traefik: "yes"

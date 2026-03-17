@@ -1,0 +1,80 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run mattermost container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-mattermost.yml
+
+---
+- name: Configure target servers
+  hosts: mattermost
+  become: yes
+  become_user: root
+  tasks:
+    - name: Ensure mattermost data directories
+      ansible.builtin.file:
+        path: "{{ mattermost_data_path }}/{{ item }}"
+        state: directory
+        owner: "2000"
+        group: "2000"
+        mode: "0744"
+      loop:
+        - config
+        - data
+        - logs
+        - plugins
+        - client/plugins
+        - bleve-indexes
+
+    - name: Ensure pip installation
+      ansible.builtin.package:
+        name: "python3-pip"
+        state: present
+      when:
+        - ansible_distribution | lower == "ubuntu"
+        - ansible_distribution_major_version != "24"
+
+    - name: Install newer version of pip itself
+      ansible.builtin.pip:
+        name: "pip"
+        state: latest
+        executable: pip3
+      when:
+        - ansible_distribution | lower == "ubuntu"
+        - ansible_distribution_major_version != "24"
+
+    - name: Install jsondiff from pip
+      ansible.builtin.pip:
+        name: "jsondiff"
+        state: present
+        executable: pip3
+      when:
+        - ansible_distribution | lower == "ubuntu"
+        - ansible_distribution_major_version != "24"
+
+    - name: Ensure jsondiff
+      ansible.builtin.package:
+        name: "python3-jsondiff"
+        state: present
+      when:
+        - ansible_distribution | lower == "ubuntu"
+        - ansible_distribution_major_version == "24"
+
+    - name: Deploy mattermost container in swarm
+      community.docker.docker_stack:
+        state: present
+        name: mattermost
+        compose:
+          - services:
+              mattermost:
+                image: "{{ mattermost_image }}"
+                tmpfs:
+                  - /tmp
+                environment: "{{ mattermost_environment }}"
+                volumes: "{{ mattermost_volumes }}"
+                ports: "{{ mattermost_ports }}"
+                deploy: "{{ mattermost_swarm_deploy }}"
+            networks:
+              default:
+                name: "{{ mattermost_docker_network_name }}"
+                external: true

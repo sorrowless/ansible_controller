@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Ageres210784/ansible_smb.git
+  version: master
+  name: ageres210784.smb
