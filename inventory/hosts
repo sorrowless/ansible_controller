@@ -48,6 +48,12 @@ eng01.vminsert.openworld.bot
 141.98.190.185 ansible_ip=141.98.190.185 ansible_domainname=141.98.190.185
 141.98.190.186 ansible_ip=141.98.190.186 ansible_domainname=141.98.190.186
 
+141.98.190.165 ansible_ip=141.98.190.165 ansible_domainname=141.98.190.165
+141.98.190.156 ansible_ip=141.98.190.156 ansible_domainname=141.98.190.156
+141.98.190.164 ansible_ip=141.98.190.164 ansible_domainname=141.98.190.164
+141.98.190.153 ansible_ip=141.98.190.153 ansible_domainname=141.98.190.153
+141.98.190.162 ansible_ip=141.98.190.162 ansible_domainname=141.98.190.162
+
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 
@@ -126,6 +132,11 @@ eng01.vminsert.openworld.bot
 141.98.190.37
 141.98.190.185
 141.98.190.186
+141.98.190.165
+141.98.190.156
+141.98.190.164
+141.98.190.153
+141.98.190.162
 
 [monitoring_clients:children]
 xray_monitoring_clients

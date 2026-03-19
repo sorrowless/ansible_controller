@@ -84,3 +84,24 @@ xray_checker_configurations:
         - "traefik.http.routers.xray-checker-usa.tls=true"
         - "traefik.http.routers.xray-checker-usa.tls.certResolver=acmeDNS"
         - "traefik.http.services.xray-checker-usa.loadbalancer.server.port=2112"
+  - stack_name: 'xray-checker-deu'
+    image: "kutovoys/xray-checker:latest"
+    envvars:
+      SUBSCRIPTION_URL: "{{ vault_checker.deu }}"
+    docker_network_name: 'prom_network'
+    swarm_manager_name: 'monitor.openworld.bot'
+    swarm_deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: []
+      labels:
+        - "traefik.enable=true"
+        # Change network name here accordingly
+        - "traefik.swarm.network=prom_network"
+        # Ensure proper host name here
+        - "traefik.http.routers.xray-checker-deu.rule=Host(`deu.checker.openworld.bot`)"
+        - "traefik.http.routers.xray-checker-deu.middlewares=basic-auth@file"
+        - "traefik.http.routers.xray-checker-deu.tls=true"
+        - "traefik.http.routers.xray-checker-deu.tls.certResolver=acmeDNS"
+        - "traefik.http.services.xray-checker-deu.loadbalancer.server.port=2112"
