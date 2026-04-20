@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Xolog/vlselect.git
+  version: main
+  name: xolog.vlselect
