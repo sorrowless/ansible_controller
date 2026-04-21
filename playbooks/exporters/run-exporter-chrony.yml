@@ -1,0 +1,8 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+---
+- name: Setup Chrony Exporter
+  hosts: prometheus_chrony_exporters
+  become: yes
+  roles:
+    - { role: xolog.prometheus_chrony_exporter, tags: ["exporters", "chrony_exporter"] }

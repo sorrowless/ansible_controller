@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Xolog/vlinsert.git
+  version: main
+  name: xolog.vlinsert
