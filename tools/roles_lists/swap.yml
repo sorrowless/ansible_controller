@@ -1,0 +1,4 @@
+---
+- src: https://github.com/geerlingguy/ansible-role-swap.git
+  version: master
+  name: geerlingguy.swap
