@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Xolog/ansible_redash.git
+  version: main
+  name: xolog.redash

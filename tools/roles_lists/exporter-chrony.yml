@@ -1,0 +1,5 @@
+---
+- src: https://github.com/Xolog/ansible-apps_chrony_exporter.git
+  version: main
+  name: xolog.prometheus_chrony_exporter
+

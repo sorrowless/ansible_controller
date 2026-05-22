@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Xolog/vlstorage.git
+  version: main
+  name: xolog.vlstorage

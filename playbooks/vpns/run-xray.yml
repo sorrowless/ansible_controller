@@ -1,0 +1,149 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run xray container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-xray.yml
+
+---
+- name: Configure target servers
+  hosts: xray
+  become: yes
+  become_user: root
+  vars:
+    image_name: "{{ xray_image_name | default('ghcr.io/xtls/xray-core') }}:{{ xray_version | default('26.3.27') }}"
+    networks:
+      default:
+        name: "{{ xray_network_name | default('prom_network')}}"
+        external: True
+
+  tasks:
+    - name: Check xray configuration is defined
+      ansible.builtin.assert:
+        that:
+          - xray_conf is defined
+        fail_msg: "Variable 'xray_conf' is undefined!"
+
+    - name: Ensure xray config directory
+      ansible.builtin.file:
+        dest: "{{ xray_conf_dir | default('/etc/xray') }}"
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+      tags: test
+
+    - name: Ensure xray config file
+      ansible.builtin.copy:
+        dest: "{{ xray_conf_dir | default('/etc/xray') }}/config.yml"
+        content: "{{ xray_conf | to_nice_yaml(indent=2) }}"
+      register: confile
+      when:
+        - xray_swarm_deploy is not defined
+      tags: test
+
+    - name: Ensure xray networks
+      ansible.builtin.set_fact:
+        networks: "{{ xray_networks }}"
+      when:
+        - xray_networks is defined
+
+    - name: Start xray container
+      community.docker.docker_compose_v2:
+        state: present
+        project_name: xray
+        definition:
+          services:
+            xray:
+              image: "{{ image_name }}"
+              container_name: "{{ xray_container_name | default('xray') }}"
+              hostname: xray
+              volumes:
+                - "{{ xray_conf_dir | default('/etc/xray') }}/config.yml:/etc/xray/config.yml:ro"
+              restart: unless-stopped
+              ports: "{{ xray_ports | default([]) }}"
+              command: run -config /etc/xray/config.yml
+              networks: "{{ networks.keys() | list }}"
+          networks: "{{ networks }}"
+      when:
+        - xray_swarm_deploy is not defined
+
+    - name: Deploy xray service in swarm
+      when:
+        - xray_swarm_deploy is defined
+      block:
+        - name: Ensure pip installation
+          package:
+            name: "python3-pip"
+            state: present
+
+        - name: Install newer version of pip itself
+          pip:
+            name: "pip"
+            state: latest
+            executable: pip3
+          when:
+            - ansible_distribution == "ubuntu"
+            - ansible_distribution_major_version != 24
+
+        - name: Install jsondiff from pip
+          pip:
+            name: "jsondiff"
+            state: present
+            executable: pip3
+          when:
+            - ansible_distribution == "ubuntu"
+            - ansible_distribution_major_version != 24
+
+        - name: Ensure jsondiff
+          package:
+            name: "python3-jsondiff"
+            state: present
+          when:
+            - ansible_distribution == "ubuntu"
+            - ansible_distribution_major_version == 24
+
+        - name: Check if config-file has changes
+          community.docker.docker_config:
+            name: xray-config
+            data: "{{ xray_conf | to_nice_yaml(indent=2) }}"
+          check_mode: yes
+          register: config_changes
+          run_once: True
+
+        - name: Delete service
+          community.docker.docker_swarm_service:
+            state: absent
+            name: "{{ xray_container_name | default('xray') }}_xray"
+          run_once: True
+          when: config_changes.changed
+
+        - name: Update config
+          community.docker.docker_config:
+            name: xray-config
+            data: "{{ xray_conf | to_nice_yaml(indent=2) }}"
+            state: present
+          run_once: True
+          when: config_changes.changed
+
+        - name: Deploy xray container in swarm
+          community.docker.docker_stack:
+            state: present
+            name: "{{ xray_container_name | default('xray') }}"
+            with_registry_auth: True
+            compose:
+              - services:
+                  xray:
+                    image: "{{ image_name }}"
+                    configs:
+                      - source: xray-config
+                        target: "/etc/xray/config.yml"
+                    ports: "{{ xray_ports | default ([]) }}"
+                    command: run -config /etc/xray/config.yml
+                    deploy: "{{ xray_swarm_deploy }}"
+                    networks: "{{ networks.keys() | list }}"
+                configs:
+                  xray-config:
+                    external: True
+                networks: "{{ networks }}"
+          run_once: True
