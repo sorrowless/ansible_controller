@@ -24,9 +24,9 @@
               volumes:
                 - "/var/run/docker.sock:/var/run/docker.sock"
               environment:
-                - "TZ={{ swarm_cron_tag | default('Europe/Moscow') }}"
-                - "LOG_LEVEL={{ swarm_cron_tag | default('info') }}"
-                - "LOG_JSON={{ swarm_cron_tag | default('false') }}"
+                - "TZ={{ swarm_cron_tz | default('Europe/Moscow') }}"
+                - "LOG_LEVEL={{ swarm_cron_log_level | default('info') }}"
+                - "LOG_JSON={{ swarm_cron_log_json | default('false') }}"
               deploy:
                 placement:
                   constraints:
