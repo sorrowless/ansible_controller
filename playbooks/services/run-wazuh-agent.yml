@@ -1,0 +1,49 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run Wazuh Agent 
+# Run it like usual executable script:
+# > ./run-wazuh-agent.yml
+#
+# Required vars:
+# wazuh_agent_version: wazuh-agent_4.14.5-1_amd64.deb
+# wazuh_agent_manager_address: 127.0.0.1
+# wazuh_agent_group: default
+# wazuh_agent_name: agent
+#
+
+---
+- name: Deploy Wazuh Agent
+  hosts: wazuh_agent
+
+  tasks:
+  - name: Download wazuh agent
+    ansible.builtin.get_url:
+      url: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/{{ wazuh_agent_version }}"
+      dest: "/tmp/{{ wazuh_agent_version }}"
+      mode: "0644"
+
+  - name: Install wazuh agent
+    ansible.builtin.shell: >
+      WAZUH_MANAGER='{{ wazuh_agent_manager_address }}'
+      WAZUH_AGENT_GROUP='{{ wazuh_agent_group }}'
+      WAZUH_AGENT_NAME='{{ wazuh_agent_name }}'
+      dpkg -i /tmp/{{ wazuh_agent_version }}
+    args:
+      creates: /var/ossec/bin/wazuh-control
+
+  - name: Systemctl daemon reload
+    ansible.builtin.systemd:
+      daemon_reload: true
+
+  - name: Set Wazuh Manager addres in ossec.conf
+    ansible.builtin.replace:
+      path: /var/ossec/etc/ossec.conf
+      regexp: '<address>.*</address>'
+      replace: '<address>{{ wazuh_agent_manager_address }}</address>'
+      backup: true
+
+  - name: Start wazuh-agent systemd unit
+    ansible.builtin.systemd:
+      name: wazuh-agent
+      enabled: true
+      state: restarted
