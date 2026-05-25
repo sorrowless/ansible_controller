@@ -13,6 +13,17 @@ deu06.vminsert.openworld.bot
 deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
 
+62.84.115.240 ansible_ip=62.84.115.240 ansible_domainname=62.84.115.240
+62.84.126.185 ansible_ip=62.84.126.185 ansible_domainname=62.84.126.185
+130.193.39.5 ansible_ip=130.193.39.5 ansible_domainname=130.193.39.5
+89.169.135.209 ansible_ip=89.169.135.209 ansible_domainname=89.169.135.209
+158.160.48.76 ansible_ip=158.160.48.76 ansible_domainname=158.160.48.76
+89.169.148.48 ansible_ip=89.169.148.48 ansible_domainname=89.169.148.48
+62.84.114.7 ansible_ip=62.84.114.7 ansible_domainname=62.84.114.7
+178.154.254.218 ansible_ip=178.154.254.218 ansible_domainname=178.154.254.218
+178.154.228.31 ansible_ip=178.154.228.31 ansible_domainname=178.154.228.31
+89.169.134.11 ansible_ip=89.169.134.11 ansible_domainname=89.169.134.11
+
 45.12.114.191 ansible_ip=45.12.114.191 ansible_domainname=45.12.114.191
 141.98.189.27 ansible_ip=141.98.189.27 ansible_domainname=141.98.189.27
 141.98.189.117 ansible_ip=141.98.189.117 ansible_domainname=141.98.189.117
@@ -36,23 +47,172 @@ eng01.vminsert.openworld.bot
 141.98.190.188 ansible_ip=141.98.190.188 ansible_domainname=141.98.190.188
 141.98.190.189 ansible_ip=141.98.190.189 ansible_domainname=141.98.190.189
 
-141.98.190.36 ansible_ip=141.98.190.36 ansible_domainname=141.98.190.36
-141.98.190.33 ansible_ip=141.98.190.33 ansible_domainname=141.98.190.33
-141.98.190.34 ansible_ip=141.98.190.34 ansible_domainname=141.98.190.34
-141.98.190.35 ansible_ip=141.98.190.35 ansible_domainname=141.98.190.35
-141.98.190.37 ansible_ip=141.98.190.37 ansible_domainname=141.98.190.37
-185.179.189.143 ansible_ip=185.179.189.143 ansible_domainname=185.179.189.143
-185.179.190.65 ansible_ip=185.179.190.65 ansible_domainname=185.179.190.65
-185.179.190.78 ansible_ip=185.179.190.78 ansible_domainname=185.179.190.78
-141.98.190.37 ansible_ip=141.98.190.37 ansible_domainname=141.98.190.37
-141.98.190.185 ansible_ip=141.98.190.185 ansible_domainname=141.98.190.185
-141.98.190.186 ansible_ip=141.98.190.186 ansible_domainname=141.98.190.186
+141.98.190.36 ansible_ip=141.98.190.36 ansible_domainname=141.98.190.36 server_type=proxy_v2
+141.98.190.33 ansible_ip=141.98.190.33 ansible_domainname=141.98.190.33 server_type=proxy_v2
+141.98.190.34 ansible_ip=141.98.190.34 ansible_domainname=141.98.190.34 server_type=proxy_v2
+141.98.190.35 ansible_ip=141.98.190.35 ansible_domainname=141.98.190.35 server_type=proxy_v2
+141.98.190.37 ansible_ip=141.98.190.37 ansible_domainname=141.98.190.37 server_type=proxy_v2
+141.98.190.37 ansible_ip=141.98.190.37 ansible_domainname=141.98.190.37 server_type=proxy_v2
+141.98.190.185 ansible_ip=141.98.190.185 ansible_domainname=141.98.190.185 server_type=proxy_v2
+141.98.190.186 ansible_ip=141.98.190.186 ansible_domainname=141.98.190.186 server_type=proxy_v2
+141.98.190.165 ansible_ip=141.98.190.165 ansible_domainname=141.98.190.165 server_type=proxy_v2
+141.98.190.156 ansible_ip=141.98.190.156 ansible_domainname=141.98.190.156 server_type=proxy_v2
+141.98.190.164 ansible_ip=141.98.190.164 ansible_domainname=141.98.190.164 server_type=proxy_v2
+141.98.190.153 ansible_ip=141.98.190.153 ansible_domainname=141.98.190.153 server_type=proxy_v2
+141.98.190.162 ansible_ip=141.98.190.162 ansible_domainname=141.98.190.162 server_type=proxy_v2
+193.201.126.120 ansible_ip=193.201.126.120 ansible_domainname=193.201.126.120 server_type=proxy_v2
+193.201.126.122 ansible_ip=193.201.126.122 ansible_domainname=193.201.126.122 server_type=proxy_v2
+193.201.126.123 ansible_ip=193.201.126.123 ansible_domainname=193.201.126.123 server_type=proxy_v2
+193.201.126.130 ansible_ip=193.201.126.130 ansible_domainname=193.201.126.130 server_type=proxy_v2
+193.201.126.135 ansible_ip=193.201.126.135 ansible_domainname=193.201.126.135 server_type=proxy_v2
+193.201.126.136 ansible_ip=193.201.126.136 ansible_domainname=193.201.126.136 server_type=proxy_v2
+193.201.126.138 ansible_ip=193.201.126.138 ansible_domainname=193.201.126.138 server_type=proxy_v2
+193.201.126.141 ansible_ip=193.201.126.141 ansible_domainname=193.201.126.141 server_type=proxy_v2
+193.201.126.142 ansible_ip=193.201.126.142 ansible_domainname=193.201.126.142 server_type=proxy_v2
+94.131.113.164 ansible_ip=94.131.113.164 ansible_domainname=94.131.113.164 server_type=proxy_v2
 
-141.98.190.165 ansible_ip=141.98.190.165 ansible_domainname=141.98.190.165
-141.98.190.156 ansible_ip=141.98.190.156 ansible_domainname=141.98.190.156
-141.98.190.164 ansible_ip=141.98.190.164 ansible_domainname=141.98.190.164
-141.98.190.153 ansible_ip=141.98.190.153 ansible_domainname=141.98.190.153
-141.98.190.162 ansible_ip=141.98.190.162 ansible_domainname=141.98.190.162
+141.98.191.89 ansible_ip=141.98.191.89 ansible_domainname=141.98.191.89 server_type=proxy_per domainname=srv001 provider=UFO country=RUS
+141.98.191.91 ansible_ip=141.98.191.91 ansible_domainname=141.98.191.91 server_type=proxy_per domainname=srv003 provider=UFO country=RUS
+141.98.191.92 ansible_ip=141.98.191.92 ansible_domainname=141.98.191.92 server_type=proxy_per domainname=srv004 provider=UFO country=RUS
+141.98.191.93 ansible_ip=141.98.191.93 ansible_domainname=141.98.191.93 server_type=proxy_per domainname=srv005 provider=UFO country=RUS
+141.98.191.94 ansible_ip=141.98.191.94 ansible_domainname=141.98.191.94 server_type=proxy_per domainname=srv006 provider=UFO country=RUS
+141.98.191.95 ansible_ip=141.98.191.95 ansible_domainname=141.98.191.95 server_type=proxy_per domainname=srv007 provider=UFO country=RUS
+141.98.191.96 ansible_ip=141.98.191.96 ansible_domainname=141.98.191.96 server_type=proxy_per domainname=srv008 provider=UFO country=RUS
+141.98.191.97 ansible_ip=141.98.191.97 ansible_domainname=141.98.191.97 server_type=proxy_per domainname=srv009 provider=UFO country=RUS
+141.98.191.98 ansible_ip=141.98.191.98 ansible_domainname=141.98.191.98 server_type=proxy_per domainname=srv010 provider=UFO country=RUS
+94.131.111.32 ansible_ip=94.131.111.32 ansible_domainname=94.131.111.32 server_type=proxy_per domainname=srv011 provider=the.hosting country=DEU
+94.131.111.61 ansible_ip=94.131.111.61 ansible_domainname=94.131.111.61 server_type=proxy_per domainname=srv012 provider=the.hosting country=DEU
+94.131.111.44 ansible_ip=94.131.111.44 ansible_domainname=94.131.111.44 server_type=proxy_per domainname=srv013 provider=the.hosting country=DEU
+94.131.111.28 ansible_ip=94.131.111.28 ansible_domainname=94.131.111.28 server_type=proxy_per domainname=srv014 provider=the.hosting country=DEU
+94.131.111.45 ansible_ip=94.131.111.45 ansible_domainname=94.131.111.45 server_type=proxy_per domainname=srv015 provider=the.hosting country=DEU
+94.131.111.51 ansible_ip=94.131.111.51 ansible_domainname=94.131.111.51 server_type=proxy_per domainname=srv016 provider=the.hosting country=DEU
+94.131.111.38 ansible_ip=94.131.111.38 ansible_domainname=94.131.111.38 server_type=proxy_per domainname=srv017 provider=the.hosting country=DEU
+94.131.111.50 ansible_ip=94.131.111.50 ansible_domainname=94.131.111.50 server_type=proxy_per domainname=srv018 provider=the.hosting country=DEU
+94.131.111.63 ansible_ip=94.131.111.63 ansible_domainname=94.131.111.63 server_type=proxy_per domainname=srv019 provider=the.hosting country=DEU
+94.131.111.62 ansible_ip=94.131.111.62 ansible_domainname=94.131.111.62 server_type=proxy_per domainname=srv020 provider=the.hosting country=DEU
+185.235.242.181 ansible_ip=185.235.242.181 ansible_domainname=185.235.242.181 server_type=proxy_per domainname=srv021 provider=UFO country=RUS
+185.235.242.182 ansible_ip=185.235.242.182 ansible_domainname=185.235.242.182 server_type=proxy_per domainname=srv022 provider=UFO country=RUS
+185.235.242.184 ansible_ip=185.235.242.184 ansible_domainname=185.235.242.184 server_type=proxy_per domainname=srv023 provider=UFO country=RUS
+185.235.242.185 ansible_ip=185.235.242.185 ansible_domainname=185.235.242.185 server_type=proxy_per domainname=srv024 provider=UFO country=RUS
+103.113.68.147 ansible_ip=103.113.68.147 ansible_domainname=103.113.68.147 server_type=proxy_per domainname=srv026 provider=UFO country=RUS
+103.113.68.209 ansible_ip=103.113.68.209 ansible_domainname=103.113.68.209 server_type=proxy_per domainname=srv027 provider=UFO country=RUS
+94.131.121.250 ansible_ip=94.131.121.250 ansible_domainname=94.131.121.250 server_type=proxy_per domainname=srv028 provider=UFO country=RUS
+141.98.189.57 ansible_ip=141.98.189.57 ansible_domainname=141.98.189.57 server_type=proxy_per domainname=srv030 provider=UFO country=RUS
+171.22.120.100 ansible_ip=171.22.120.100 ansible_domainname=171.22.120.100 server_type=proxy_per domainname=srv031 provider=the.hosting country=DEU
+171.22.120.103 ansible_ip=171.22.120.103 ansible_domainname=171.22.120.103 server_type=proxy_per domainname=srv032 provider=the.hosting country=DEU
+185.235.241.119 ansible_ip=185.235.241.119 ansible_domainname=185.235.241.119 server_type=proxy_per domainname=srv033 provider=the.hosting country=DEU
+185.235.241.116 ansible_ip=185.235.241.116 ansible_domainname=185.235.241.116 server_type=proxy_per domainname=srv034 provider=the.hosting country=DEU
+185.235.241.122 ansible_ip=185.235.241.122 ansible_domainname=185.235.241.122 server_type=proxy_per domainname=srv035 provider=the.hosting country=DEU
+185.235.241.115 ansible_ip=185.235.241.115 ansible_domainname=185.235.241.115 server_type=proxy_per domainname=srv036 provider=the.hosting country=DEU
+185.235.241.121 ansible_ip=185.235.241.121 ansible_domainname=185.235.241.121 server_type=proxy_per domainname=srv037 provider=the.hosting country=DEU
+171.22.120.116 ansible_ip=171.22.120.116 ansible_domainname=171.22.120.116 server_type=proxy_per domainname=srv038 provider=the.hosting country=DEU
+185.235.241.117 ansible_ip=185.235.241.117 ansible_domainname=185.235.241.117 server_type=proxy_per domainname=srv039 provider=the.hosting country=DEU
+171.22.120.111 ansible_ip=171.22.120.111 ansible_domainname=171.22.120.111 server_type=proxy_per domainname=srv040 provider=the.hosting country=DEU
+185.235.241.126 ansible_ip=185.235.241.126 ansible_domainname=185.235.241.126 server_type=proxy_per domainname=srv041 provider=the.hosting country=DEU
+185.235.241.114 ansible_ip=185.235.241.114 ansible_domainname=185.235.241.114 server_type=proxy_per domainname=srv042 provider=the.hosting country=DEU
+185.235.241.124 ansible_ip=185.235.241.124 ansible_domainname=185.235.241.124 server_type=proxy_per domainname=srv043 provider=the.hosting country=DEU
+185.235.241.128 ansible_ip=185.235.241.128 ansible_domainname=185.235.241.128 server_type=proxy_per domainname=srv044 provider=the.hosting country=DEU
+171.22.120.119 ansible_ip=171.22.120.119 ansible_domainname=171.22.120.119 server_type=proxy_per domainname=srv045 provider=the.hosting country=DEU
+146.19.247.97 ansible_ip=146.19.247.97 ansible_domainname=146.19.247.97 server_type=proxy_per domainname=srv046 provider=the.hosting country=DEU
+185.235.241.129 ansible_ip=185.235.241.129 ansible_domainname=185.235.241.129 server_type=proxy_per domainname=srv047 provider=the.hosting country=DEU
+185.235.241.127 ansible_ip=185.235.241.127 ansible_domainname=185.235.241.127 server_type=proxy_per domainname=srv048 provider=the.hosting country=DEU
+185.235.241.130 ansible_ip=185.235.241.130 ansible_domainname=185.235.241.130 server_type=proxy_per domainname=srv049 provider=the.hosting country=DEU
+185.235.241.131 ansible_ip=185.235.241.131 ansible_domainname=185.235.241.131 server_type=proxy_per domainname=srv050 provider=the.hosting country=DEU
+185.235.241.146 ansible_ip=185.235.241.146 ansible_domainname=185.235.241.146 server_type=proxy_per domainname=srv051 provider=the.hosting country=DEU
+185.235.241.149 ansible_ip=185.235.241.149 ansible_domainname=185.235.241.149 server_type=proxy_per domainname=srv052 provider=the.hosting country=DEU
+185.235.241.144 ansible_ip=185.235.241.144 ansible_domainname=185.235.241.144 server_type=proxy_per domainname=srv053 provider=the.hosting country=DEU
+185.235.241.142 ansible_ip=185.235.241.142 ansible_domainname=185.235.241.142 server_type=proxy_per domainname=srv054 provider=the.hosting country=DEU
+185.235.241.145 ansible_ip=185.235.241.145 ansible_domainname=185.235.241.145 server_type=proxy_per domainname=srv055 provider=the.hosting country=DEU
+185.235.241.151 ansible_ip=185.235.241.151 ansible_domainname=185.235.241.151 server_type=proxy_per domainname=srv056 provider=the.hosting country=DEU
+185.235.241.147 ansible_ip=185.235.241.147 ansible_domainname=185.235.241.147 server_type=proxy_per domainname=srv057 provider=the.hosting country=DEU
+185.235.241.150 ansible_ip=185.235.241.150 ansible_domainname=185.235.241.150 server_type=proxy_per domainname=srv058 provider=the.hosting country=DEU
+185.235.241.153 ansible_ip=185.235.241.153 ansible_domainname=185.235.241.153 server_type=proxy_per domainname=srv059 provider=the.hosting country=DEU
+185.235.241.160 ansible_ip=185.235.241.160 ansible_domainname=185.235.241.160 server_type=proxy_per domainname=srv060 provider=the.hosting country=DEU
+185.235.241.152 ansible_ip=185.235.241.152 ansible_domainname=185.235.241.152 server_type=proxy_per domainname=srv061 provider=the.hosting country=DEU
+185.235.241.157 ansible_ip=185.235.241.157 ansible_domainname=185.235.241.157 server_type=proxy_per domainname=srv062 provider=the.hosting country=DEU
+185.235.241.159 ansible_ip=185.235.241.159 ansible_domainname=185.235.241.159 server_type=proxy_per domainname=srv063 provider=the.hosting country=DEU
+185.235.241.163 ansible_ip=185.235.241.163 ansible_domainname=185.235.241.163 server_type=proxy_per domainname=srv064 provider=the.hosting country=DEU
+185.235.241.156 ansible_ip=185.235.241.156 ansible_domainname=185.235.241.156 server_type=proxy_per domainname=srv065 provider=the.hosting country=DEU
+185.235.241.155 ansible_ip=185.235.241.155 ansible_domainname=185.235.241.155 server_type=proxy_per domainname=srv066 provider=the.hosting country=DEU
+185.235.241.154 ansible_ip=185.235.241.154 ansible_domainname=185.235.241.154 server_type=proxy_per domainname=srv067 provider=the.hosting country=DEU
+185.235.241.164 ansible_ip=185.235.241.164 ansible_domainname=185.235.241.164 server_type=proxy_per domainname=srv068 provider=the.hosting country=DEU
+185.235.241.162 ansible_ip=185.235.241.162 ansible_domainname=185.235.241.162 server_type=proxy_per domainname=srv069 provider=the.hosting country=DEU
+185.235.241.167 ansible_ip=185.235.241.167 ansible_domainname=185.235.241.167 server_type=proxy_per domainname=srv070 provider=the.hosting country=DEU
+185.235.241.168 ansible_ip=185.235.241.168 ansible_domainname=185.235.241.168 server_type=proxy_per domainname=srv071 provider=the.hosting country=DEU
+185.235.241.165 ansible_ip=185.235.241.165 ansible_domainname=185.235.241.165 server_type=proxy_per domainname=srv072 provider=the.hosting country=DEU
+185.235.241.166 ansible_ip=185.235.241.166 ansible_domainname=185.235.241.166 server_type=proxy_per domainname=srv073 provider=the.hosting country=DEU
+185.235.241.169 ansible_ip=185.235.241.169 ansible_domainname=185.235.241.169 server_type=proxy_per domainname=srv074 provider=the.hosting country=DEU
+185.235.241.170 ansible_ip=185.235.241.170 ansible_domainname=185.235.241.170 server_type=proxy_per domainname=srv075 provider=the.hosting country=DEU
+45.15.129.144 ansible_ip=45.15.129.144 ansible_domainname=45.15.129.144 server_type=proxy_per domainname=srv076 provider=GEO country=DEU
+45.15.129.146 ansible_ip=45.15.129.146 ansible_domainname=45.15.129.146 server_type=proxy_per domainname=srv077 provider=GEO country=DEU
+45.15.129.147 ansible_ip=45.15.129.147 ansible_domainname=45.15.129.147 server_type=proxy_per domainname=srv078 provider=GEO country=DEU
+45.15.129.149 ansible_ip=45.15.129.149 ansible_domainname=45.15.129.149 server_type=proxy_per domainname=srv079 provider=GEO country=DEU
+45.15.129.148 ansible_ip=45.15.129.148 ansible_domainname=45.15.129.148 server_type=proxy_per domainname=srv080 provider=GEO country=DEU
+45.15.129.152 ansible_ip=45.15.129.152 ansible_domainname=45.15.129.152 server_type=proxy_per domainname=srv081 provider=GEO country=DEU
+45.15.129.150 ansible_ip=45.15.129.150 ansible_domainname=45.15.129.150 server_type=proxy_per domainname=srv082 provider=GEO country=DEU
+45.15.129.153 ansible_ip=45.15.129.153 ansible_domainname=45.15.129.153 server_type=proxy_per domainname=srv083 provider=GEO country=DEU
+45.15.129.154 ansible_ip=45.15.129.154 ansible_domainname=45.15.129.154 server_type=proxy_per domainname=srv084 provider=GEO country=DEU
+45.15.129.151 ansible_ip=45.15.129.151 ansible_domainname=45.15.129.151 server_type=proxy_per domainname=srv085 provider=GEO country=DEU
+45.150.67.177 ansible_ip=45.150.67.177 ansible_domainname=45.150.67.177 server_type=proxy_per domainname=srv086 provider=the.hosting country=MLD
+45.150.67.175 ansible_ip=45.150.67.175 ansible_domainname=45.150.67.175 server_type=proxy_per domainname=srv087 provider=the.hosting country=MLD
+45.150.67.181 ansible_ip=45.150.67.181 ansible_domainname=45.150.67.181 server_type=proxy_per domainname=srv088 provider=the.hosting country=MLD
+45.150.67.176 ansible_ip=45.150.67.176 ansible_domainname=45.150.67.176 server_type=proxy_per domainname=srv089 provider=the.hosting country=MLD
+45.150.67.179 ansible_ip=45.150.67.179 ansible_domainname=45.150.67.179 server_type=proxy_per domainname=srv090 provider=the.hosting country=MLD
+45.150.67.178 ansible_ip=45.150.67.178 ansible_domainname=45.150.67.178 server_type=proxy_per domainname=srv091 provider=the.hosting country=MLD
+45.150.67.173 ansible_ip=45.150.67.173 ansible_domainname=45.150.67.173 server_type=proxy_per domainname=srv092 provider=the.hosting country=MLD
+45.150.67.174 ansible_ip=45.150.67.174 ansible_domainname=45.150.67.174 server_type=proxy_per domainname=srv093 provider=the.hosting country=MLD
+45.150.67.180 ansible_ip=45.150.67.180 ansible_domainname=45.150.67.180 server_type=proxy_per domainname=srv094 provider=the.hosting country=MLD
+45.150.67.171 ansible_ip=45.150.67.171 ansible_domainname=45.150.67.171 server_type=proxy_per domainname=srv095 provider=the.hosting country=MLD
+45.150.67.194 ansible_ip=45.150.67.194 ansible_domainname=45.150.67.194 server_type=proxy_per domainname=srv096 provider=the.hosting country=MLD
+45.150.67.187 ansible_ip=45.150.67.187 ansible_domainname=45.150.67.187 server_type=proxy_per domainname=srv097 provider=the.hosting country=MLD
+45.150.67.185 ansible_ip=45.150.67.185 ansible_domainname=45.150.67.185 server_type=proxy_per domainname=srv098 provider=the.hosting country=MLD
+45.150.67.184 ansible_ip=45.150.67.184 ansible_domainname=45.150.67.184 server_type=proxy_per domainname=srv099 provider=the.hosting country=MLD
+45.150.67.193 ansible_ip=45.150.67.193 ansible_domainname=45.150.67.193 server_type=proxy_per domainname=srv100 provider=the.hosting country=MLD
+45.150.67.195 ansible_ip=45.150.67.195 ansible_domainname=45.150.67.195 server_type=proxy_per domainname=srv101 provider=the.hosting country=MLD
+45.150.67.192 ansible_ip=45.150.67.192 ansible_domainname=45.150.67.192 server_type=proxy_per domainname=srv102 provider=the.hosting country=MLD
+45.150.67.191 ansible_ip=45.150.67.191 ansible_domainname=45.150.67.191 server_type=proxy_per domainname=srv103 provider=the.hosting country=MLD
+45.150.67.196 ansible_ip=45.150.67.196 ansible_domainname=45.150.67.196 server_type=proxy_per domainname=srv104 provider=the.hosting country=MLD
+45.150.67.189 ansible_ip=45.150.67.189 ansible_domainname=45.150.67.189 server_type=proxy_per domainname=srv105 provider=the.hosting country=MLD
+94.131.113.118 ansible_ip=94.131.113.118 ansible_domainname=94.131.113.118 server_type=proxy_per domainname=spare002 provider=UFO country=RUS
+94.131.113.93 ansible_ip=94.131.113.93 ansible_domainname=94.131.113.93 server_type=proxy_per domainname=spare003 provider=UFO country=RUS
+45.15.129.140 ansible_ip=45.15.129.140 ansible_domainname=45.15.129.140 server_type=proxy_per domainname=spare004 provider=GEO country=DEU
+
+45.150.67.202 ansible_ip=45.150.67.202 ansible_domainname=45.150.67.202 server_type=proxy_per domainname=srv106 provider=the.hosting country=MLD
+45.150.67.203 ansible_ip=45.150.67.203 ansible_domainname=45.150.67.203 server_type=proxy_per domainname=srv107 provider=the.hosting country=MLD
+45.150.67.210 ansible_ip=45.150.67.210 ansible_domainname=45.150.67.210 server_type=proxy_per domainname=srv108 provider=the.hosting country=MLD
+45.150.67.204 ansible_ip=45.150.67.204 ansible_domainname=45.150.67.204 server_type=proxy_per domainname=srv109 provider=the.hosting country=MLD
+45.150.67.207 ansible_ip=45.150.67.207 ansible_domainname=45.150.67.207 server_type=proxy_per domainname=srv110 provider=the.hosting country=MLD
+45.150.67.206 ansible_ip=45.150.67.206 ansible_domainname=45.150.67.206 server_type=proxy_per domainname=srv111 provider=the.hosting country=MLD
+45.140.146.27 ansible_ip=45.140.146.27 ansible_domainname=45.140.146.27 server_type=proxy_per domainname=srv112 provider=the.hosting country=MLD
+45.150.67.211 ansible_ip=45.150.67.211 ansible_domainname=45.150.67.211 server_type=proxy_per domainname=srv113 provider=the.hosting country=MLD
+45.84.0.184 ansible_ip=45.84.0.184 ansible_domainname=45.84.0.184 server_type=proxy_per domainname=srv114 provider=the.hosting country=MLD
+45.150.67.29 ansible_ip=45.150.67.29 ansible_domainname=45.150.67.29 server_type=proxy_per domainname=srv115 provider=the.hosting country=MLD
+45.150.67.208 ansible_ip=45.150.67.208 ansible_domainname=45.150.67.208 server_type=proxy_per domainname=srv116 provider=the.hosting country=MLD
+45.84.0.252 ansible_ip=45.84.0.252 ansible_domainname=45.84.0.252 server_type=proxy_per domainname=srv117 provider=the.hosting country=MLD
+45.150.67.205 ansible_ip=45.150.67.205 ansible_domainname=45.150.67.205 server_type=proxy_per domainname=srv118 provider=the.hosting country=MLD
+45.150.67.214 ansible_ip=45.150.67.214 ansible_domainname=45.150.67.214 server_type=proxy_per domainname=srv119 provider=the.hosting country=MLD
+45.150.67.215 ansible_ip=45.150.67.215 ansible_domainname=45.150.67.215 server_type=proxy_per domainname=srv120 provider=the.hosting country=MLD
+
+171.22.133.211 ansible_ip=171.22.133.211 server_type=proxy_v2 ansible_domainname=171.22.133.211 provider=GEO country=DEU
+171.22.133.212 ansible_ip=171.22.133.212 server_type=proxy_v2 ansible_domainname=171.22.133.212 provider=GEO country=DEU
+171.22.133.213 ansible_ip=171.22.133.213 server_type=proxy_v2 ansible_domainname=171.22.133.213 provider=GEO country=DEU
+171.22.133.214 ansible_ip=171.22.133.214 server_type=proxy_v2 ansible_domainname=171.22.133.214 provider=GEO country=DEU
+45.15.129.160 ansible_ip=45.15.129.160 server_type=proxy_v2 ansible_domainname=45.15.129.160 provider=GEO country=DEU
+45.15.129.161 ansible_ip=45.15.129.161 server_type=proxy_v2 ansible_domainname=45.15.129.161 provider=GEO country=DEU
+45.15.129.162 ansible_ip=45.15.129.162 server_type=proxy_v2 ansible_domainname=45.15.129.162 provider=GEO country=DEU
+45.15.129.163 ansible_ip=45.15.129.163 server_type=proxy_v2 ansible_domainname=45.15.129.163 provider=GEO country=DEU
+45.15.129.164 ansible_ip=45.15.129.164 server_type=proxy_v2 ansible_domainname=45.15.129.164 provider=GEO country=DEU
+45.15.129.165 ansible_ip=45.15.129.165 server_type=proxy_v2 ansible_domainname=45.15.129.165 provider=GEO country=DEU
+45.15.129.166 ansible_ip=45.15.129.166 server_type=proxy_v2 ansible_domainname=45.15.129.166 provider=GEO country=DEU
+45.15.129.167 ansible_ip=45.15.129.167 server_type=proxy_v2 ansible_domainname=45.15.129.167 provider=GEO country=DEU
+45.15.129.168 ansible_ip=45.15.129.168 server_type=proxy_v2 ansible_domainname=45.15.129.168 provider=GEO country=DEU
+45.15.129.169 ansible_ip=45.15.129.169 server_type=proxy_v2 ansible_domainname=45.15.129.169 provider=GEO country=DEU
+45.15.129.170 ansible_ip=45.15.129.170 server_type=proxy_v2 ansible_domainname=45.15.129.170 provider=GEO country=DEU
+45.15.129.171 ansible_ip=45.15.129.171 server_type=proxy_v2 ansible_domainname=45.15.129.171 provider=GEO country=DEU
+45.15.129.172 ansible_ip=45.15.129.172 server_type=proxy_v2 ansible_domainname=45.15.129.172 provider=GEO country=DEU
+45.15.129.173 ansible_ip=45.15.129.173 server_type=proxy_v2 ansible_domainname=45.15.129.173 provider=GEO country=DEU
+45.15.129.174 ansible_ip=45.15.129.174 server_type=proxy_v2 ansible_domainname=45.15.129.174 provider=GEO country=DEU
+
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -71,6 +231,9 @@ deu05.vminsert.openworld.bot
 deu06.vminsert.openworld.bot
 deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
+
+[server_common:children]
+sec_limits
 
 [iptables:children]
 server_common
@@ -108,6 +271,18 @@ eng01.vminsert.openworld.bot
 
 [xray_monitoring_clients]
 
+[sec_limits]
+62.84.115.240
+62.84.126.185
+130.193.39.5
+89.169.135.209
+158.160.48.76
+89.169.148.48
+62.84.114.7
+178.154.254.218
+178.154.228.31
+89.169.134.11
+
 [tg_proxy_hosts]
 45.12.114.191
 141.98.189.27
@@ -120,7 +295,7 @@ eng01.vminsert.openworld.bot
 141.98.190.188
 141.98.190.189
 
-[tg_proxy_hosts_v2]
+[proxy_part1]
 141.98.190.36
 141.98.190.33
 141.98.190.34
@@ -137,6 +312,176 @@ eng01.vminsert.openworld.bot
 141.98.190.164
 141.98.190.153
 141.98.190.162
+193.201.126.120
+193.201.126.122
+193.201.126.123
+193.201.126.130
+193.201.126.135
+193.201.126.136
+193.201.126.138
+193.201.126.141
+193.201.126.142
+94.131.113.164
+
+141.98.191.89
+141.98.191.91
+141.98.191.92
+141.98.191.93
+141.98.191.94
+141.98.191.95
+141.98.191.96
+141.98.191.97
+141.98.191.98
+94.131.111.32
+94.131.111.61
+94.131.111.44
+94.131.111.28
+94.131.111.45
+94.131.111.51
+94.131.111.38
+94.131.111.50
+94.131.111.63
+94.131.111.62
+185.235.242.181
+185.235.242.182
+185.235.242.184
+185.235.242.185
+103.113.68.147
+185.235.241.119
+185.235.241.116
+185.235.241.122
+185.235.241.115
+185.235.241.121
+171.22.120.116
+185.235.241.117
+171.22.120.111
+185.235.241.126
+185.235.241.114
+185.235.241.124
+185.235.241.128
+171.22.120.119
+146.19.247.97
+185.235.241.129
+185.235.241.127
+185.235.241.130
+185.235.241.131
+185.235.241.146
+185.235.241.149
+185.235.241.144
+185.235.241.142
+185.235.241.145
+185.235.241.151
+185.235.241.147
+185.235.241.150
+185.235.241.153
+185.235.241.160
+185.235.241.152
+185.235.241.157
+185.235.241.159
+185.235.241.163
+185.235.241.156
+185.235.241.155
+185.235.241.154
+185.235.241.164
+185.235.241.162
+185.235.241.167
+185.235.241.168
+185.235.241.165
+185.235.241.166
+185.235.241.169
+185.235.241.170
+45.15.129.144
+45.15.129.146
+45.15.129.147
+45.15.129.149
+45.15.129.148
+45.15.129.152
+45.15.129.150
+45.15.129.153
+45.15.129.154
+45.15.129.151
+45.150.67.177
+45.150.67.175
+45.150.67.181
+45.150.67.176
+45.150.67.179
+45.150.67.178
+45.150.67.173
+45.150.67.174
+45.150.67.180
+45.150.67.171
+45.150.67.194
+45.150.67.187
+45.150.67.185
+45.150.67.184
+45.150.67.193
+45.150.67.195
+45.150.67.192
+45.150.67.191
+45.150.67.196
+45.150.67.189
+94.131.113.118
+94.131.113.93
+45.15.129.140
+103.113.68.209
+94.131.121.250
+141.98.189.57
+171.22.120.100
+171.22.120.103
+
+[proxy_part2]
+45.150.67.202
+45.150.67.203
+45.150.67.210
+45.150.67.204
+45.150.67.207
+45.150.67.206
+45.140.146.27
+45.150.67.211
+45.84.0.184
+45.150.67.29
+45.150.67.208
+45.84.0.252
+45.150.67.205
+45.150.67.214
+45.150.67.215
+45.150.67.202
+45.150.67.203
+45.150.67.210
+45.150.67.204
+45.150.67.207
+45.150.67.206
+45.140.146.27
+45.150.67.211
+45.84.0.184
+45.150.67.29
+45.150.67.208
+45.84.0.252
+45.150.67.205
+45.150.67.214
+45.150.67.215
+
+[tg_proxy_hosts_v2]
+171.22.133.211
+171.22.133.212
+171.22.133.213
+171.22.133.214
+45.15.129.160
+45.15.129.161
+45.15.129.162
+45.15.129.163
+45.15.129.164
+45.15.129.165
+45.15.129.166
+45.15.129.167
+45.15.129.168
+45.15.129.169
+45.15.129.170
+45.15.129.171
+45.15.129.172
+45.15.129.173
+45.15.129.174
+
 
 [monitoring_clients:children]
 xray_monitoring_clients
