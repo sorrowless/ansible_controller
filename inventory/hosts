@@ -515,6 +515,6 @@ monitoring_servers
 monitor.openworld.bot
 
 [test_hosts]
-m9test-vm-024 ansible_ip=62.76.115.218 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no" ansible_password='_4Kgkwn4_=F)qfpv'
-m9test-vm-025 ansible_ip=62.76.115.219 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no" ansible_password='8ClxRL)xtEplo(%9'
-m9test-vm-026 ansible_ip=62.76.115.220 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no" ansible_password='*8V()Vd(TWhbGXMg'
+m9test-vm-024 ansible_ip=62.76.115.218 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no"
+m9test-vm-025 ansible_ip=62.76.115.219 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no"
+m9test-vm-026 ansible_ip=62.76.115.220 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no"
