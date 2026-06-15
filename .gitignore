@@ -8,3 +8,4 @@ host_vars/test_slave.yml
 library
 .vscode
 daemon/__pycache__
+logs/
