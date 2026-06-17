@@ -1,5 +1,4 @@
-sbog.controller
-===============
+# sbog.controller
 
 Base framework to create further Ansible deploys for organization. It's nothing
 more but just a carcass to further developing deployments.
@@ -36,6 +35,39 @@ and installed it locally and configures as default strategy. You can run it by
 ansible-playbook tools/switch-to-mitogen.yml
 ```
 
+#### Make / interactive deploys
+
+The root `Makefile` wraps common deploy targets. `make prepare` bootstraps the virtualenv and installs dependencies from `daemon/requirements.txt` (FastAPI, uvicorn, and related packages).
+
+Host-specific targets (`docker-services`, `traefik`) accept an optional `HOST` variable. When `HOST` is not set, `fzf` prompts for one or more hosts from top-level `host_vars/` directories (hidden dirs like `.examples` and `.DEPRECATED` are excluded).
+
+`fzf` is only required for interactive mode (`brew install fzf` on macOS).
+
+```bash
+# Start the Ansible provisioner API (Swagger UI at /docs)
+make daemon
+
+# Override bind address/port
+DAEMON_HOST=0.0.0.0 DAEMON_PORT=9000 make daemon
+
+# Interactive: pick host(s) with fzf (Tab to multi-select, Enter to confirm)
+make docker-services
+
+# Single host
+HOST=ru01.sbog.org make traefik
+
+# Multiple hosts (comma-separated, passed to ansible -l)
+HOST=ru01.sbog.org,us03.sbog.org make docker-services
+
+# Reuse HOST across commands in the same shell
+export HOST=router-pc.sbog.org
+make traefik
+```
+
+For a tabular list of hosts with IP and placement metadata, use `./tools/nodes_list.sh`.
+
+API details and `curl` examples for the provisioner daemon are in [`daemon/readme.md`](daemon/readme.md).
+
 #### Playbooks directory structure
 The directory has the following structure:
 - backups
@@ -49,7 +81,8 @@ The directory has the following structure:
 - vpns
 - full-files
 
-Playbooks in every directory run exactly one included role. But full-files includes entire run-files from subdirectories.
+Playbooks in every directory run exactly one included role. But full-files
+includes entire run-files from subdirectories.
 
 ```yaml
 # example run-bitwarden-full.yml
