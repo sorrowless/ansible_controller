@@ -13,6 +13,7 @@ deu06.vminsert.openworld.bot
 deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
 
+
 62.84.115.240 ansible_ip=62.84.115.240 ansible_domainname=62.84.115.240
 62.84.126.185 ansible_ip=62.84.126.185 ansible_domainname=62.84.126.185
 130.193.39.5 ansible_ip=130.193.39.5 ansible_domainname=130.193.39.5
@@ -231,6 +232,10 @@ deu05.vminsert.openworld.bot
 deu06.vminsert.openworld.bot
 deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
+m9test-hypervisor
+
+[docker_hosts]
+m9test-hypervisor
 
 [server_common:children]
 sec_limits
@@ -256,6 +261,7 @@ tg_proxy_hosts_v2
 
 [monitoring_servers]
 monitor.openworld.bot
+m9test-hypervisor
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -503,7 +509,11 @@ monitoring_servers
 xray_monitoring_clients
 tg_proxy_hosts
 tg_proxy_hosts_v2
+<<<<<<< configure/new-hypervisor
+docker_hosts
+=======
 test_hosts
+>>>>>>> master
 
 [prometheus_grok_exporters:children]
 xray_monitoring_clients

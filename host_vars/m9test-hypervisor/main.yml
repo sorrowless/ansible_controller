@@ -1,0 +1,11 @@
+---
+metainfo:
+  placement: AKH
+  company: AKH
+ansible_ip: 62.76.115.194
+ansible_domainname: m9test-hypervisor
+ansible_host: "{{ ansible_ip }}"
+ansible_port: "{{ sshd_port }}"
+ansible_user: root
+ansible_become: true
+ansible_ssh_common_args: '-o IdentitiesOnly=yes -o PubkeyAuthentication=no'
