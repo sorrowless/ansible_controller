@@ -1,0 +1,13 @@
+---
+docker_additional_networks:
+- name: prom_network
+  driver: bridge
+  bridge_name: prom_bridge
+  subnet: 10.10.11.0/24
+  gateway: 10.10.11.1
+  iprange: 10.10.11.128/25
+
+docker_live_restore: true
+docker_swarm_manager: false
+docker_swarm_configure: false
+docker_swarm_node_labels: {}

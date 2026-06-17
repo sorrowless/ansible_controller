@@ -1,0 +1,10 @@
+---
+metainfo:
+  placement: AKH
+  company: AKH
+ansible_ip: 94.131.122.240
+ansible_domainname: 94.131.122.240
+ansible_host: "{{ ansible_domainname }}"
+ansible_port: "{{ sshd_port }}"
+ansible_user: root
+ansible_become: true

@@ -2,20 +2,92 @@
 vmagent_docker_network_name: prom_network
 vmagent_container_name: vmagent
 vmagent_docker_image: "victoriametrics/vmagent:v1.113.0"
-vmagent_ports: []
 
 vmagent_config_dir: /var/lib/vmagent
-vmagent_extra_hosts:
-- "{{ ansible_host }}:{{ ansible_ip }}"
 
-vmagent_additional_configs:
-  - "{{ sc_monitor_openworld.bot }}"
+vmagent_remotewrite_address: "http://vminsert:8480"
+vmagent_log_level: INFO
+
+vmagent_command:
+  - '-promscrape.config=/etc/prometheus/prometheus.yml'
+  - '-remoteWrite.url={{ vmagent_remotewrite_address }}/insert/0/prometheus/'
+  - '-remoteWrite.basicAuth.username={{ vault_group_dsvmagent_command.basicauth.username }}'
+  - '-remoteWrite.basicAuth.password={{ vault_group_dsvmagent_command.basicauth.password }}'
+  - '-loggerLevel={{ vmagent_log_level }}'
+
+# Та самая рабочая конструкция для твоего шаблона
+prometheus_config:
+  global:
+    scrape_interval: 10s
+  scrape_configs:
+    - job_name: "vminsert"
+      static_configs:
+        - targets: ["vminsert:8480"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "vmselect"
+      static_configs:
+        - targets: ["vmselect:8481"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "vmstorage"
+      static_configs:
+        - targets: ["vmstorage:8482"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "vmagent"
+      static_configs:
+        - targets: ["vmagent:8429"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "vmalert"
+      static_configs:
+        - targets: ["vmalert:8880"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "alertmanager"
+      static_configs:
+        - targets: ["alertmanager:9093"]
+          labels:
+            project: akh
+            env: production
+            scrape_type: alertmanager
+            server_type: 'monitor'
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "{{ ansible_ip }}-node-exporter"
+      static_configs:
+        - targets: ['victoriametrics_node_exporter:9100']
+          labels:
+            dns_hostname: "{{ ansible_domainname }}"
+            domainname: "{{ ansible_domainname }}"
+            instance: "{{ ansible_ip }}"
+            env: production
+            ipaddress: "{{ ansible_ip }}"
+            project: akh
+            scrape_type: node_exporter
+            server_type: 'monitor'
 
 vmagent_stack_name: victoriametrics
 vmagent_swarm_cluster: true
-vm_swarm_manager: monitor.openworld.bot
+vm_swarm_manager: "monitor.openworld.bot"
 vmagent_swarm_deploy:
   mode: replicated
   replicas: 1
   placement:
-    constraints: []
+    constraints: [node.role == manager]

@@ -493,13 +493,14 @@ eng01.vminsert.openworld.bot
 xray_monitoring_clients
 tg_proxy_hosts
 tg_proxy_hosts_v2
+postgresql_servers
 
 [docker_hosts:children]
 monitoring_servers
 xray_monitoring_clients
 tg_proxy_hosts
 tg_proxy_hosts_v2
-test_hosts
+patroni_hosts
 
 [grafana]
 monitor.openworld.bot
@@ -509,11 +510,8 @@ monitoring_servers
 xray_monitoring_clients
 tg_proxy_hosts
 tg_proxy_hosts_v2
-<<<<<<< configure/new-hypervisor
+postgresql_servers
 docker_hosts
-=======
-test_hosts
->>>>>>> master
 
 [prometheus_grok_exporters:children]
 xray_monitoring_clients
@@ -524,7 +522,10 @@ monitoring_servers
 [xray_checker_servers]
 monitor.openworld.bot
 
-[test_hosts]
-m9test-vm-024 ansible_ip=62.76.115.218 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no"
-m9test-vm-025 ansible_ip=62.76.115.219 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no"
-m9test-vm-026 ansible_ip=62.76.115.220 ansible_ssh_common_args="-o PreferredAuthentications=password -o PubkeyAuthentication=no"
+[patroni_hosts]
+main-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+test-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+
+[postgresql_servers]
+main-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+test-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'

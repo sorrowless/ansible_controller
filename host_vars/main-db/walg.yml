@@ -1,0 +1,34 @@
+---
+walg_backup: yes
+walg_in_docker: false
+walg_version: v3.0.8
+walg_binary_name: "wal-g-pg-22.04-amd64"
+walg_container_name: "patroni"
+walg_dbs: pg
+walg_url: "/tmp/wal-g-pg-22.04-amd64.tar.gz"
+walg_config_path: "/var/lib/postgres_patroni" 
+walg_pgdata: "/var/lib/postgresql/postgresql/data"
+walg_binary: "docker exec -i {{ walg_container_name }} wal-g"
+
+walg_config:
+  WALG_S3_PREFIX: "s3://akh-main-db/backups/db-main"
+  AWS_ENDPOINT: "https://storage.yandexcloud.net"
+  AWS_REGION: "ru-central1"
+  AWS_ACCESS_KEY_ID: "{{ VAULT_WALG_AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "{{ VAULT_WALG_AWS_SECRET_ACCESS_KEY }}"
+  AWS_S3_FORCE_PATH_STYLE: "true"
+  
+  PGHOST: "/var/run/postgresql"
+  PGUSER: "postgres"
+  PGPASSWORD: "{{ PG_SUPERUSER_PASSWD }}"
+  PGDATA: "{{ walg_pgdata }}"
+  
+  WALG_COMPRESSION_METHOD: "brotli"
+  WALG_DELTA_MAX_STEPS: "6"
+
+postgresql_conf_change: no
+
+walg_cron_time:
+  minute: 0
+  hour: 1
+walg_delete_before_days: 7
