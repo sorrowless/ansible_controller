@@ -6,7 +6,7 @@ walg_binary_name: "wal-g-pg-22.04-amd64"
 walg_container_name: "patroni"
 walg_dbs: pg
 # walg_url: "/tmp/wal-g-pg-22.04-amd64.tar.gz"
-walg_config_path: "/var/lib/postgres_patroni" 
+walg_config_path: "/var/lib/postgres_patroni"
 walg_pgdata: "/var/lib/postgresql/postgresql/data"
 walg_binary: "docker exec -i {{ walg_container_name }} wal-g"
 
@@ -17,12 +17,12 @@ walg_config:
   AWS_ACCESS_KEY_ID: "{{ VAULT_WALG_AWS_ACCESS_KEY_ID }}"
   AWS_SECRET_ACCESS_KEY: "{{ VAULT_WALG_AWS_SECRET_ACCESS_KEY }}"
   AWS_S3_FORCE_PATH_STYLE: "true"
-  
+
   PGHOST: "/var/run/postgresql"
   PGUSER: "postgres"
   PGPASSWORD: "{{ PG_SUPERUSER_PASSWD }}"
   PGDATA: "{{ walg_pgdata }}"
-  
+
   WALG_COMPRESSION_METHOD: "brotli"
   WALG_DELTA_MAX_STEPS: "6"
 

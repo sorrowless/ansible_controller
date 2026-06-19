@@ -30,7 +30,7 @@ grok_exporter_configs:
           # 2026/01/07 00:02:01.598956 from 127.0.0.1:35626 accepted tcp:firebaselogging.googleapis.com:443 [block] email: 7495156806 91a437d6
           # 2026/01/07 00:02:02.037306 from 127.0.0.1:35648 accepted tcp:firebaselogging.googleapis.com:443 [block] email: 7495156806 91a437d6
           # base patterns: https://github.com/logstash-plugins/logstash-patterns-core/blob/main/patterns/ecs-v1/grok-patterns
-          #match: '%{XRAY_DATETIME} from %{IP:host}:%{NUMBER:port} accepted %{URIPROTO:protocol}:%{IPORHOST:domain}:%{POSINT} %{XRAY_TYPE:type} email: %{NUMBER:telegram_id}.*'
+          # match: '%{XRAY_DATETIME} from %{IP:host}:%{NUMBER:port} accepted %{URIPROTO:protocol}:%{IPORHOST:domain}:%{POSINT} %{XRAY_TYPE:type} email: %{NUMBER:telegram_id}.*'
           match: '%{XRAY_DATETIME} from %{IP:host}:%{NUMBER:port} accepted %{URIPROTO:protocol}:%{IPORHOST:domain}:%{POSINT} \[%{XRAY_TYPE:type} [>-]> %{WORD:action}\] email: %{NUMBER:telegram_id}.*'
           labels:
             host: !unsafe '{{.host}}'
