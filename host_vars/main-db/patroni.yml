@@ -17,7 +17,6 @@ patroni_docker_uid: 70
 
 postgres_config_dir: "/var/lib/postgresql/postgresql/data"
 postgres_data_dir: "/var/lib/postgresql/postgresql/data"
-postgres_user_uid: 108
 postgres_connect_port: 5433
 patroni_expose_ports:
   - "127.0.0.1:8008:8008"
