@@ -47,16 +47,25 @@ eng01.vminsert.openworld.bot
 141.98.190.188 ansible_ip=141.98.190.188 ansible_domainname=141.98.190.188
 141.98.190.189 ansible_ip=141.98.190.189 ansible_domainname=141.98.190.189
 
-# Платные прокси (m9test-vm-001 - m9test-vm-006)
-m9test-vm-001 ansible_ip=62.76.115.195 ansible_domainname=62.76.115.195 server_type=proxy domainname=m9test-vm-001 provider=ixcelerate country=RUS
-m9test-vm-002 ansible_ip=62.76.115.196 ansible_domainname=62.76.115.196 server_type=proxy domainname=m9test-vm-002 provider=ixcelerate country=RUS
-m9test-vm-003 ansible_ip=62.76.115.197 ansible_domainname=62.76.115.197 server_type=proxy domainname=m9test-vm-003 provider=ixcelerate country=RUS
-m9test-vm-004 ansible_ip=62.76.115.198 ansible_domainname=62.76.115.198 server_type=proxy domainname=m9test-vm-004 provider=ixcelerate country=RUS
-m9test-vm-005 ansible_ip=62.76.115.199 ansible_domainname=62.76.115.199 server_type=proxy domainname=m9test-vm-005 provider=ixcelerate country=RUS
-m9test-vm-006 ansible_ip=62.76.115.200 ansible_domainname=62.76.115.200 server_type=proxy domainname=m9test-vm-006 provider=ixcelerate country=RUS
-# Бесплатный рекламный прокси (m9test-vm-007)
-m9test-vm-007 ansible_ip=62.76.115.201 ansible_domainname=62.76.115.201 server_type=proxy domainname=m9test-vm-007 provider=ixcelerate country=RUS
+# Новые европейские прокси
+colo01 ansible_ip=45.137.215.133 ansible_domainname=colo01 server_type=proxy domainname=colo01 provider=ishosting country=NLD ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+colo02 ansible_ip=185.192.23.112 ansible_domainname=colo02 server_type=proxy domainname=colo02 provider=ishosting country=DEU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+colo03 ansible_ip=185.192.20.59 ansible_domainname=colo03 server_type=proxy domainname=colo03 provider=ishosting country=NLD ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+colo04 ansible_ip=62.197.45.90 ansible_domainname=colo04 server_type=proxy domainname=colo04 provider=ishosting country=NLD ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+colo05 ansible_ip=185.192.23.119 ansible_domainname=colo05 server_type=proxy domainname=colo05 provider=ishosting country=DEU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+colo06 ansible_ip=185.192.23.115 ansible_domainname=colo06 server_type=proxy domainname=colo06 provider=ishosting country=DEU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 
+# Финский бесплатный прокси
+free_proxy ansible_ip=92.63.224.67 ansible_domainname=free_proxy server_type=free_proxy domainname=free_proxy provider=ishosting country=FIN ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+
+# Продуктовые релеи (бывшие m9test-vm-001..007)
+free_relay ansible_ip=62.76.115.201 ansible_domainname=free_relay server_type=free_relay domainname=free_relay provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+relay006 ansible_ip=62.76.115.195 ansible_domainname=relay006 server_type=relay domainname=relay006 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+relay007 ansible_ip=62.76.115.196 ansible_domainname=relay007 server_type=relay domainname=relay007 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+relay008 ansible_ip=62.76.115.197 ansible_domainname=relay008 server_type=relay domainname=relay008 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+relay009 ansible_ip=62.76.115.198 ansible_domainname=relay009 server_type=relay domainname=relay009 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+relay010 ansible_ip=62.76.115.199 ansible_domainname=relay010 server_type=relay domainname=relay010 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+relay011 ansible_ip=62.76.115.200 ansible_domainname=relay011 server_type=relay domainname=relay011 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -82,6 +91,7 @@ m9test-hypervisor
 
 [server_common:children]
 sec_limits
+tg_proxy_hosts_v2
 
 [iptables:children]
 server_common
@@ -145,13 +155,20 @@ eng01.vminsert.openworld.bot
 141.98.190.189
 
 [tg_proxy_hosts_v2]
-m9test-vm-001
-m9test-vm-002
-m9test-vm-003
-m9test-vm-004
-m9test-vm-005
-m9test-vm-006
-m9test-vm-007
+colo01
+colo02
+colo03
+colo04
+colo05
+colo06
+free_proxy
+free_relay
+relay006
+relay007
+relay008
+relay009
+relay010
+relay011
 
 [monitoring_clients:children]
 xray_monitoring_clients
