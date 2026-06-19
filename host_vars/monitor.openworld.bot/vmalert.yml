@@ -26,4 +26,4 @@ vmalert_swarm_deploy:
     constraints: []
 
 vmalert_templates_include:
-  - node_exporter_cpu.yml
+- node_exporter_cpu.yml

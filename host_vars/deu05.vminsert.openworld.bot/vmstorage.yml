@@ -10,10 +10,10 @@ vmstorage_command:
 - '-search.maxConcurrentRequests=48'
 
 vmstorage_ports:
-  - target: 8401
-    published: 8401
-    protocol: tcp
-    mode: host
+- target: 8401
+  published: 8401
+  protocol: tcp
+  mode: host
 vmstorage_stack_name: victoriametrics
 vmstorage_swarm_cluster: true
 vmstorage_web_host: deu05.vmstorage.openworld.bot

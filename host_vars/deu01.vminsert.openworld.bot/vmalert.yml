@@ -54,63 +54,63 @@ vmalert_additional_alerts:
 - filename: _recordings.yml
   data:
     groups:
-      - name: xray_aggregated_rules
-        interval: 1m
-        rules:
-          - record: xray:domains:sum
-            expr: |
-              sum by (
-                domainname
-              ) (
-                xray_access[1m]
-              )
-            labels:
-              aggregation: domains
-              retention: "2d"
-          - record: xray:providers:sum
-            expr: |
-              sum by (
-                provider
-              ) (
-                xray_access[1m]
-              )
-            labels:
-              aggregation: providers
-              retention: "2d"
-          - record: xray:countries:sum
-            expr: |
-              sum by (
-                country
-              ) (
-                xray_access[1m]
-              )
-            labels:
-              aggregation: countries
-              retention: "2d"
-          - record: xray:aggregation:sum
-            expr: |
-              sum by (
-                country,
-                domainname,
-                ipaddress,
-                server_type
-              ) (
-                xray_access[1m]
-              )
-            labels:
-              aggregation: common
-              retention: "2d"
-          - record: xray:user_connections:sum
-            expr: |
-              sum by (
-                country,
-                domainname,
-                ipaddress,
-                telegram_id,
-                host
-              ) (
-                xray_access[1m]
-              )
-            labels:
-              aggregation: user_connections
-              retention: "2d"
+    - name: xray_aggregated_rules
+      interval: 1m
+      rules:
+        - record: xray:domains:sum
+          expr: |
+            sum by (
+              domainname
+            ) (
+              xray_access[1m]
+            )
+          labels:
+            aggregation: domains
+            retention: "2d"
+        - record: xray:providers:sum
+          expr: |
+            sum by (
+              provider
+            ) (
+              xray_access[1m]
+            )
+          labels:
+            aggregation: providers
+            retention: "2d"
+        - record: xray:countries:sum
+          expr: |
+            sum by (
+              country
+            ) (
+              xray_access[1m]
+            )
+          labels:
+            aggregation: countries
+            retention: "2d"
+        - record: xray:aggregation:sum
+          expr: |
+            sum by (
+              country,
+              domainname,
+              ipaddress,
+              server_type
+            ) (
+              xray_access[1m]
+            )
+          labels:
+            aggregation: common
+            retention: "2d"
+        - record: xray:user_connections:sum
+          expr: |
+            sum by (
+              country,
+              domainname,
+              ipaddress,
+              telegram_id,
+              host
+            ) (
+              xray_access[1m]
+            )
+          labels:
+            aggregation: user_connections
+            retention: "2d"

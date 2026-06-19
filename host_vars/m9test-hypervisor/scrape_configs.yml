@@ -1,17 +1,17 @@
 ---
 sc_monitor_openworld_bot:
   - data:
-    - job_name: 'm9test-hypervisor-node-exporter'
-      scheme: http
-      static_configs:
-        - labels:
-            dns_hostname: 'm9test-hypervisor'
-            domainname: 'm9test-hypervisor'
-            env: production
-            ipaddress: '62.76.115.194'
-            project: akh
-            scrape_type: node_exporter
-            server_type: hypervisor
-          targets:
-            - '62.76.115.194:9100'
+      - job_name: 'm9test-hypervisor-node-exporter'
+        scheme: http
+        static_configs:
+          - labels:
+              dns_hostname: 'm9test-hypervisor'
+              domainname: 'm9test-hypervisor'
+              env: production
+              ipaddress: '62.76.115.194'
+              project: akh
+              scrape_type: node_exporter
+              server_type: hypervisor
+            targets:
+              - '62.76.115.194:9100'
     filename: 'm9test-hypervisor-node-exporter.yml'
