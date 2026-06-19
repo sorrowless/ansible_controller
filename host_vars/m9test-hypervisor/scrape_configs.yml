@@ -1,5 +1,5 @@
 ---
-sc_monitor_openworld.bot:
+sc_monitor_openworld_bot:
   - data:
     - job_name: 'm9test-hypervisor-node-exporter'
       scheme: http

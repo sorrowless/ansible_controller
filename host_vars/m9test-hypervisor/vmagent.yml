@@ -10,7 +10,7 @@ vmagent_extra_hosts:
 - "{{ ansible_host }}:{{ ansible_ip }}"
 
 vmagent_additional_configs:
-  - "{{ vars['sc_monitor_openworld.bot'] }}"
+  - "{{ vars['sc_monitor_openworld_bot'] }}"
 vmagent_remotewrite_address: "https://insert.openworld.bot"
 vmagent_log_level: INFO
 vmagent_command:
