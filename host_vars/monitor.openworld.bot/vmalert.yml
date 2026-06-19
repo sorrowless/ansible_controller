@@ -5,16 +5,16 @@ vmalert_docker_network_name: prom_network
 vmalert_config_dir: /var/lib/vmalert
 vmalert_ports: []
 vmalert_command:
-# vmselect or balancer
-- '--datasource.url=http://{{ vmselect_container_name }}:8481/select/0/prometheus'
-- '--remoteRead.url=http://{{ vmselect_container_name }}:8481/select/0/prometheus'
-# vminsert or balancer
-- '--remoteWrite.url=http://{{ vminsert_container_name }}:8480/insert/0/prometheus'
-# alertmanager
-- '--notifier.url=http://{{ alertmanager_container_name }}:9093/'
-- '--rule=/etc/alerts/*.yml'
-# display source of alerts in grafana
-- '-external.url=http://{{ alertmanager_container_name }}:3000'   # grafana outside container
+  # vmselect or balancer
+  - '--datasource.url=http://{{ vmselect_container_name }}:8481/select/0/prometheus'
+  - '--remoteRead.url=http://{{ vmselect_container_name }}:8481/select/0/prometheus'
+  # vminsert or balancer
+  - '--remoteWrite.url=http://{{ vminsert_container_name }}:8480/insert/0/prometheus'
+  # alertmanager
+  - '--notifier.url=http://{{ alertmanager_container_name }}:9093/'
+  - '--rule=/etc/alerts/*.yml'
+  # display source of alerts in grafana
+  - '-external.url=http://{{ alertmanager_container_name }}:3000'   # grafana outside container
 
 vmalert_stack_name: victoriametrics
 vmalert_swarm_cluster: true
@@ -26,4 +26,4 @@ vmalert_swarm_deploy:
     constraints: []
 
 vmalert_templates_include:
-- node_exporter_cpu.yml
+  - node_exporter_cpu.yml

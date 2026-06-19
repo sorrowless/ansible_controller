@@ -1,5 +1,5 @@
 ---
-sc_monitor_openworld_bot:
+sc_monitor_openworld.bot:
   - data:
       - job_name: 'main-db-node-exporter'
         scheme: http
