@@ -1,0 +1,10 @@
+---
+# Iptables rules
+iptables:
+  default_allowed_tcp_ports: [22, 80, 443]  # Открываем порты для SSH и Traefik веб-интерфейсов
+  raw_rules:
+    # Разрешаем локальный трафик внутри docker prom_network
+    - "-A INPUT -s 10.10.10.0/24 -j ACCEPT -m comment --comment 'docker-prom_network'"
+    # Безопасность vmstorage: разрешаем доступ на порт 8401 ТОЛЬКО с центрального мониторинга
+    - "-A INPUT -p tcp --dport 8401 -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j ACCEPT -m comment --comment 'allow-central-monitor-to-vmstorage'"
+    - "-A INPUT -p tcp --dport 8401 -j DROP -m comment --comment 'drop-all-other-to-vmstorage'"
