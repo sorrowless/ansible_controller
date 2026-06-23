@@ -1,17 +1,2 @@
 ---
-sc_monitor_openworld_bot:
-  - data:
-      - job_name: 'eng02-node-exporter'
-        scheme: https
-        static_configs:
-          - labels:
-              dns_hostname: 'eng02.vminsert.openworld.bot'
-              domainname: 'eng02.vminsert.openworld.bot'
-              env: production
-              ipaddress: '194.150.166.100'
-              project: akh
-              scrape_type: node_exporter
-              server_type: monitor
-            targets:
-              - 'eng02.vminsert.openworld.bot:9100'
-    filename: 'eng02.vminsert.openworld.bot-node-exporter.yml'
+sc_monitor_openworld_bot: []

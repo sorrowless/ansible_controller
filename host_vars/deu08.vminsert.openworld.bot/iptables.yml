@@ -8,3 +8,5 @@ iptables:
     # Безопасность vmstorage: разрешаем доступ на порт 8401 ТОЛЬКО с центрального мониторинга
     - "-A INPUT -p tcp --dport 8401 -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j ACCEPT -m comment --comment 'allow-central-monitor-to-vmstorage'"
     - "-A INPUT -p tcp --dport 8401 -j DROP -m comment --comment 'drop-all-other-to-vmstorage'"
+    - "-A INPUT -p tcp --dport 8481 -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j ACCEPT -m comment --comment 'allow-central-monitor-to-vmselect'"
+    - "-A INPUT -p tcp --dport 8481 -j DROP -m comment --comment 'drop-all-other-to-vmselect'"

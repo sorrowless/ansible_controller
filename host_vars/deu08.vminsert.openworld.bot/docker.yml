@@ -11,4 +11,7 @@ docker_additional_networks:
 docker_live_restore: false
 docker_swarm_manager: true
 docker_swarm_configure: true
-docker_swarm_node_labels: {}
+
+# Автоматическая простановка Swarm-метки для vmagent
+docker_swarm_node_labels:
+  victoriametrics: "true"

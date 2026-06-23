@@ -6,10 +6,11 @@ vmagent_ports: []
 
 vmagent_config_dir: /var/lib/vmagent
 vmagent_extra_hosts:
-  - "{{ ansible_host }}:{{ ansible_ip }}"
+  - "{{ ansible_domainname }}:{{ ansible_ip }}"
 
-vmagent_additional_configs:
-  - "{{ sc_monitor_openworld_bot }}"
+# Инициализируем пустые списки для обхода бага роли в Swarm режиме
+vmagent_additional_configs: []
+list_of_filenames_to_add: []
 
 vmagent_remotewrite_address: "https://insert.openworld.bot"
 vmagent_log_level: INFO
@@ -20,9 +21,24 @@ vmagent_command:
   - '-remoteWrite.basicAuth.password={{ vault_group_dsvmagent_command.basicauth.password }}'
   - '-loggerLevel={{ vmagent_log_level }}'
 
+# Скрап-таргет node_exporter встроен напрямую в плоский Swarm Config
 prometheus_config:
   global:
     scrape_interval: 30s
+  scrape_configs:
+    - job_name: "deu08-node-exporter"
+      scheme: http
+      static_configs:
+        - labels:
+            dns_hostname: "deu08.vminsert.openworld.bot"
+            domainname: "deu08.vminsert.openworld.bot"
+            env: production
+            ipaddress: "93.152.217.218"
+            project: akh
+            scrape_type: node_exporter
+            server_type: monitor
+          targets:
+            - "93.152.217.218:9100"
 
 vmagent_relabel_configs:
   - source_labels: [__name__]
