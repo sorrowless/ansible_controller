@@ -1,0 +1,55 @@
+---
+vmagent_docker_network_name: prom_network
+vmagent_container_name: vmagent
+vmagent_docker_image: "victoriametrics/vmagent:v1.113.0"
+vmagent_ports: []
+
+vmagent_config_dir: /var/lib/vmagent
+vmagent_extra_hosts:
+  - "{{ ansible_domainname }}:{{ ansible_ip }}"
+
+vmagent_additional_configs: []
+list_of_filenames_to_add: []
+
+vmagent_remotewrite_address: "http://vminsert:8480"
+vmagent_log_level: ERROR
+vmagent_command:
+  - '-promscrape.config=/etc/prometheus/prometheus.yml'
+  - '-remoteWrite.url={{ vmagent_remotewrite_address }}/insert/0/prometheus/'
+  - '-loggerLevel={{ vmagent_log_level }}'
+
+prometheus_config:
+  global:
+    scrape_interval: 30s
+  scrape_configs:
+    - job_name: "eng02-node-exporter"
+      scheme: http
+      static_configs:
+        - labels:
+            dns_hostname: "eng02.vminsert.openworld.bot"
+            domainname: "eng02.vminsert.openworld.bot"
+            env: production
+            instance: "194.150.166.100:9100"
+            ipaddress: "194.150.166.100"
+            project: akh
+            scrape_type: node_exporter
+            server_type: monitor
+          targets:
+            - "victoriametrics_node_exporter:9100"
+
+vmagent_relabel_configs:
+  - source_labels: [__name__]
+    regex: 'xray:.*'
+    action: keep
+  - source_labels: [__name__]
+    regex: 'xray_access.*'
+    action: drop
+
+vmagent_stack_name: victoriametrics
+vmagent_swarm_cluster: true
+vm_swarm_manager: "{{ ansible_domainname }}"
+vmagent_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []

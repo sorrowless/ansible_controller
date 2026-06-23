@@ -1,0 +1,111 @@
+---
+vmalert_container_name: vmalert
+vmalert_docker_image: "victoriametrics/vmalert:v1.113.0"
+vmalert_docker_network_name: prom_network
+vmalert_config_dir: /var/lib/vmalert
+vmalert_ports: []
+alertmanager_container_name: alertmanager
+vmalert_command:
+  - '--datasource.url=http://{{ vmselect_container_name }}:8481/select/0/prometheus'
+  - '--remoteRead.url=http://{{ vmselect_container_name }}:8481/select/0/prometheus'
+  - '--remoteWrite.url=http://{{ vminsert_container_name }}:8480/insert/0/prometheus'
+  - '--notifier.url=http://{{ alertmanager_container_name }}:9093/'
+  - '--rule=/etc/alerts/*.yml'
+  - '-external.url=http://{{ alertmanager_container_name }}:3000'
+
+vmalert_stack_name: victoriametrics
+vmalert_swarm_cluster: true
+vm_swarm_manager: "{{ ansible_domainname }}"
+vmalert_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []
+
+vmalert_additional_alerts:
+  - filename: victoriametrics.yml
+    data:
+      groups:
+        - name: vmagent.rules
+          rules:
+            - alert: ScrapeTargetIsDown
+              expr: 'sum by (dns_hostname,env,domainname) (vm_promscrape_targets{status="down"}) > 0'
+              for: 5m
+              labels:
+                severity: critical
+              annotations:
+                summary: !unsafe "Scrape targets in the amount {{ $value }} on host {{ $labels.dns_hostname }} are down."
+                summary_resolved: !unsafe "{{ $labels.dns_hostname }} scrape targets are up."
+                description: !unsafe "Scrape targets in the amount {{ $value }} on host {{ $labels.dns_hostname }} are down."
+            - alert: ScrapeTargetIsUnavailable
+              expr: 'group by (dns_hostname,env,domainname,project,job) (up{} offset 24h unless on (instance) up{}) == 1'
+              for: 5m
+              labels:
+                severity: critical
+              annotations:
+                summary: !unsafe "Scrape target with job {{ $labels.job }} on host {{ $labels.dns_hostname }} is unavailable."
+                summary_resolved: !unsafe "{{ $labels.job }} scrape target is available."
+                description: !unsafe "Scrape target with job {{ $labels.job }} on host {{ $labels.dns_hostname }} is unavailable."
+  - filename: _recordings.yml
+    data:
+      groups:
+        - name: xray_aggregated_rules
+          interval: 1m
+          rules:
+            - record: xray:domains:sum
+              expr: |
+                sum by (
+                  domainname
+                ) (
+                  xray_access[1m]
+                )
+              labels:
+                aggregation: domains
+                retention: "2d"
+            - record: xray:providers:sum
+              expr: |
+                sum by (
+                  provider
+                ) (
+                  xray_access[1m]
+                )
+              labels:
+                aggregation: providers
+                retention: "2d"
+            - record: xray:countries:sum
+              expr: |
+                sum by (
+                  country
+                ) (
+                  xray_access[1m]
+                )
+              labels:
+                aggregation: countries
+                retention: "2d"
+            - record: xray:aggregation:sum
+              expr: |
+                sum by (
+                  country,
+                  domainname,
+                  ipaddress,
+                  server_type
+                ) (
+                  xray_access[1m]
+                )
+              labels:
+                aggregation: common
+                retention: "2d"
+            - record: xray:user_connections:sum
+              expr: |
+                sum by (
+                  country,
+                  domainname,
+                  ipaddress,
+                  telegram_id,
+                  host
+                ) (
+                  xray_access[1m]
+                )
+              labels:
+                aggregation: user_connections
+                retention: "2d"

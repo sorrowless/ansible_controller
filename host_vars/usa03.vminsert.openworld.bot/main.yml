@@ -1,0 +1,10 @@
+---
+metainfo:
+  placement: USA, regxa
+  company: AKH
+ansible_ip: 184.174.97.32
+ansible_domainname: usa03.vminsert.openworld.bot
+ansible_host: "{{ ansible_ip }}"
+ansible_port: "{{ sshd_port }}"
+ansible_user: root
+ansible_become: true
