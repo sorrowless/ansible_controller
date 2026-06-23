@@ -11,7 +11,7 @@ vmagent_extra_hosts:
 vmagent_additional_configs: []
 list_of_filenames_to_add: []
 
-vmagent_remotewrite_address: "http://victoriametrics_vminsert:8480"
+vmagent_remotewrite_address: "http://vminsert:8480"
 vmagent_log_level: ERROR
 vmagent_command:
   - '-promscrape.config=/etc/prometheus/prometheus.yml'
@@ -29,12 +29,13 @@ prometheus_config:
             dns_hostname: "deu13.vminsert.openworld.bot"
             domainname: "deu13.vminsert.openworld.bot"
             env: production
+            instance: "45.128.99.143:9100"
             ipaddress: "45.128.99.143"
             project: akh
             scrape_type: node_exporter
             server_type: monitor
           targets:
-            - "45.128.99.143:9100"
+            - "victoriametrics_node_exporter:9100"
 
 vmagent_relabel_configs:
   - source_labels: [__name__]

@@ -31,12 +31,13 @@ prometheus_config:
             dns_hostname: "deu08.vminsert.openworld.bot"
             domainname: "deu08.vminsert.openworld.bot"
             env: production
+            instance: "93.152.217.218:9100"
             ipaddress: "93.152.217.218"
             project: akh
             scrape_type: node_exporter
             server_type: monitor
           targets:
-            - "93.152.217.218:9100"
+            - "victoriametrics_node_exporter:9100"
 
 vmagent_relabel_configs:
   - source_labels: [__name__]

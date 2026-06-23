@@ -14,3 +14,6 @@ iptables:
     # Блокируем несанкционированный трафик в DOCKER-USER
     - "-A DOCKER-USER -p tcp --dport 8401 ! -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j DROP -m comment --comment 'block-unauthorized-to-vmstorage'"
     - "-A DOCKER-USER -p tcp --dport 8481 ! -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j DROP -m comment --comment 'block-unauthorized-to-vmselect'"
+
+    # Блокируем внешний трафик на порт node_exporter (9100) из внешнего мира
+    - "-A DOCKER-USER -p tcp --dport 9100 -j DROP -m comment --comment 'block-all-external-to-node-exporter'"
