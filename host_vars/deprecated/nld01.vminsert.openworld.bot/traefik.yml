@@ -9,12 +9,14 @@ traefik_docker_networks:
     name: "prom_network"
     external: true
 traefik_swarm_cluster: true
+# traefik_swarm_manager value is inventory/hosts name, not actual DNS one
 traefik_swarm_manager: "{{ ansible_domainname }}"
 traefik_web_host: "{{ ansible_ip }}"
 
 traefik_dynamic_confs:
   global_basicauth.yml: "{{ vault_traefik_global_basicauth }}"
 
+# Publish on host directly
 traefik_ports:
   - target: 80
     published: 80
