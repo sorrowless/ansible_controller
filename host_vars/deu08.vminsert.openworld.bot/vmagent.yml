@@ -8,20 +8,18 @@ vmagent_config_dir: /var/lib/vmagent
 vmagent_extra_hosts:
   - "{{ ansible_domainname }}:{{ ansible_ip }}"
 
-# Инициализируем пустые списки для обхода бага роли в Swarm режиме
+# Обходим баг роли в Swarm
 vmagent_additional_configs: []
 list_of_filenames_to_add: []
 
-vmagent_remotewrite_address: "https://insert.openworld.bot"
-vmagent_log_level: INFO
+# Отправляем метрики ЛОКАЛЬНО в Swarm-сервис vminsert на порт 8480
+vmagent_remotewrite_address: "http://victoriametrics_vminsert:8480"
+vmagent_log_level: ERROR
 vmagent_command:
   - '-promscrape.config=/etc/prometheus/prometheus.yml'
   - '-remoteWrite.url={{ vmagent_remotewrite_address }}/insert/0/prometheus/'
-  - '-remoteWrite.basicAuth.username={{ vault_group_dsvmagent_command.basicauth.username }}'
-  - '-remoteWrite.basicAuth.password={{ vault_group_dsvmagent_command.basicauth.password }}'
   - '-loggerLevel={{ vmagent_log_level }}'
 
-# Скрап-таргет node_exporter встроен напрямую в плоский Swarm Config
 prometheus_config:
   global:
     scrape_interval: 30s

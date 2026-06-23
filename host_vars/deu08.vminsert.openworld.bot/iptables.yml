@@ -5,8 +5,12 @@ iptables:
   raw_rules:
     # Разрешаем локальный трафик внутри docker prom_network
     - "-A INPUT -s 10.10.10.0/24 -j ACCEPT -m comment --comment 'docker-prom_network'"
-    # Безопасность vmstorage: разрешаем доступ на порт 8401 ТОЛЬКО с центрального мониторинга
-    - "-A INPUT -p tcp --dport 8401 -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j ACCEPT -m comment --comment 'allow-central-monitor-to-vmstorage'"
-    - "-A INPUT -p tcp --dport 8401 -j DROP -m comment --comment 'drop-all-other-to-vmstorage'"
-    - "-A INPUT -p tcp --dport 8481 -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j ACCEPT -m comment --comment 'allow-central-monitor-to-vmselect'"
-    - "-A INPUT -p tcp --dport 8481 -j DROP -m comment --comment 'drop-all-other-to-vmselect'"
+
+    # создаем цепочку DOCKER-USER, если генератор её стер
+    - "-N DOCKER-USER"
+    # Добавляем прыжок из FORWARD в DOCKER-USER на первую позицию
+    - "-I FORWARD 1 -j DOCKER-USER"
+    
+    # Блокируем несанкционированный трафик в DOCKER-USER
+    - "-A DOCKER-USER -p tcp --dport 8401 ! -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j DROP -m comment --comment 'block-unauthorized-to-vmstorage'"
+    - "-A DOCKER-USER -p tcp --dport 8481 ! -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j DROP -m comment --comment 'block-unauthorized-to-vmselect'"

@@ -5,7 +5,7 @@ node_exporter_host_address: 0.0.0.0
 node_exporter_container_name: "217.60.23.6"
 node_exporter_stack_name: victoriametrics
 node_exporter_swarm_cluster: true
-node_exporter_swarm_manager: "{{ ansible_domainname }}"
+node_exporter_swarm_manager: "nld02.vminsert.openworld.bot"
 node_exporter_swarm_deploy:
   mode: replicated
   replicas: 1
