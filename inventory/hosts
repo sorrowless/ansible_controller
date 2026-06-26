@@ -76,6 +76,36 @@ relay008 ansible_ip=62.76.115.197 ansible_domainname=relay008 server_type=relay 
 relay009 ansible_ip=62.76.115.198 ansible_domainname=relay009 server_type=relay domainname=relay009 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 relay010 ansible_ip=62.76.115.199 ansible_domainname=relay010 server_type=relay domainname=relay010 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 relay011 ansible_ip=62.76.115.200 ansible_domainname=relay011 server_type=relay domainname=relay011 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+relay012 server_type=WX domainname=relay012 provider=colocation country=RU
+relay013 server_type=WX domainname=relay013 provider=colocation country=RU
+relay014 server_type=WX domainname=relay014 provider=colocation country=RU
+relay015 server_type=WX domainname=relay015 provider=colocation country=RU
+relay016 server_type=WX domainname=relay016 provider=colocation country=RU
+relay017 server_type=WX domainname=relay017 provider=colocation country=RU
+relay018 server_type=WX domainname=relay018 provider=colocation country=RU
+relay019 server_type=WX domainname=relay019 provider=colocation country=RU
+relay020 server_type=WX domainname=relay020 provider=colocation country=RU
+relay021 server_type=WX domainname=relay021 provider=colocation country=RU
+relay022 server_type=WX domainname=relay022 provider=colocation country=RU
+relay023 server_type=WX domainname=relay023 provider=colocation country=RU
+relay024 server_type=WX domainname=relay024 provider=colocation country=RU
+relay025 server_type=WX domainname=relay025 provider=colocation country=RU
+relay026 server_type=WX domainname=relay026 provider=colocation country=RU
+relay027 server_type=WX domainname=relay027 provider=colocation country=RU
+relay028 server_type=WX domainname=relay028 provider=colocation country=RU
+relay029 server_type=WX domainname=relay029 provider=colocation country=RU
+relay030 server_type=WX domainname=relay030 provider=colocation country=RU
+relay031 server_type=WX domainname=relay031 provider=colocation country=RU
+relay032 server_type=WX domainname=relay032 provider=colocation country=RU
+relay033 server_type=WX domainname=relay033 provider=colocation country=RU
+relay034 server_type=WX domainname=relay034 provider=colocation country=RU
+relay035 server_type=WX domainname=relay035 provider=colocation country=RU
+relay036 server_type=WX domainname=relay036 provider=colocation country=RU
+relay037 server_type=WX domainname=relay037 provider=colocation country=RU
+relay038 server_type=WX domainname=relay038 provider=colocation country=RU
+relay039 server_type=WX domainname=relay039 provider=colocation country=RU
+relay040 server_type=WX domainname=relay040 provider=colocation country=RU
+relay041 server_type=WX domainname=relay041 provider=colocation country=RU
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -200,6 +230,36 @@ relay008
 relay009
 relay010
 relay011
+relay012
+relay013
+relay014
+relay015
+relay016
+relay017
+relay018
+relay019
+relay020
+relay021
+relay022
+relay023
+relay024
+relay025
+relay026
+relay027
+relay028
+relay029
+relay030
+relay031
+relay032
+relay033
+relay034
+relay035
+relay036
+relay037
+relay038
+relay039
+relay040
+relay041
 
 [monitoring_clients:children]
 xray_monitoring_clients
