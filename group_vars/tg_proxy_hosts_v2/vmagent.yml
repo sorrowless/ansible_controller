@@ -9,7 +9,7 @@ vmagent_config_dir: /var/lib/vmagent
 vmagent_extra_hosts:
   - "{{ ansible_domainname }}:{{ ansible_ip }}"
 
-vmagent_additional_configs: "{{ sc_monitor_openworld_bot }}"
+vmagent_additional_configs: "{{ host_scrape_configs }}"
 
 vmagent_remotewrite_address: "https://insert.openworld.bot"
 vmagent_log_level: ERROR
