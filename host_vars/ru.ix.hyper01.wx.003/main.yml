@@ -2,8 +2,8 @@
 metainfo:
   placement: AKH
   company: AKH
-ansible_ip: 62.76.115.199
-ansible_domainname: relay010
+ansible_ip: 62.76.115.197
+ansible_domainname: ru.ix.hyper01.wx.003
 ansible_host: "{{ ansible_ip }}"
 ansible_user: root
 ansible_become: true

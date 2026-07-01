@@ -11,7 +11,7 @@ sc_monitor_openworld_bot:
               ipaddress: "{{ ansible_ip }}"
               project: akh
               scrape_type: node_exporter
-              server_type: free_relay
+              server_type: ru.ix.hyper01.wx.007
               country: RU
               provider: colocation
             targets:
