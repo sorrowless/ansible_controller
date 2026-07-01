@@ -3,7 +3,7 @@ metainfo:
   placement: AKH
   company: AKH
 ansible_ip: 62.76.115.194
-ansible_domainname: m9test-hypervisor
+ansible_domainname: ru.ix.hyper01
 ansible_host: "{{ ansible_ip }}"
 ansible_port: "{{ sshd_port }}"
 ansible_user: root

@@ -1,4 +1,4 @@
 ---
 # Hosts name
 server_common_host:
-  dns_hostname: "m9test-hypervisor"
+  dns_hostname: "ru.ix.hyper01"

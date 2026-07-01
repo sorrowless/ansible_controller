@@ -1,12 +1,12 @@
 ---
 sc_monitor_openworld_bot:
   - data:
-      - job_name: 'm9test-hypervisor-node-exporter'
+      - job_name: 'ru.ix.hyper01-node-exporter'
         scheme: http
         static_configs:
           - labels:
-              dns_hostname: 'm9test-hypervisor'
-              domainname: 'm9test-hypervisor'
+              dns_hostname: 'ru.ix.hyper01'
+              domainname: 'ru.ix.hyper01'
               env: production
               ipaddress: '62.76.115.194'
               project: akh
@@ -14,4 +14,4 @@ sc_monitor_openworld_bot:
               server_type: hypervisor
             targets:
               - '62.76.115.194:9100'
-    filename: 'm9test-hypervisor-node-exporter.yml'
+    filename: 'ru.ix.hyper01-node-exporter.yml'
