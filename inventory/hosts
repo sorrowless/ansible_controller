@@ -302,3 +302,6 @@ test-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=p
 [postgresql_servers]
 main-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 test-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+
+[sysctl]
+ru.ix.hyper01
