@@ -1,5 +1,6 @@
 [all]
 monitor.openworld.bot
+ru.ix.hyper01 ansible_ip=62.76.115.194 server_type=hypervisor provider=colocation country=RU
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -69,13 +70,13 @@ colo06 ansible_ip=185.192.23.115 ansible_domainname=colo06 server_type=proxy dom
 free_proxy ansible_ip=92.63.224.67 ansible_domainname=free_proxy server_type=free_proxy domainname=free_proxy provider=ishosting country=FIN ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 
 # Продуктовые релеи (бывшие m9test-vm-001..007)
-ru.ix.hyper01.wx.007 ansible_ip=62.76.115.201 ansible_domainname=ru.ix.hyper01.wx.007 server_type=free_relay domainname=ru.ix.hyper01.wx.007 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-ru.ix.hyper01.wx.001 ansible_ip=62.76.115.195 ansible_domainname=ru.ix.hyper01.wx.001 server_type=relay domainname=ru.ix.hyper01.wx.001 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-ru.ix.hyper01.wx.002 ansible_ip=62.76.115.196 ansible_domainname=ru.ix.hyper01.wx.002 server_type=relay domainname=ru.ix.hyper01.wx.002 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-ru.ix.hyper01.wx.003 ansible_ip=62.76.115.197 ansible_domainname=ru.ix.hyper01.wx.003 server_type=relay domainname=ru.ix.hyper01.wx.003 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-ru.ix.hyper01.wx.004 ansible_ip=62.76.115.198 ansible_domainname=ru.ix.hyper01.wx.004 server_type=relay domainname=ru.ix.hyper01.wx.004 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-ru.ix.hyper01.wx.005 ansible_ip=62.76.115.199 ansible_domainname=ru.ix.hyper01.wx.005 server_type=relay domainname=ru.ix.hyper01.wx.005 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-ru.ix.hyper01.wx.006 ansible_ip=62.76.115.200 ansible_domainname=ru.ix.hyper01.wx.006 server_type=relay domainname=ru.ix.hyper01.wx.006 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+ru.ix.hyper01.wx.007 ansible_ip=62.76.115.201 server_type=free_relay provider=colocation country=RU
+ru.ix.hyper01.wx.001 ansible_ip=62.76.115.195 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.002 ansible_ip=62.76.115.196 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.003 ansible_ip=62.76.115.197 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.004 ansible_ip=62.76.115.198 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.005 ansible_ip=62.76.115.199 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.006 ansible_ip=62.76.115.200 server_type=relay provider=colocation country=RU
 ru.ix.hyper01.wx.008 ansible_ip=62.76.115.202 server_type=WX provider=colocation country=RU
 ru.ix.hyper01.wx.009 ansible_ip=62.76.115.203 server_type=WX provider=colocation country=RU
 ru.ix.hyper01.wx.010 ansible_ip=62.76.115.204 server_type=WX provider=colocation country=RU
