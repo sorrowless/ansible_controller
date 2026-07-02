@@ -1,12 +1,12 @@
 ---
 sc_monitor_openworld_bot:
   - data:
-      - job_name: 'ix-hyper-02-node-exporter'
+      - job_name: 'ru.ix.hyper02-node-exporter'
         scheme: http
         static_configs:
           - labels:
-              dns_hostname: 'ix-hyper-02'
-              domainname: 'ix-hyper-02'
+              dns_hostname: 'ru.ix.hyper02'
+              domainname: 'ru.ix.hyper02'
               env: production
               ipaddress: '185.16.213.62'
               project: akh
@@ -14,4 +14,4 @@ sc_monitor_openworld_bot:
               server_type: hypervisor
             targets:
               - '185.16.213.62:9100'
-    filename: 'ix-hyper-02-node-exporter.yml'
+    filename: 'ru.ix.hyper02-node-exporter.yml'
