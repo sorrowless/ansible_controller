@@ -10,7 +10,7 @@ traefik_docker_networks:
     external: true
 traefik_swarm_cluster: true
 traefik_swarm_manager: "{{ ansible_domainname }}"
-traefik_web_host: "{{ ansible_ip }}"
+traefik_web_host: "{{ ansible_domainname }}"
 
 traefik_dynamic_confs:
   global_basicauth.yml: "{{ vault_traefik_global_basicauth }}"
