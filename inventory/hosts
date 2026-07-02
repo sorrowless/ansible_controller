@@ -178,7 +178,7 @@ deu06.vminsert.openworld.bot
 deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
 ru.ix.hyper01
-ix-hyper-02
+ru.ix.hyper02
 deu08.vminsert.openworld.bot
 deu09.vminsert.openworld.bot
 deu10.vminsert.openworld.bot
@@ -191,7 +191,7 @@ usa03.vminsert.openworld.bot
 
 [docker_hosts]
 m9test-hypervisor
-ix-hyper-02
+ru.ix.hyper02
 
 [server_common:children]
 sec_limits
@@ -219,7 +219,7 @@ tg_proxy_hosts_v2
 [monitoring_servers]
 monitor.openworld.bot
 ru.ix.hyper01
-ix-hyper-02
+ru.ix.hyper02
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
