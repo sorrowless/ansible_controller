@@ -1,5 +1,6 @@
 [all]
 monitor.openworld.bot
+ru.ix.hyper01 ansible_ip=62.76.115.194 server_type=hypervisor provider=colocation country=RU
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -69,43 +70,95 @@ colo06 ansible_ip=185.192.23.115 ansible_domainname=colo06 server_type=proxy dom
 free_proxy ansible_ip=92.63.224.67 ansible_domainname=free_proxy server_type=free_proxy domainname=free_proxy provider=ishosting country=FIN ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 
 # Продуктовые релеи (бывшие m9test-vm-001..007)
-free_relay ansible_ip=62.76.115.201 ansible_domainname=free_relay server_type=free_relay domainname=free_relay provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-relay006 ansible_ip=62.76.115.195 ansible_domainname=relay006 server_type=relay domainname=relay006 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-relay007 ansible_ip=62.76.115.196 ansible_domainname=relay007 server_type=relay domainname=relay007 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-relay008 ansible_ip=62.76.115.197 ansible_domainname=relay008 server_type=relay domainname=relay008 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-relay009 ansible_ip=62.76.115.198 ansible_domainname=relay009 server_type=relay domainname=relay009 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-relay010 ansible_ip=62.76.115.199 ansible_domainname=relay010 server_type=relay domainname=relay010 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-relay011 ansible_ip=62.76.115.200 ansible_domainname=relay011 server_type=relay domainname=relay011 provider=colocation country=RU ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-relay012 ansible_ip=62.76.115.202 server_type=WX provider=colocation country=RU
-relay013 ansible_ip=62.76.115.203 server_type=WX provider=colocation country=RU
-relay014 ansible_ip=62.76.115.204 server_type=WX provider=colocation country=RU
-relay015 ansible_ip=62.76.115.205 server_type=WX provider=colocation country=RU
-relay016 ansible_ip=62.76.115.206 server_type=WX provider=colocation country=RU
-relay017 ansible_ip=62.76.115.207 server_type=WX provider=colocation country=RU
-relay018 ansible_ip=62.76.115.208 server_type=WX provider=colocation country=RU
-relay019 ansible_ip=62.76.115.209 server_type=WX provider=colocation country=RU
-relay020 ansible_ip=62.76.115.210 server_type=WX provider=colocation country=RU
-relay021 ansible_ip=62.76.115.211 server_type=WX provider=colocation country=RU
-relay022 ansible_ip=62.76.115.212 server_type=WX provider=colocation country=RU
-relay023 ansible_ip=62.76.115.213 server_type=WX provider=colocation country=RU
-relay024 ansible_ip=62.76.115.214 server_type=WX provider=colocation country=RU
-relay025 ansible_ip=62.76.115.215 server_type=WX provider=colocation country=RU
-relay026 ansible_ip=62.76.115.216 server_type=WX provider=colocation country=RU
-relay027 ansible_ip=62.76.115.217 server_type=WX provider=colocation country=RU
-relay028 ansible_ip=62.76.115.218 server_type=WX provider=colocation country=RU
-relay029 ansible_ip=62.76.115.219 server_type=WX provider=colocation country=RU
-relay030 ansible_ip=62.76.115.220 server_type=WX provider=colocation country=RU
-relay031 ansible_ip=217.199.221.2 server_type=WX provider=colocation country=RU
-relay032 ansible_ip=217.199.221.3 server_type=WX provider=colocation country=RU
-relay033 ansible_ip=217.199.221.4 server_type=WX provider=colocation country=RU
-relay034 ansible_ip=217.199.221.5 server_type=WX provider=colocation country=RU
-relay035 ansible_ip=217.199.221.6 server_type=WX provider=colocation country=RU
-relay036 ansible_ip=217.199.221.7 server_type=WX provider=colocation country=RU
-relay037 ansible_ip=217.199.221.8 server_type=WX provider=colocation country=RU
-relay038 ansible_ip=217.199.221.9 server_type=WX provider=colocation country=RU
-relay039 ansible_ip=217.199.221.10 server_type=WX provider=colocation country=RU
-relay040 ansible_ip=217.199.221.11 server_type=WX provider=colocation country=RU
-relay041 ansible_ip=217.199.221.12 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.007 ansible_ip=62.76.115.201 server_type=free_relay provider=colocation country=RU
+ru.ix.hyper01.wx.001 ansible_ip=62.76.115.195 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.002 ansible_ip=62.76.115.196 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.003 ansible_ip=62.76.115.197 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.004 ansible_ip=62.76.115.198 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.005 ansible_ip=62.76.115.199 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.006 ansible_ip=62.76.115.200 server_type=relay provider=colocation country=RU
+ru.ix.hyper01.wx.008 ansible_ip=62.76.115.202 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.009 ansible_ip=62.76.115.203 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.010 ansible_ip=62.76.115.204 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.011 ansible_ip=62.76.115.205 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.012 ansible_ip=62.76.115.206 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.013 ansible_ip=62.76.115.207 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.014 ansible_ip=62.76.115.208 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.015 ansible_ip=62.76.115.209 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.016 ansible_ip=62.76.115.210 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.017 ansible_ip=62.76.115.211 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.018 ansible_ip=62.76.115.212 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.019 ansible_ip=62.76.115.213 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.020 ansible_ip=62.76.115.214 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.021 ansible_ip=62.76.115.215 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.022 ansible_ip=62.76.115.216 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.023 ansible_ip=62.76.115.217 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.024 ansible_ip=62.76.115.218 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.025 ansible_ip=62.76.115.219 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.026 ansible_ip=62.76.115.220 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.027 ansible_ip=217.199.221.2 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.028 ansible_ip=217.199.221.3 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.029 ansible_ip=217.199.221.4 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.030 ansible_ip=217.199.221.5 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.031 ansible_ip=217.199.221.6 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.032 ansible_ip=217.199.221.7 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.033 ansible_ip=217.199.221.8 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.034 ansible_ip=217.199.221.9 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.035 ansible_ip=217.199.221.10 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.036 ansible_ip=217.199.221.11 server_type=WX provider=colocation country=RU
+ru.ix.hyper01.wx.037 ansible_ip=217.199.221.12 server_type=WX provider=colocation country=RU
+
+# Продуктовые релеи на 2м гипервизоре (ru.ix.hyper02)
+ru.ix.hyper02.wx.001 ansible_ip=217.199.221.13 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.002 ansible_ip=217.199.221.14 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.003 ansible_ip=217.199.221.15 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.004 ansible_ip=217.199.221.16 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.005 ansible_ip=217.199.221.17 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.006 ansible_ip=217.199.221.18 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.007 ansible_ip=217.199.221.19 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.008 ansible_ip=217.199.221.20 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.009 ansible_ip=217.199.221.21 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.010 ansible_ip=217.199.221.22 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.011 ansible_ip=217.199.221.23 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.012 ansible_ip=217.199.221.24 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.013 ansible_ip=217.199.221.25 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.014 ansible_ip=217.199.221.26 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.015 ansible_ip=217.199.221.27 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.016 ansible_ip=217.199.221.28 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.017 ansible_ip=185.126.92.2 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.018 ansible_ip=185.126.92.3 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.019 ansible_ip=185.126.92.4 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.020 ansible_ip=185.126.92.5 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.021 ansible_ip=185.126.92.6 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.022 ansible_ip=185.126.92.7 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.023 ansible_ip=185.126.92.8 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.024 ansible_ip=185.126.92.9 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.025 ansible_ip=185.126.92.10 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.026 ansible_ip=185.126.92.11 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.027 ansible_ip=185.126.92.12 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.028 ansible_ip=185.126.92.13 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.029 ansible_ip=185.126.92.14 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.030 ansible_ip=185.126.92.15 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.031 ansible_ip=185.126.92.16 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.032 ansible_ip=185.126.92.17 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.033 ansible_ip=185.126.92.18 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.034 ansible_ip=185.126.92.19 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.035 ansible_ip=185.126.92.20 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.036 ansible_ip=185.126.92.21 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.037 ansible_ip=185.126.92.22 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.038 ansible_ip=185.126.92.23 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.039 ansible_ip=185.126.92.24 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.040 ansible_ip=185.126.92.25 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.041 ansible_ip=185.126.92.26 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.042 ansible_ip=185.126.92.27 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.043 ansible_ip=185.126.92.28 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.044 ansible_ip=185.16.213.34 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.045 ansible_ip=185.16.213.35 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.046 ansible_ip=185.16.213.36 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.047 ansible_ip=185.16.213.37 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.048 ansible_ip=185.16.213.38 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.049 ansible_ip=185.16.213.39 server_type=WX provider=colocation country=RU
+ru.ix.hyper02.wx.050 ansible_ip=185.16.213.40 server_type=WX provider=colocation country=RU
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -124,8 +177,8 @@ deu05.vminsert.openworld.bot
 deu06.vminsert.openworld.bot
 deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
-m9test-hypervisor
-ix-hyper-02
+ru.ix.hyper01
+ru.ix.hyper02
 deu08.vminsert.openworld.bot
 deu09.vminsert.openworld.bot
 deu10.vminsert.openworld.bot
@@ -138,7 +191,7 @@ usa03.vminsert.openworld.bot
 
 [docker_hosts]
 m9test-hypervisor
-ix-hyper-02
+ru.ix.hyper02
 
 [server_common:children]
 sec_limits
@@ -165,8 +218,8 @@ tg_proxy_hosts_v2
 
 [monitoring_servers]
 monitor.openworld.bot
-m9test-hypervisor
-ix-hyper-02
+ru.ix.hyper01
+ru.ix.hyper02
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -223,43 +276,93 @@ colo04
 colo05
 colo06
 free_proxy
-free_relay
-relay006
-relay007
-relay008
-relay009
-relay010
-relay011
-relay012
-relay013
-relay014
-relay015
-relay016
-relay017
-relay018
-relay019
-relay020
-relay021
-relay022
-relay023
-relay024
-relay025
-relay026
-relay027
-relay028
-relay029
-relay030
-relay031
-relay032
-relay033
-relay034
-relay035
-relay036
-relay037
-relay038
-relay039
-relay040
-relay041
+ru.ix.hyper01.wx.007
+ru.ix.hyper01.wx.001
+ru.ix.hyper01.wx.002
+ru.ix.hyper01.wx.003
+ru.ix.hyper01.wx.004
+ru.ix.hyper01.wx.005
+ru.ix.hyper01.wx.006
+ru.ix.hyper01.wx.008
+ru.ix.hyper01.wx.009
+ru.ix.hyper01.wx.010
+ru.ix.hyper01.wx.011
+ru.ix.hyper01.wx.012
+ru.ix.hyper01.wx.013
+ru.ix.hyper01.wx.014
+ru.ix.hyper01.wx.015
+ru.ix.hyper01.wx.016
+ru.ix.hyper01.wx.017
+ru.ix.hyper01.wx.018
+ru.ix.hyper01.wx.019
+ru.ix.hyper01.wx.020
+ru.ix.hyper01.wx.021
+ru.ix.hyper01.wx.022
+ru.ix.hyper01.wx.023
+ru.ix.hyper01.wx.024
+ru.ix.hyper01.wx.025
+ru.ix.hyper01.wx.026
+ru.ix.hyper01.wx.027
+ru.ix.hyper01.wx.028
+ru.ix.hyper01.wx.029
+ru.ix.hyper01.wx.030
+ru.ix.hyper01.wx.031
+ru.ix.hyper01.wx.032
+ru.ix.hyper01.wx.033
+ru.ix.hyper01.wx.034
+ru.ix.hyper01.wx.035
+ru.ix.hyper01.wx.036
+ru.ix.hyper01.wx.037
+ru.ix.hyper02.wx.001
+ru.ix.hyper02.wx.002
+ru.ix.hyper02.wx.003
+ru.ix.hyper02.wx.004
+ru.ix.hyper02.wx.005
+ru.ix.hyper02.wx.006
+ru.ix.hyper02.wx.007
+ru.ix.hyper02.wx.008
+ru.ix.hyper02.wx.009
+ru.ix.hyper02.wx.010
+ru.ix.hyper02.wx.011
+ru.ix.hyper02.wx.012
+ru.ix.hyper02.wx.013
+ru.ix.hyper02.wx.014
+ru.ix.hyper02.wx.015
+ru.ix.hyper02.wx.016
+ru.ix.hyper02.wx.017
+ru.ix.hyper02.wx.018
+ru.ix.hyper02.wx.019
+ru.ix.hyper02.wx.020
+ru.ix.hyper02.wx.021
+ru.ix.hyper02.wx.022
+ru.ix.hyper02.wx.023
+ru.ix.hyper02.wx.024
+ru.ix.hyper02.wx.025
+ru.ix.hyper02.wx.026
+ru.ix.hyper02.wx.027
+ru.ix.hyper02.wx.028
+ru.ix.hyper02.wx.029
+ru.ix.hyper02.wx.030
+ru.ix.hyper02.wx.031
+ru.ix.hyper02.wx.032
+ru.ix.hyper02.wx.033
+ru.ix.hyper02.wx.034
+ru.ix.hyper02.wx.035
+ru.ix.hyper02.wx.036
+ru.ix.hyper02.wx.037
+ru.ix.hyper02.wx.038
+ru.ix.hyper02.wx.039
+ru.ix.hyper02.wx.040
+ru.ix.hyper02.wx.041
+ru.ix.hyper02.wx.042
+ru.ix.hyper02.wx.043
+ru.ix.hyper02.wx.044
+ru.ix.hyper02.wx.045
+ru.ix.hyper02.wx.046
+ru.ix.hyper02.wx.047
+ru.ix.hyper02.wx.048
+ru.ix.hyper02.wx.049
+ru.ix.hyper02.wx.050
 
 [monitoring_clients:children]
 xray_monitoring_clients
@@ -301,3 +404,6 @@ test-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=p
 [postgresql_servers]
 main-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 test-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+
+[sysctl]
+ru.ix.hyper01
