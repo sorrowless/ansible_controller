@@ -7,7 +7,7 @@ vmagent_ports:
 
 vmagent_config_dir: /var/lib/vmagent
 vmagent_extra_hosts:
-  - "{{ ansible_host }}:{{ ansible_ip }}"
+  - "{{ ansible_domainname }}:{{ ansible_ip }}"
 
 vmagent_additional_configs:
   - "{{ vars['sc_monitor_openworld_bot'] }}"

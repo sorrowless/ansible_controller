@@ -1,6 +1,9 @@
 [all]
 monitor.openworld.bot
 ru.ix.hyper01 ansible_ip=62.76.115.194 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper02 ansible_ip=185.16.213.62 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper03 ansible_ip=185.16.213.41 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper04 ansible_ip=185.16.213.42 server_type=hypervisor provider=colocation country=RU
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -179,6 +182,8 @@ deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
 ru.ix.hyper01
 ru.ix.hyper02
+ru.ix.hyper03
+ru.ix.hyper04
 deu08.vminsert.openworld.bot
 deu09.vminsert.openworld.bot
 deu10.vminsert.openworld.bot
@@ -189,9 +194,18 @@ nld02.vminsert.openworld.bot
 eng02.vminsert.openworld.bot
 usa03.vminsert.openworld.bot
 
-[docker_hosts]
-m9test-hypervisor
+# Группа физических гипервизоров
+[hypervisors]
+ru.ix.hyper01
 ru.ix.hyper02
+ru.ix.hyper03
+ru.ix.hyper04
+
+[docker_hosts]
+ru.ix.hyper01
+ru.ix.hyper02
+ru.ix.hyper03
+ru.ix.hyper04
 
 [server_common:children]
 sec_limits
@@ -220,6 +234,8 @@ tg_proxy_hosts_v2
 monitor.openworld.bot
 ru.ix.hyper01
 ru.ix.hyper02
+ru.ix.hyper03
+ru.ix.hyper04
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -407,3 +423,6 @@ test-db ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=p
 
 [sysctl]
 ru.ix.hyper01
+ru.ix.hyper02
+ru.ix.hyper03
+ru.ix.hyper04

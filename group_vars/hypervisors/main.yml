@@ -2,6 +2,7 @@
 metainfo:
   placement: AKH
   company: AKH
+ansible_domainname: "{{ inventory_hostname }}"
 ansible_host: "{{ ansible_ip }}"
 ansible_port: "{{ sshd_port }}"
 ansible_user: root
