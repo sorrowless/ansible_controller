@@ -15,5 +15,5 @@ sc_monitor_openworld_bot:
               country: '{{ country | default("") }}'
               provider: '{{ provider | default("") }}'
             targets:
-              - '{{ ansible_ip }}:9100'
+              - '10.10.10.1:9100'
     filename: '{{ ansible_domainname }}-node-exporter.yml'
