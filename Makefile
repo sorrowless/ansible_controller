@@ -1,4 +1,4 @@
-.PHONY: help prepare daemon sshconfig docker-services traefik
+.PHONY: help prepare daemon sshconfig docker-services traefik iptables
 
 VENV := .venv
 PYTHON ?= 3.12
@@ -37,3 +37,6 @@ docker-services: prepare
 
 traefik: prepare
 		$(call run_with_host,./playbooks/services/run-traefik.yml)
+
+iptables: prepare
+		$(call run_with_host,./playbooks/configurations/run-iptables.yml)
