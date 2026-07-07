@@ -1,4 +1,4 @@
-.PHONY: help prepare daemon sshconfig docker-services traefik iptables
+.PHONY: help prepare daemon sshconfig docker-services traefik iptables update-from-upstream
 
 VENV := .venv
 PYTHON ?= 3.12
@@ -26,7 +26,7 @@ prepare:
 		@bash tools/prepare.sh "$(PYTHON)"
 
 update-from-upstream:
-		@bash git remote update && git pull --no-ff upstream master && git push origin master
+		$(call git remote update && git pull --no-ff upstream master && git push origin master)
 
 daemon: prepare
 		@. $(VENV)/bin/activate && uvicorn main:app --app-dir daemon \
