@@ -25,6 +25,9 @@ help:
 prepare:
 		@bash tools/prepare.sh "$(PYTHON)"
 
+update-from-upstream:
+		@bash git remote update && git pull --no-ff upstream master && git push origin master
+
 daemon: prepare
 		@. $(VENV)/bin/activate && uvicorn main:app --app-dir daemon \
 			--host $(DAEMON_HOST) --port $(DAEMON_PORT)
