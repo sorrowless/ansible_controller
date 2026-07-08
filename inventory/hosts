@@ -4,6 +4,8 @@ ru.ix.hyper01 ansible_ip=62.76.115.194 server_type=hypervisor provider=colocatio
 ru.ix.hyper02 ansible_ip=185.16.213.62 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper03 ansible_ip=185.16.213.41 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper04 ansible_ip=185.16.213.42 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper05 ansible_ip=185.126.93.2 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper06 ansible_ip=185.126.93.252 server_type=hypervisor provider=colocation country=RU
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -266,6 +268,8 @@ ru.ix.hyper01
 ru.ix.hyper02
 ru.ix.hyper03
 ru.ix.hyper04
+ru.ix.hyper05
+ru.ix.hyper06
 deu08.vminsert.openworld.bot
 deu09.vminsert.openworld.bot
 deu10.vminsert.openworld.bot
@@ -282,12 +286,16 @@ ru.ix.hyper01
 ru.ix.hyper02
 ru.ix.hyper03
 ru.ix.hyper04
+ru.ix.hyper05
+ru.ix.hyper06
 
 [docker_hosts]
 ru.ix.hyper01
 ru.ix.hyper02
 ru.ix.hyper03
 ru.ix.hyper04
+ru.ix.hyper05
+ru.ix.hyper06
 
 [server_common:children]
 sec_limits
@@ -318,6 +326,8 @@ ru.ix.hyper01
 ru.ix.hyper02
 ru.ix.hyper03
 ru.ix.hyper04
+ru.ix.hyper05
+ru.ix.hyper06
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -588,3 +598,5 @@ ru.ix.hyper01
 ru.ix.hyper02
 ru.ix.hyper03
 ru.ix.hyper04
+ru.ix.hyper05
+ru.ix.hyper06
