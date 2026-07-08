@@ -247,6 +247,88 @@ ru.ix.hyper04.wx.038 ansible_ip=185.126.93.62 server_type=WX provider=colocation
 ru.ix.hyper04.wx.039 ansible_ip=185.126.93.63 server_type=WX provider=colocation country=RU
 ru.ix.hyper04.wx.040 ansible_ip=185.126.93.64 server_type=WX provider=colocation country=RU
 
+ru.ix.hyper03.wx.031 ansible_ip=185.126.93.95 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.001 ansible_ip=185.126.93.65 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.002 ansible_ip=185.126.93.66 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.003 ansible_ip=185.126.93.67 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.004 ansible_ip=185.126.93.68 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.005 ansible_ip=185.126.93.69 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.006 ansible_ip=185.126.93.70 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.007 ansible_ip=185.126.93.71 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.008 ansible_ip=185.126.93.72 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.009 ansible_ip=185.126.93.73 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.010 ansible_ip=185.126.93.74 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.011 ansible_ip=185.126.93.75 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.012 ansible_ip=185.126.93.76 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.013 ansible_ip=185.126.93.77 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.014 ansible_ip=185.126.93.78 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.015 ansible_ip=185.126.93.79 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.016 ansible_ip=185.126.93.80 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.017 ansible_ip=185.126.93.81 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.018 ansible_ip=185.126.93.82 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.019 ansible_ip=185.126.93.83 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.020 ansible_ip=185.126.93.84 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.021 ansible_ip=185.126.93.85 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.022 ansible_ip=185.126.93.86 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.023 ansible_ip=185.126.93.87 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.024 ansible_ip=185.126.93.88 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.025 ansible_ip=185.126.93.89 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.026 ansible_ip=185.126.93.90 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.027 ansible_ip=185.126.93.91 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.028 ansible_ip=185.126.93.92 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.029 ansible_ip=185.126.93.93 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.030 ansible_ip=185.126.93.94 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.032 ansible_ip=185.126.93.96 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.033 ansible_ip=185.126.93.97 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.034 ansible_ip=185.126.93.98 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.035 ansible_ip=185.126.93.99 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.036 ansible_ip=185.126.93.100 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.037 ansible_ip=185.126.93.101 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.038 ansible_ip=185.126.93.102 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.039 ansible_ip=185.126.93.103 server_type=WX provider=colocation country=RU
+ru.ix.hyper05.wx.040 ansible_ip=185.126.93.104 server_type=WX provider=colocation country=RU
+
+ru.ix.hyper06.wx.001 ansible_ip=185.126.93.105 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.002 ansible_ip=185.126.93.106 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.003 ansible_ip=185.126.93.107 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.004 ansible_ip=185.126.93.108 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.005 ansible_ip=185.126.93.109 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.006 ansible_ip=185.126.93.110 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.007 ansible_ip=185.126.93.111 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.008 ansible_ip=185.126.93.112 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.009 ansible_ip=185.126.93.113 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.010 ansible_ip=185.126.93.114 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.011 ansible_ip=185.126.93.115 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.012 ansible_ip=185.126.93.116 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.013 ansible_ip=185.126.93.117 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.014 ansible_ip=185.126.93.118 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.015 ansible_ip=185.126.93.119 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.016 ansible_ip=185.126.93.120 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.017 ansible_ip=185.126.93.121 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.018 ansible_ip=185.126.93.122 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.019 ansible_ip=185.126.93.123 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.020 ansible_ip=185.126.93.124 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.021 ansible_ip=185.126.93.125 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.022 ansible_ip=185.126.93.126 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.023 ansible_ip=185.126.93.127 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.024 ansible_ip=185.126.93.128 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.025 ansible_ip=185.126.93.129 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.026 ansible_ip=185.126.93.130 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.027 ansible_ip=185.126.93.131 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.028 ansible_ip=185.126.93.132 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.029 ansible_ip=185.126.93.133 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.030 ansible_ip=185.126.93.134 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.031 ansible_ip=185.126.93.135 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.032 ansible_ip=185.126.93.136 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.033 ansible_ip=185.126.93.137 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.034 ansible_ip=185.126.93.138 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.035 ansible_ip=185.126.93.139 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.036 ansible_ip=185.126.93.140 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.037 ansible_ip=185.126.93.141 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.038 ansible_ip=185.126.93.142 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.039 ansible_ip=185.126.93.143 server_type=WX provider=colocation country=RU
+ru.ix.hyper06.wx.040 ansible_ip=185.126.93.144 server_type=WX provider=colocation country=RU
+
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 
@@ -551,6 +633,86 @@ ru.ix.hyper04.wx.037
 ru.ix.hyper04.wx.038
 ru.ix.hyper04.wx.039
 ru.ix.hyper04.wx.040
+ru.ix.hyper03.wx.031
+ru.ix.hyper05.wx.001
+ru.ix.hyper05.wx.002
+ru.ix.hyper05.wx.003
+ru.ix.hyper05.wx.004
+ru.ix.hyper05.wx.005
+ru.ix.hyper05.wx.006
+ru.ix.hyper05.wx.007
+ru.ix.hyper05.wx.008
+ru.ix.hyper05.wx.009
+ru.ix.hyper05.wx.010
+ru.ix.hyper05.wx.011
+ru.ix.hyper05.wx.012
+ru.ix.hyper05.wx.013
+ru.ix.hyper05.wx.014
+ru.ix.hyper05.wx.015
+ru.ix.hyper05.wx.016
+ru.ix.hyper05.wx.017
+ru.ix.hyper05.wx.018
+ru.ix.hyper05.wx.019
+ru.ix.hyper05.wx.020
+ru.ix.hyper05.wx.021
+ru.ix.hyper05.wx.022
+ru.ix.hyper05.wx.023
+ru.ix.hyper05.wx.024
+ru.ix.hyper05.wx.025
+ru.ix.hyper05.wx.026
+ru.ix.hyper05.wx.027
+ru.ix.hyper05.wx.028
+ru.ix.hyper05.wx.029
+ru.ix.hyper05.wx.030
+ru.ix.hyper05.wx.032
+ru.ix.hyper05.wx.033
+ru.ix.hyper05.wx.034
+ru.ix.hyper05.wx.035
+ru.ix.hyper05.wx.036
+ru.ix.hyper05.wx.037
+ru.ix.hyper05.wx.038
+ru.ix.hyper05.wx.039
+ru.ix.hyper05.wx.040
+ru.ix.hyper06.wx.001
+ru.ix.hyper06.wx.002
+ru.ix.hyper06.wx.003
+ru.ix.hyper06.wx.004
+ru.ix.hyper06.wx.005
+ru.ix.hyper06.wx.006
+ru.ix.hyper06.wx.007
+ru.ix.hyper06.wx.008
+ru.ix.hyper06.wx.009
+ru.ix.hyper06.wx.010
+ru.ix.hyper06.wx.011
+ru.ix.hyper06.wx.012
+ru.ix.hyper06.wx.013
+ru.ix.hyper06.wx.014
+ru.ix.hyper06.wx.015
+ru.ix.hyper06.wx.016
+ru.ix.hyper06.wx.017
+ru.ix.hyper06.wx.018
+ru.ix.hyper06.wx.019
+ru.ix.hyper06.wx.020
+ru.ix.hyper06.wx.021
+ru.ix.hyper06.wx.022
+ru.ix.hyper06.wx.023
+ru.ix.hyper06.wx.024
+ru.ix.hyper06.wx.025
+ru.ix.hyper06.wx.026
+ru.ix.hyper06.wx.027
+ru.ix.hyper06.wx.028
+ru.ix.hyper06.wx.029
+ru.ix.hyper06.wx.030
+ru.ix.hyper06.wx.031
+ru.ix.hyper06.wx.032
+ru.ix.hyper06.wx.033
+ru.ix.hyper06.wx.034
+ru.ix.hyper06.wx.035
+ru.ix.hyper06.wx.036
+ru.ix.hyper06.wx.037
+ru.ix.hyper06.wx.038
+ru.ix.hyper06.wx.039
+ru.ix.hyper06.wx.040
 
 [monitoring_clients:children]
 xray_monitoring_clients
