@@ -1,0 +1,7 @@
+---
+node_exporter_version: '1.4.0'
+node_exporter_run_in_docker: true
+node_exporter_host_address: "{{ ansible_ip }}"
+node_exporter_stack_name: node_exporter
+node_exporter_swarm_cluster: false
+node_exporter_docker_network_name: prom_network

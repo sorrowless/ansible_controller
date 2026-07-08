@@ -1,0 +1,24 @@
+---
+vmagent_docker_network_name: prom_network
+vmagent_container_name: vmagent
+vmagent_docker_image: "victoriametrics/vmagent:v1.113.0"
+vmagent_ports:
+  - "127.0.0.1:8429:8429"
+
+vmagent_config_dir: /var/lib/vmagent
+vmagent_extra_hosts:
+  - "{{ ansible_domainname }}:{{ ansible_ip }}"
+
+vmagent_additional_configs: "{{ sc_monitor_openworld_bot }}"
+
+vmagent_remotewrite_address: "https://insert.openworld.bot"
+vmagent_log_level: INFO
+vmagent_command:
+  - '-promscrape.config=/etc/prometheus/prometheus.yml'
+  - '-remoteWrite.url={{ vmagent_remotewrite_address }}/insert/0/prometheus/'
+  - '-remoteWrite.basicAuth.username={{ vault_group_dsvmagent_command.basicauth.username }}'
+  - '-remoteWrite.basicAuth.password={{ vault_group_dsvmagent_command.basicauth.password }}'
+  - '-loggerLevel={{ vmagent_log_level }}'
+
+vmagent_stack_name: victoriametrics
+vmagent_swarm_cluster: false
