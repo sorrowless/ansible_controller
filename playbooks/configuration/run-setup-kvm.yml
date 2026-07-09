@@ -2,7 +2,7 @@
 #
 # Run it like usual executable script:
 #
-# > ./run-server-common.yml
+# > ./run-setup-kvm.yml
 #
 ---
 - name: Настройка KVM на новых гипервизорах
