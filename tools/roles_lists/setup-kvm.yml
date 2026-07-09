@@ -1,0 +1,4 @@
+---
+- src: https://github.com/Jony321/ansible_kvm_hypervisor.git
+  version: master
+  name: jony321.kvm_hypervisors
