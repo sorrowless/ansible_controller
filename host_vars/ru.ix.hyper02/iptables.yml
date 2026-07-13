@@ -1,0 +1,9 @@
+---
+# Iptables rules
+iptables:
+  default_allowed_tcp_ports: [22]
+  raw_rules:
+  - "-A INPUT -s 10.10.10.0/24 -j ACCEPT -m comment --comment 'docker-prom_network'"
+  - "-A FORWARD -i br0 -j ACCEPT -m comment --comment 'allow-kvm-br0-in'"
+  - "-A FORWARD -o br0 -j ACCEPT -m comment --comment 'allow-kvm-br0-out'"
+  - "-t nat -A POSTROUTING -s 10.99.0.0/24 -o enp216s0f1 -j MASQUERADE -m comment --comment 'kvm-vms-nat-masquerade'"
