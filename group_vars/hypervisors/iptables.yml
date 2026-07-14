@@ -6,3 +6,14 @@ iptables:
   - "-A INPUT -s 10.10.10.0/24 -j ACCEPT -m comment --comment 'docker-prom_network'"
   - "-A FORWARD -i br0 -j ACCEPT -m comment --comment 'allow-kvm-br0-in'"
   - "-A FORWARD -o br0 -j ACCEPT -m comment --comment 'allow-kvm-br0-out'"
+
+  # === НАСТРОЙКИ НЕМЕЦКОЙ ОПТИКИ И DHCP ===
+  # 1. Маскарадинг транзитного трафика серой сети ВМ в немецкую оптику
+  - "-t nat -A POSTROUTING -s 10.99.0.0/24 -o {{ german_interface }} -j MASQUERADE -m comment --comment 'masquerade-german-uplink'"
+  
+  # 2. Обход политики FORWARD DROP фаервола Docker для немецкого моста
+  - "-A DOCKER-USER -i vSwitch_DE -j ACCEPT -m comment --comment 'docker-vswitch-de-in'"
+  - "-A DOCKER-USER -o vSwitch_DE -j ACCEPT -m comment --comment 'docker-vswitch-de-out'"
+  
+  # 3. Разрешение входящего DHCP-трафика от виртуалок на самом гипервизоре
+  - "-A INPUT -i vSwitch_DE -p udp --dport 67:68 --sport 67:68 -j ACCEPT -m comment --comment 'vswitch-de-dhcp'"
