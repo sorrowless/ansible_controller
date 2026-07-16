@@ -5,10 +5,10 @@ ru.ix.hyper02 ansible_ip=185.218.180.12 server_type=hypervisor provider=colocati
 ru.ix.hyper03 ansible_ip=185.218.180.13 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper04 ansible_ip=185.218.180.14 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper05 ansible_ip=185.218.180.15 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper06 ansible_ip=185.218.180.16 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper07 ansible_ip=185.218.180.17 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper08 ansible_ip=185.218.180.18 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper09 ansible_ip=185.218.180.10 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper06 ansible_ip=185.218.180.6 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper07 ansible_ip=185.218.180.7 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper08 ansible_ip=185.218.180.8 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper09 ansible_ip=185.218.180.9 server_type=hypervisor provider=colocation country=RU
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
