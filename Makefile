@@ -1,4 +1,4 @@
-.PHONY: help prepare daemon sshconfig docker-services traefik iptables update-from-upstream
+.PHONY: help prepare daemon sshconfig docker-services traefik iptables update-from-upstream xray docker common
 
 VENV := .venv
 PYTHON ?= 3.12
@@ -13,11 +13,16 @@ endef
 
 help:
 		@echo 'Targets:'
-		@echo '  make prepare               - bootstrap uv, venv, poetry, and daemon deps (macOS / Ubuntu)'
+		@echo '  make common                - deploy common server configuration like hostname and limits (HOST or fzf)'
 		@echo '  make daemon                - start Ansible provisioner API (127.0.0.1:8000)'
-		@echo '  make sshconfig             - change ssh config on localhost'
+		@echo '  make docker                - deploy docker (HOST or fzf)'
 		@echo '  make docker-services       - deploy docker-services (HOST or fzf)'
+		@echo '  make iptables              - deploy iptables (HOST or fzf)'
+		@echo '  make prepare               - bootstrap uv, venv, poetry, and daemon deps (macOS / Ubuntu)'
+		@echo '  make sshconfig             - change ssh config on localhost'
 		@echo '  make traefik               - deploy traefik with its config (HOST or fzf)'
+		@echo '  make update-from-upstream  - update from upstream if "upstream" remote exists'
+		@echo '  make xray                  - deploy xray server in docker (HOST or fzf)'
 		@echo ''
 		@echo 'HOST can be one host or comma-separated: HOST=ru01.sbog.org,us03.sbog.org'
 		@echo 'Without HOST, fzf prompts for host(s) from host_vars/'
@@ -43,3 +48,12 @@ traefik: prepare
 
 iptables: prepare
 		$(call run_with_host,./playbooks/configuration/run-iptables.yml)
+
+docker: prepare
+		$(call run_with_host,./playbooks/services/run-docker.yml)
+
+xray: prepare
+		$(call run_with_host,./playbooks/vpns/run-xray.yml)
+
+common: prepare iptables
+		$(call run_with_host,./playbooks/configuration/run-server-common.yml)
