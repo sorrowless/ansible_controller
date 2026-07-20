@@ -7,18 +7,6 @@ ru.ix.hyper04 ansible_ip=185.16.213.42 server_type=hypervisor provider=colocatio
 ru.ix.hyper05 ansible_ip=185.126.93.2 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper06 ansible_ip=185.126.93.252 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper07 ansible_ip=185.126.93.251 server_type=hypervisor provider=colocation country=RU
-rus01.vminsert.openworld.bot
-nld01.vminsert.openworld.bot
-usa01.vminsert.openworld.bot
-usa02.vminsert.openworld.bot
-deu01.vminsert.openworld.bot
-deu02.vminsert.openworld.bot
-deu03.vminsert.openworld.bot
-deu04.vminsert.openworld.bot
-deu05.vminsert.openworld.bot
-deu06.vminsert.openworld.bot
-deu07.vminsert.openworld.bot
-eng01.vminsert.openworld.bot
 # Промежуточные серверы мониторинга (XRay-коллекторы)
 deu08.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 deu09.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
@@ -376,18 +364,6 @@ ansible_python_interpreter=/usr/bin/python3
 
 [server_common]
 monitor.openworld.bot
-rus01.vminsert.openworld.bot
-nld01.vminsert.openworld.bot
-usa01.vminsert.openworld.bot
-usa02.vminsert.openworld.bot
-deu01.vminsert.openworld.bot
-deu02.vminsert.openworld.bot
-deu03.vminsert.openworld.bot
-deu04.vminsert.openworld.bot
-deu05.vminsert.openworld.bot
-deu06.vminsert.openworld.bot
-deu07.vminsert.openworld.bot
-eng01.vminsert.openworld.bot
 ru.ix.hyper01
 ru.ix.hyper02
 ru.ix.hyper03
@@ -456,18 +432,6 @@ ru.ix.hyper04
 ru.ix.hyper05
 ru.ix.hyper06
 ru.ix.hyper07
-rus01.vminsert.openworld.bot
-nld01.vminsert.openworld.bot
-usa01.vminsert.openworld.bot
-usa02.vminsert.openworld.bot
-deu01.vminsert.openworld.bot
-deu02.vminsert.openworld.bot
-deu03.vminsert.openworld.bot
-deu04.vminsert.openworld.bot
-deu05.vminsert.openworld.bot
-deu06.vminsert.openworld.bot
-deu07.vminsert.openworld.bot
-eng01.vminsert.openworld.bot
 deu08.vminsert.openworld.bot
 deu09.vminsert.openworld.bot
 deu10.vminsert.openworld.bot

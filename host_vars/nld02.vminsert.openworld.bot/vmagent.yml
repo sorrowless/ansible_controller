@@ -11,7 +11,7 @@ vmagent_extra_hosts:
 vmagent_additional_configs: []
 list_of_filenames_to_add: []
 
-vmagent_remotewrite_address: "http://vminsert:8480"
+vmagent_remotewrite_address: "http://victoriametrics_vminsert:8480"
 vmagent_log_level: ERROR
 vmagent_command:
   - '-promscrape.config=/etc/prometheus/prometheus.yml'
