@@ -37,6 +37,46 @@ prometheus_config:
           targets:
             - "victoriametrics_node_exporter:9100"
 
+    - job_name: "vminsert"
+      static_configs:
+        - targets: ["vminsert:8480"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "vmselect"
+      static_configs:
+        - targets: ["vmselect:8481"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "vmstorage"
+      static_configs:
+        - targets: ["vmstorage:8482"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "vmagent"
+      static_configs:
+        - targets: ["vmagent:8429"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
+    - job_name: "vmalert"
+      static_configs:
+        - targets: ["vmalert:8880"]
+          labels:
+            project: akh
+            env: production
+            domainname: "{{ ansible_domainname }}"
+
 vmagent_relabel_configs:
   - source_labels: [__name__]
     regex: 'xray:.*'
