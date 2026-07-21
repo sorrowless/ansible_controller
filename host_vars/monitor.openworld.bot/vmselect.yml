@@ -3,6 +3,7 @@ vmselect_container_name: vmselect
 vmselect_docker_image: "victoriametrics/vmselect:v1.113.0-cluster"
 vmselect_docker_network_name: prom_network
 vmselect_command:
+- '-storageNode={{ vmstorage_container_name }}:8401'
 # новые промежуточные ноды для хранения метрик
 - '-storageNode=93.152.217.218:8401'  # deu08
 - '-storageNode=91.219.23.161:8401'  # deu09
