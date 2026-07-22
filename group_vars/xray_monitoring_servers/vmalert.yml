@@ -46,56 +46,25 @@ vmalert_additional_alerts:
                 summary: !unsafe "Scrape target with job {{ $labels.job }} on host {{ $labels.dns_hostname }} is unavailable."
                 summary_resolved: !unsafe "{{ $labels.job }} scrape target is available."
                 description: !unsafe "Scrape target with job {{ $labels.job }} on host {{ $labels.dns_hostname }} is unavailable."
+
   - filename: _recordings.yml
     data:
       groups:
         - name: xray_aggregated_rules
           interval: 1m
           rules:
-            - record: xray:domains:sum
+            # === Новые оптимизированные правила ===
+            
+            # 1. Быстрый подсчет уникальных пользователей (без telegram_id!)
+            - record: xray:active_users_5m:count
               expr: |
-                sum by (
-                  domainname
-                ) (
-                  xray_access[1m]
-                )
+                count(last_over_time(xray_access[5m])) by (ipaddress, domainname, country)
               labels:
-                aggregation: domains
+                aggregation: active_users
                 retention: "2d"
-            - record: xray:providers:sum
-              expr: |
-                sum by (
-                  provider
-                ) (
-                  xray_access[1m]
-                )
-              labels:
-                aggregation: providers
-                retention: "2d"
-            - record: xray:countries:sum
-              expr: |
-                sum by (
-                  country
-                ) (
-                  xray_access[1m]
-                )
-              labels:
-                aggregation: countries
-                retention: "2d"
-            - record: xray:aggregation:sum
-              expr: |
-                sum by (
-                  country,
-                  domainname,
-                  ipaddress,
-                  server_type
-                ) (
-                  xray_access[1m]
-                )
-              labels:
-                aggregation: common
-                retention: "2d"
-            - record: xray:user_connections:sum
+
+            # 2. Быстрый подсчет коннектов по пользователям (предрассчитанный 5м интервал)
+            - record: xray:user_connections_5m:increase
               expr: |
                 sum by (
                   country,
@@ -104,8 +73,40 @@ vmalert_additional_alerts:
                   telegram_id,
                   host
                 ) (
-                  xray_access[1m]
+                  increase(xray_access[5m])
                 )
+              labels:
+                aggregation: user_connections_5m
+                retention: "2d"
+
+            # === Ваши старые правила ===
+            - record: xray:domains:sum
+              expr: |
+                sum by (domainname) (xray_access[1m])
+              labels:
+                aggregation: domains
+                retention: "2d"
+            - record: xray:providers:sum
+              expr: |
+                sum by (provider) (xray_access[1m])
+              labels:
+                aggregation: providers
+                retention: "2d"
+            - record: xray:countries:sum
+              expr: |
+                sum by (country) (xray_access[1m])
+              labels:
+                aggregation: countries
+                retention: "2d"
+            - record: xray:aggregation:sum
+              expr: |
+                sum by (country, domainname, ipaddress, server_type) (xray_access[1m])
+              labels:
+                aggregation: common
+                retention: "2d"
+            - record: xray:user_connections:sum
+              expr: |
+                sum by (country, domainname, ipaddress, telegram_id, host) (xray_access[1m])
               labels:
                 aggregation: user_connections
                 retention: "2d"

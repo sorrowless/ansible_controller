@@ -442,6 +442,17 @@ nld02.vminsert.openworld.bot
 eng02.vminsert.openworld.bot
 usa03.vminsert.openworld.bot
 
+[xray_monitoring_servers]
+deu08.vminsert.openworld.bot
+deu09.vminsert.openworld.bot
+deu10.vminsert.openworld.bot
+deu11.vminsert.openworld.bot
+deu12.vminsert.openworld.bot
+deu13.vminsert.openworld.bot
+nld02.vminsert.openworld.bot
+eng02.vminsert.openworld.bot
+usa03.vminsert.openworld.bot
+
 [xray_monitoring_clients]
 
 [sec_limits]
