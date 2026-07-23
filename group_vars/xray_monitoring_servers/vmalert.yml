@@ -54,16 +54,7 @@ vmalert_additional_alerts:
           interval: 1m
           rules:
             # === Новые оптимизированные правила ===
-            
-            # 1. Быстрый подсчет уникальных пользователей (без telegram_id!)
-            - record: xray:active_users_5m:count
-              expr: |
-                count(last_over_time(xray_access[5m])) by (ipaddress, domainname, country)
-              labels:
-                aggregation: active_users
-                retention: "2d"
-
-            # 2. Быстрый подсчет коннектов по пользователям (предрассчитанный 5м интервал)
+            # Быстрый подсчет коннектов по пользователям (предрассчитанный 5м интервал)
             - record: xray:user_connections_5m:increase
               expr: |
                 sum by (
