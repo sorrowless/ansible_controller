@@ -4,8 +4,10 @@ iptables:
   default_allowed_tcp_ports: [22, 80, 443]
   raw_rules:
     - "-A INPUT -s 10.10.10.0/24 -j ACCEPT -m comment --comment 'docker-prom_network'"
+    # Автоматически создаем цепочку DOCKER-USER, если генератор её стер
     - "-N DOCKER-USER"
     - "-I FORWARD 1 -j DOCKER-USER"
+    # Блокируем несанкционированный внешний трафик к vmstorage, vmselect и node_exporter
     - "-A DOCKER-USER -p tcp --dport 8401 ! -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j DROP -m comment --comment 'block-unauthorized-to-vmstorage'"
     - "-A DOCKER-USER -p tcp --dport 8481 ! -s {{ hostvars['monitor.openworld.bot'].ansible_ip }} -j DROP -m comment --comment 'block-unauthorized-to-vmselect'"
     - "-A DOCKER-USER -p tcp --dport 9100 -j DROP -m comment --comment 'block-all-external-to-node-exporter'"

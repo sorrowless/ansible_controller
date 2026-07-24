@@ -53,24 +53,6 @@ vmalert_additional_alerts:
         - name: xray_aggregated_rules
           interval: 1m
           rules:
-            # === Новые оптимизированные правила ===
-            # Быстрый подсчет коннектов по пользователям (предрассчитанный 5м интервал)
-            - record: xray:user_connections_5m:increase
-              expr: |
-                sum by (
-                  country,
-                  domainname,
-                  ipaddress,
-                  telegram_id,
-                  host
-                ) (
-                  increase(xray_access[5m])
-                )
-              labels:
-                aggregation: user_connections_5m
-                retention: "2d"
-
-            # === Ваши старые правила ===
             - record: xray:domains:sum
               expr: |
                 sum by (domainname) (xray_access[1m])
@@ -100,4 +82,20 @@ vmalert_additional_alerts:
                 sum by (country, domainname, ipaddress, telegram_id, host) (xray_access[1m])
               labels:
                 aggregation: user_connections
+                retention: "2d"
+
+            # подсчет коннектов по пользователям (предрассчитанный 5м интервал)
+            - record: xray:user_connections_5m:increase
+              expr: |
+                sum by (
+                  country,
+                  domainname,
+                  ipaddress,
+                  telegram_id,
+                  host
+                ) (
+                  increase(xray_access[5m])
+                )
+              labels:
+                aggregation: user_connections_5m
                 retention: "2d"
