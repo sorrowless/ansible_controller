@@ -22,15 +22,15 @@ prometheus_config:
   global:
     scrape_interval: 30s
   scrape_configs:
-    - job_name: "eng02-node-exporter"
+    - job_name: "{{ inventory_hostname.split('.')[0] }}-node-exporter"
       scheme: http
       static_configs:
         - labels:
-            dns_hostname: "eng02.vminsert.openworld.bot"
-            domainname: "eng02.vminsert.openworld.bot"
+            dns_hostname: "{{ ansible_domainname }}"
+            domainname: "{{ ansible_domainname }}"
             env: production
-            instance: "194.150.166.100:9100"
-            ipaddress: "194.150.166.100"
+            instance: "{{ ansible_ip }}:9100"
+            ipaddress: "{{ ansible_ip }}"
             project: akh
             scrape_type: node_exporter
             server_type: monitor
