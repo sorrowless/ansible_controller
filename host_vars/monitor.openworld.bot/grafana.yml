@@ -2,9 +2,9 @@
 grafana_web_host: grafana.openworld.bot
 grafana:
   admin_user: admin
-  admin_password: admin
+  admin_password: "{{ vault_grafana_admin_password}}"
 grafana_docker_network_name: prom_network
-grafana_url: "https://{{ grafana_web_host }}/"
+grafana_url: "https://{{ grafana_web_host }}"
 grafana_datasources:
   - name: VictoriaMetrics
     url: http://{{ vmselect_container_name }}:8481/select/0/prometheus
@@ -12,7 +12,27 @@ grafana_datasources:
     access: proxy
     isDefault: true
 
-grafana_provisioning_dashboards: []
+# GitSync & Provisioning Configuration
+grafana_cleanup_old_provisioning: true
+grafana_gitsync_enabled: true
+
+# Source repository
+grafana_dashboards_repo_url: "https://github.com/Jony321/grafana-dashboards.git"
+grafana_dashboards_repo_version: "feature/gitsync-migration"
+grafana_gitsync_token: "{{ vault_grafana_dashboards_repo_token }}"
+
+# Маска 1-в-1 для продуктовых дашбордов:
+grafana_provisioning_dashboards:
+  - "alertmanager"
+  - "common-hosts-info"
+  - "hosts-availability-v2"
+  - "mtproxy-sessions"
+  - "node-exporter-*"
+  - "victoriametrics*"
+  - "vmagent"
+  - "vmalert"
+  - "xray-logs-data"
+
 grafana_ports: []
 grafana_stack_name: victoriametrics
 grafana_swarm_cluster: true
