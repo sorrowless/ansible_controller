@@ -77,13 +77,11 @@
         seconds: 5
       when: not ansible_check_mode
 
-    - name: 11. Проверка внешнего IP (запрос идет уже через Германию)
-      ansible.builtin.uri:
-        url: http://ifconfig.co
-        headers:
-          Accept: "application/json"
-        return_content: true
+    - name: 11. Проверка внешнего IP
+      ansible.builtin.shell:
+        cmd: "curl -s -4 --connect-timeout 5 icanhazip.com"
       register: external_ip_check
+      changed_when: false
       when: not ansible_check_mode
 
     - name: 12. Вывод проверенного внешнего IP
