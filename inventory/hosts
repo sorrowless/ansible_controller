@@ -10,7 +10,7 @@ ru.ix.hyper07 ansible_ip=185.218.180.7 server_type=hypervisor provider=colocatio
 ru.ix.hyper08 ansible_ip=185.218.180.8 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper09 ansible_ip=185.218.180.9 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper10 ansible_ip=185.218.180.10 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper11 ansible_ip=185.218.180.21 server_type=hypervisor provider=colocation country=RU
+ru.ix.hyper11 ansible_ip=185.218.180.21 server_type=hypervisor provider=colocation country=RU german_interface="enp175s0f1" german_ip="91.247.185.174"
 rus01.vminsert.openworld.bot
 nld01.vminsert.openworld.bot
 usa01.vminsert.openworld.bot
@@ -1183,5 +1183,5 @@ ru.ix.hyper09
 ru.ix.hyper10
 ru.ix.hyper11
 
-[grafana]
-ru.ix.hyper02.wx.041
+[german_nic:children]
+tg_proxy_hosts_v2

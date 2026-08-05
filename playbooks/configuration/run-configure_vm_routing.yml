@@ -6,7 +6,7 @@
 #
 ---
 - name: Автоматическая настройка PBR и немецкого маршрута на ВМ
-  hosts: test_vms
+  hosts: german_nic
   become: true
   gather_facts: true
 
@@ -65,13 +65,13 @@
       ansible.builtin.command:
         cmd: "netplan apply"
 
-    # 5. Переключаем глобальный дефолтный шлюз (ВЫПОЛНЯЕТСЯ ПОСЛЕ NETPLAN APPLY)
+    # 5. Переключаем глобальный дефолтный шлюз
     - name: 9. Удаление дефолтного русского шлюза из основной таблицы
       ansible.builtin.command:
         cmd: "ip route del default via {{ ru_gw }} dev {{ ru_iface }}"
       failed_when: false
 
-    # 6. Валидация работы (выполняется только при реальном запуске, не в check-mode)
+    # 6. Валидация работы
     - name: 10. Пауза 5 секунд для получения IP по DHCP
       ansible.builtin.pause:
         seconds: 5
