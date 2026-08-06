@@ -11,7 +11,6 @@
   gather_facts: true
 
   tasks:
-    # 1. Автоматически определяем основной русскую сеть из фактов ядра Linux
     - name: 1. Автоопределение основного интерфейса, IP и шлюза
       ansible.builtin.set_fact:
         ru_iface: "{{ ansible_default_ipv4.interface }}"
@@ -19,7 +18,6 @@
         ru_gw: "{{ ansible_default_ipv4.gateway }}"
       when: ansible_default_ipv4 is defined
 
-    # 2. ДИНАМИЧЕСКИЙ ПОИСК второго интерфейса (любой отличный от основного)
     - name: 2. Поиск имени второго сетевого интерфейса
       ansible.builtin.shell:
         cmd: "ip -br link show | awk -v primary='{{ ru_iface }}' '$1 != \"lo\" && $1 != primary && $1 !~ /docker|veth|prom/ {print $1}' | head -n 1"
@@ -39,7 +37,6 @@
       ansible.builtin.debug:
         msg: "Топология {{ inventory_hostname }}: Основной={{ ru_iface }} (IP={{ ru_ip }}, GW={{ ru_gw }}), Немецкий={{ de_iface }}"
 
-    # 3. Настраиваем PBR для русского IP (гарантирует доступность через РФ)
     - name: 6. Добавление русского шлюза в кастомную таблицу 100
       ansible.builtin.command:
         cmd: "ip route add default via {{ ru_gw }} dev {{ ru_iface }} table 100"
@@ -50,13 +47,6 @@
         cmd: "ip rule add from {{ ru_ip }} table 100"
       failed_when: false
 
-    # 4. Очищаем устаревшие жесткие конфиги Netplan (если существовали)
-    - name: 8. Очистка устаревших захардкоженных конфигов Netplan
-      ansible.builtin.file:
-        path: /etc/netplan/99-ens8-dhcp.yaml
-        state: absent
-
-    # 5. Настраиваем постоянный Netplan для динамически найденного немецкого интерфейса
     - name: 9. Создание перманентного Netplan-конфига для DHCP на {{ de_iface }}
       ansible.builtin.copy:
         dest: "/etc/netplan/99-{{ de_iface }}-dhcp.yaml"
@@ -77,13 +67,11 @@
       ansible.builtin.command:
         cmd: "netplan apply"
 
-    # 6. Применение и пауза
     - name: 11. Пауза 5 секунд для получения IP по DHCP
       ansible.builtin.pause:
         seconds: 5
       when: not ansible_check_mode
 
-    # Прямой опрос ядра Linux (проверяем, появился ли inet IPv4 на интерфейсе)
     - name: 12. Проверка получения IPv4-адреса на {{ de_iface }} в реальном времени
       ansible.builtin.shell:
         cmd: "ip -4 addr show dev {{ de_iface }} | grep -q inet"
@@ -92,7 +80,6 @@
       changed_when: false
       when: not ansible_check_mode
 
-    # 7. Переключаем дефолтный маршрут (выполняется только если IP получен!)
     - name: 13. Удаление дефолтного русского шлюза из основной таблицы
       ansible.builtin.command:
         cmd: "ip route del default via {{ ru_gw }} dev {{ ru_iface }}"
