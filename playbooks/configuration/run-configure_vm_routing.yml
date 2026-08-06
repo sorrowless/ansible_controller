@@ -11,43 +11,55 @@
   gather_facts: true
 
   tasks:
-    # 1. Безопасно вытягиваем IP-адрес интерфейса ens3 из фактов Ansible
-    - name: 1. Получение статического IP интерфейса ens3
+    # 1. Автоматически определяем основной русскую сеть из фактов ядра Linux
+    - name: 1. Автоопределение основного интерфейса, IP и шлюза
       ansible.builtin.set_fact:
-        ru_ip: "{{ ansible_facts['ens3']['ipv4']['address'] }}"
-        ru_iface: "ens3"
-      when: ansible_facts['ens3'] is defined
+        ru_iface: "{{ ansible_default_ipv4.interface }}"
+        ru_ip: "{{ ansible_default_ipv4.address }}"
+        ru_gw: "{{ ansible_default_ipv4.gateway }}"
+      when: ansible_default_ipv4 is defined
 
-    # 2. Динамически парсим Netplan, чтобы найти шлюз, даже если он уже удален из runtime-таблицы
-    - name: 2. Поиск русского шлюза в конфигурационных файлах Netplan
+    # 2. ДИНАМИЧЕСКИЙ ПОИСК второго интерфейса (любой отличный от основного)
+    - name: 2. Поиск имени второго сетевого интерфейса
       ansible.builtin.shell:
-        cmd: "grep -E 'via|gateway' /etc/netplan/*.yaml | head -n 1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+'"
-      register: netplan_gateway_search
+        cmd: "ip -br link show | awk -v primary='{{ ru_iface }}' '$1 != \"lo\" && $1 != primary && $1 !~ /docker|veth|prom/ {print $1}' | head -n 1"
+      register: secondary_iface_search
       changed_when: false
 
-    - name: 3. Сохранение полученного русского шлюза
+    - name: 3. Сохранение имени второго интерфейса
       ansible.builtin.set_fact:
-        ru_gw: "{{ netplan_gateway_search.stdout | trim }}"
+        de_iface: "{{ secondary_iface_search.stdout | trim }}"
 
-    - name: 4. Вывод обнаруженных данных для проверки безопасности
+    - name: 4. Проверка наличия второго интерфейса
+      ansible.builtin.fail:
+        msg: "Второй сетевой интерфейс не найден на ВМ {{ inventory_hostname }}! Выполните virsh attach-interface."
+      when: de_iface == ""
+
+    - name: 5. Вывод обнаруженной топологии
       ansible.builtin.debug:
-        msg: "Обнаружено на ВМ: Интерфейс={{ ru_iface }}, IP={{ ru_ip }}, Шлюз={{ ru_gw }}"
+        msg: "Топология {{ inventory_hostname }}: Основной={{ ru_iface }} (IP={{ ru_ip }}, GW={{ ru_gw }}), Немецкий={{ de_iface }}"
 
-    # 3. Настраиваем PBR на ВМ (сначала страхуем входящие соединения)
-    - name: 5. Добавление русского шлюза в кастомную таблицу 100
+    # 3. Настраиваем PBR для русского IP (гарантирует доступность через РФ)
+    - name: 6. Добавление русского шлюза в кастомную таблицу 100
       ansible.builtin.command:
         cmd: "ip route add default via {{ ru_gw }} dev {{ ru_iface }} table 100"
       failed_when: false
 
-    - name: 6. Добавление правила политики маршрутизации для русского IP
+    - name: 7. Добавление правила политики маршрутизации для русского IP
       ansible.builtin.command:
         cmd: "ip rule add from {{ ru_ip }} table 100"
       failed_when: false
 
-    # 4. Настраиваем постоянный Netplan для ens8 (Германия)
-    - name: 7. Создание перманентного Netplan-конфига для DHCP на ens8
+    # 4. Очищаем устаревшие жесткие конфиги Netplan (если существовали)
+    - name: 8. Очистка устаревших захардкоженных конфигов Netplan
+      ansible.builtin.file:
+        path: /etc/netplan/99-ens8-dhcp.yaml
+        state: absent
+
+    # 5. Настраиваем постоянный Netplan для динамически найденного немецкого интерфейса
+    - name: 9. Создание перманентного Netplan-конфига для DHCP на {{ de_iface }}
       ansible.builtin.copy:
-        dest: /etc/netplan/99-ens8-dhcp.yaml
+        dest: "/etc/netplan/99-{{ de_iface }}-dhcp.yaml"
         owner: root
         group: root
         mode: '0600'
@@ -56,35 +68,44 @@
             version: 2
             renderer: networkd
             ethernets:
-              ens8:
+              {{ de_iface }}:
                 dhcp4: true
                 dhcp4-overrides:
                   route-metric: 100
 
-    - name: 8. Применение конфигурации Netplan
+    - name: 10. Применение конфигурации Netplan
       ansible.builtin.command:
         cmd: "netplan apply"
 
-    # 5. Переключаем глобальный дефолтный шлюз
-    - name: 9. Удаление дефолтного русского шлюза из основной таблицы
-      ansible.builtin.command:
-        cmd: "ip route del default via {{ ru_gw }} dev {{ ru_iface }}"
-      failed_when: false
-
-    # 6. Валидация работы
-    - name: 10. Пауза 5 секунд для получения IP по DHCP
+    # 6. Применение и пауза
+    - name: 11. Пауза 5 секунд для получения IP по DHCP
       ansible.builtin.pause:
         seconds: 5
       when: not ansible_check_mode
 
-    - name: 11. Проверка внешнего IP
+    # Прямой опрос ядра Linux (проверяем, появился ли inet IPv4 на интерфейсе)
+    - name: 12. Проверка получения IPv4-адреса на {{ de_iface }} в реальном времени
+      ansible.builtin.shell:
+        cmd: "ip -4 addr show dev {{ de_iface }} | grep -q inet"
+      register: dhcp_ip_check
+      failed_when: dhcp_ip_check.rc != 0
+      changed_when: false
+      when: not ansible_check_mode
+
+    # 7. Переключаем дефолтный маршрут (выполняется только если IP получен!)
+    - name: 13. Удаление дефолтного русского шлюза из основной таблицы
+      ansible.builtin.command:
+        cmd: "ip route del default via {{ ru_gw }} dev {{ ru_iface }}"
+      failed_when: false
+
+    - name: 14. Проверка внешнего IP (запрос через Германию)
       ansible.builtin.shell:
         cmd: "curl -s -4 --connect-timeout 5 icanhazip.com"
       register: external_ip_check
       changed_when: false
       when: not ansible_check_mode
 
-    - name: 12. Вывод проверенного внешнего IP
+    - name: 15. Вывод проверенного внешнего IP
       ansible.builtin.debug:
-        msg: "Успех! Внешний IP виртуалки теперь: {{ external_ip_check.json.ip }}"
+        msg: "Успех! Внешний IP {{ inventory_hostname }} теперь: {{ external_ip_check.stdout | trim }}"
       when: not ansible_check_mode
