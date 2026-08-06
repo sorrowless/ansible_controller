@@ -1,7 +1,7 @@
 [all]
 monitor.openworld.bot
 ru.ix.hyper01 ansible_ip=62.76.115.194 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper02 ansible_ip=185.16.213.62 server_type=hypervisor provider=colocation country=RU german_interface=enp216s0f1 german_ip=91.247.185.162
+ru.ix.hyper02 ansible_ip=185.16.213.62 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper03 ansible_ip=185.16.213.41 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper04 ansible_ip=185.16.213.42 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper05 ansible_ip=185.126.93.2 server_type=hypervisor provider=colocation country=RU
