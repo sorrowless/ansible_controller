@@ -99,3 +99,16 @@ vmalert_additional_alerts:
               labels:
                 aggregation: user_connections_5m
                 retention: "2d"
+
+            # суммарно по пользователю (без доменов и IP) ===
+            - record: xray:user_total_connections_5m:increase
+              expr: |
+                sum by (
+                  country,
+                  telegram_id
+                ) (
+                  increase(xray_access[5m])
+                )
+              labels:
+                aggregation: user_total_connections_5m
+                retention: "2d"
