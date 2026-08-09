@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-swap.yml
+#
+---
+- name: Configure swap
+  hosts: swap
+
+  roles:
+    - { role: geerlingguy.swap, tags: ['swap'] }
