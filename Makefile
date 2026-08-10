@@ -1,4 +1,4 @@
-.PHONY: help prepare daemon sshconfig docker-services traefik iptables update-from-upstream xray docker common
+.PHONY: help prepare daemon sshconfig docker-services traefik iptables update-from-upstream xray docker common bitwarden
 
 VENV := .venv
 PYTHON ?= 3.12
@@ -57,3 +57,6 @@ xray: prepare
 
 common: prepare iptables
 		$(call run_with_host,./playbooks/configuration/run-server-common.yml)
+
+bitwarden: prepare
+		$(call run_with_host,./playbooks/services/run-bitwarden.yml)
