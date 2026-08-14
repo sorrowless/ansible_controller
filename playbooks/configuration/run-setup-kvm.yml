@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-setup-kvm.yml
+#
+---
+- name: Настройка KVM на новых гипервизорах
+  hosts: hypervisors
+  become: true
+  roles:
+    - jony321.kvm_hypervisors

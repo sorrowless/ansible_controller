@@ -1,7 +1,10 @@
 #!/usr/bin/env -S ansible-playbook
 #
-# Playbook to install and run xray container on
-# target nodes. Run it like usual executable script:
+# Playbook to install and run xray on target nodes.
+# Modes (mutually exclusive for local vs swarm):
+#   - xray_local_install: true  → official install-release.sh + systemd
+#   - xray_swarm_deploy defined → Docker Swarm
+#   - otherwise                 → docker compose
 #
 # > ./run-xray.yml
 
@@ -24,6 +27,108 @@
           - xray_conf is defined
         fail_msg: "Variable 'xray_conf' is undefined!"
 
+    - name: Check local and swarm modes are mutually exclusive
+      ansible.builtin.assert:
+        that:
+          - not ((xray_local_install | default(false) | bool) and (xray_swarm_deploy is defined))
+        fail_msg: "Set either xray_local_install or xray_swarm_deploy, not both."
+
+    - name: Install Xray locally via official script
+      when:
+        - xray_local_install | default(false) | bool
+      block:
+        - name: Remove Xray docker compose when switching to local
+          community.docker.docker_compose_v2:
+            state: absent
+            project_name: xray
+            definition:
+              services:
+                xray:
+                  image: "{{ image_name }}"
+                  container_name: "{{ xray_container_name | default('xray') }}"
+          failed_when: false
+
+        - name: Remove Xray swarm stack when switching to local
+          community.docker.docker_stack:
+            state: absent
+            name: "{{ xray_container_name | default('xray') }}"
+          failed_when: false
+
+        - name: Ensure curl for Xray installer
+          ansible.builtin.package:
+            name: curl
+            state: present
+
+        - name: Download official Xray install script
+          ansible.builtin.get_url:
+            url: https://github.com/XTLS/Xray-install/raw/main/install-release.sh
+            dest: /tmp/xray-install-release.sh
+            mode: "0755"
+
+        - name: Install Xray via official script
+          ansible.builtin.command:
+            argv: "{{ ['bash', '/tmp/xray-install-release.sh', 'install'] + (['--version', xray_version] if xray_version is defined else []) }}"
+          register: xray_install
+          changed_when: >-
+            'Installing' in xray_install.stdout
+            or 'installed:' in xray_install.stdout
+
+        - name: Ensure Xray config directory (official path)
+          ansible.builtin.file:
+            path: "{{ xray_conf_dir | default('/usr/local/etc/xray') }}"
+            state: directory
+            mode: "0755"
+            owner: root
+            group: root
+
+        - name: Ensure Xray config.json
+          ansible.builtin.copy:
+            dest: "{{ xray_conf_dir | default('/usr/local/etc/xray') }}/config.json"
+            content: "{{ xray_conf | to_nice_json(indent=2) }}"
+            mode: "0644"
+          register: xray_local_confile
+
+        - name: Enable and restart Xray systemd service
+          ansible.builtin.systemd:
+            name: xray
+            enabled: true
+            state: restarted
+            daemon_reload: true
+          when: xray_install.changed or xray_local_confile.changed
+
+    - name: Remove local Xray when switching to docker or swarm
+      when:
+        - not (xray_local_install | default(false) | bool)
+      block:
+        - name: Check for local Xray binary
+          ansible.builtin.stat:
+            path: /usr/local/bin/xray
+          register: xray_local_bin
+
+        - name: Ensure curl for Xray remover
+          ansible.builtin.package:
+            name: curl
+            state: present
+          when: xray_local_bin.stat.exists
+
+        - name: Download official Xray install script for remove
+          ansible.builtin.get_url:
+            url: https://github.com/XTLS/Xray-install/raw/main/install-release.sh
+            dest: /tmp/xray-install-release.sh
+            mode: "0755"
+          when: xray_local_bin.stat.exists
+
+        - name: Remove local Xray via official script
+          ansible.builtin.command:
+            argv:
+              - bash
+              - /tmp/xray-install-release.sh
+              - remove
+              - --purge
+          when: xray_local_bin.stat.exists
+          register: xray_remove
+          changed_when: "'removed:' in xray_remove.stdout"
+
     - name: Ensure xray config directory
       ansible.builtin.file:
         dest: "{{ xray_conf_dir | default('/etc/xray') }}"
@@ -31,6 +136,8 @@
         mode: "0755"
         owner: root
         group: root
+      when:
+        - not (xray_local_install | default(false) | bool)
       tags: test
 
     - name: Ensure xray config file
@@ -39,6 +146,7 @@
         content: "{{ xray_conf | to_nice_yaml(indent=2) }}"
       register: confile
       when:
+        - not (xray_local_install | default(false) | bool)
         - xray_swarm_deploy is not defined
       tags: test
 
@@ -46,6 +154,7 @@
       ansible.builtin.set_fact:
         networks: "{{ xray_networks }}"
       when:
+        - not (xray_local_install | default(false) | bool)
         - xray_networks is defined
 
     - name: Start xray container
@@ -66,10 +175,12 @@
               networks: "{{ networks.keys() | list }}"
           networks: "{{ networks }}"
       when:
+        - not (xray_local_install | default(false) | bool)
         - xray_swarm_deploy is not defined
 
     - name: Deploy xray service in swarm
       when:
+        - not (xray_local_install | default(false) | bool)
         - xray_swarm_deploy is defined
       block:
         - name: Ensure pip installation

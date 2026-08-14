@@ -1,0 +1,52 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run auditd service on target nodes# Run it like usual executable script:
+#
+# > ./run-auditd.yml
+#
+# For configuration vars look at role variables or host_vars/.example
+# directory.
+---
+- name: Configure auditd
+  hosts: auditd
+  remote_user: root
+
+  tasks:
+
+  - name: Install auditd
+    package:
+      name: "auditd"
+      state: present
+
+  - name: Deploy auditd.conf
+    copy:
+      dest: /etc/audit/auditd.conf
+      content: "{{ auditd_conf }}"
+      owner: root
+      group: root
+      mode: "0640"
+      notify: restart auditd
+    when: auditd_conf is defined
+
+  - name: Deploy rules.d files
+    copy:
+      dest: "/etc/audit/rules.d/{{ item.key }}"
+      content: "{{ item.value }}"
+      owner: root
+      group: root
+      mode: "0640"
+      loop: "{{ auditd_rulesd | dict2items }}"
+      notify: restart auditd
+    when: auditd_rulesd is defined
+
+  - name: Enable and start auditd
+    service:
+      name: auditd
+      enabled: true
+      state: started
+
+  handlers:
+  - name: restart auditd
+    service:
+      name: auditd
+      state: restarted

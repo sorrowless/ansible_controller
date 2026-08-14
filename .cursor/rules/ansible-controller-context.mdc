@@ -1,0 +1,24 @@
+---
+description: Контекст Ansible Controller — читать docs/ и AGENTS.md
+alwaysApply: true
+---
+
+# Ansible Controller — контекст для агента
+
+Перед изменениями в репозитории читай [`AGENTS.md`](../../AGENTS.md) и [`docs/README.md`](../../docs/README.md).
+
+## Маршрутизация
+
+- Плейбуки → `docs/guides/running-playbooks.md`, `docs/reference/playbooks-catalog.md`
+- Хосты, inventory, vars → `docs/guides/configuring-hosts.md`
+- tools/, Makefile → `docs/guides/make-and-tools.md`, `docs/reference/tools-scripts.md`
+- CI → `docs/guides/ci-automation.md`
+- daemon/ → `daemon/readme.md`, `daemon/plans/`
+- Планы задач → `plans/README.md`
+
+## Правила
+
+- Не создавать дублирующую документацию вне `docs/` и component-readme без запроса пользователя.
+- Роли в `roles/` не коммитятся; списки — `tools/roles_lists/`.
+- CI-маппинг — `tools/ci-config.yml`.
+- Composite-плейбуки — `playbooks/run-*-full.yml` в корне `playbooks/`, не подкаталог `full-files/`.
