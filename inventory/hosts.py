@@ -1,5 +1,43 @@
 #!/usr/bin/env python3
 
+"""
+Generate a combined Ansible inventory from host_vars and a static inventory.
+
+Groups are derived from YAML filenames in host_vars/<host>/:
+  host_vars/web-01/nginx.yml
+  host_vars/web-01/app.yml
+  host_vars/web-02/nginx.yml
+
+produces:
+  [nginx]
+  web-01 
+  web-02
+  [app]
+  web-01
+
+The resulting inventory is merged with inventory/hosts:
+  inventory/hosts + generated groups -> dynamic JSON inventory
+
+Example:
+inventory/hosts
+  [all-nginx]
+  web-01
+  web-02
+
+produces:
+  [nginx]
+  web-01 
+  web-02
+  [app]
+  web-01
+  [all-nginx]
+  web-01
+  web-02
+
+Static host/group variables are preserved; hosts and groups with the same
+names are merged and duplicates are removed.
+"""
+
 import json
 import subprocess
 import sys
