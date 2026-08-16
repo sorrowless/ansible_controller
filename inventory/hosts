@@ -22,15 +22,15 @@ deu06.vminsert.openworld.bot
 deu07.vminsert.openworld.bot
 eng01.vminsert.openworld.bot
 # Промежуточные серверы мониторинга (XRay-коллекторы)
-deu08.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-deu09.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-deu10.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-deu11.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-deu12.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-deu13.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-nld02.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-eng02.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
-usa03.vminsert.openworld.bot ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
+eng02.vminsert.openworld.bot ansible_ip=194.150.166.100 country=GBR provider=hosters
+deu08.vminsert.openworld.bot ansible_ip=93.152.217.218 country=DEU provider=hosters
+deu09.vminsert.openworld.bot ansible_ip=91.219.23.161 country=DEU provider=hosters
+deu10.vminsert.openworld.bot ansible_ip=194.87.71.246 country=DEU provider=hosters
+deu11.vminsert.openworld.bot ansible_ip=217.60.68.2 country=DEU provider=hosters
+deu12.vminsert.openworld.bot ansible_ip=217.60.68.3 country=DEU provider=hosters
+deu13.vminsert.openworld.bot ansible_ip=45.128.99.143 country=DEU provider=webhost
+nld02.vminsert.openworld.bot ansible_ip=217.60.23.6 country=NLD provider=hosters
+usa03.vminsert.openworld.bot ansible_ip=184.174.97.32 country=USA provider=regxa
 
 62.84.115.240 ansible_ip=62.84.115.240 ansible_domainname=62.84.115.240
 62.84.126.185 ansible_ip=62.84.126.185 ansible_domainname=62.84.126.185
@@ -452,18 +452,6 @@ ansible_python_interpreter=/usr/bin/python3
 
 [server_common]
 monitor.openworld.bot
-rus01.vminsert.openworld.bot
-nld01.vminsert.openworld.bot
-usa01.vminsert.openworld.bot
-usa02.vminsert.openworld.bot
-deu01.vminsert.openworld.bot
-deu02.vminsert.openworld.bot
-deu03.vminsert.openworld.bot
-deu04.vminsert.openworld.bot
-deu05.vminsert.openworld.bot
-deu06.vminsert.openworld.bot
-deu07.vminsert.openworld.bot
-eng01.vminsert.openworld.bot
 ru.ix.hyper01
 ru.ix.hyper02
 ru.ix.hyper03

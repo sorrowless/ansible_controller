@@ -1,0 +1,11 @@
+---
+metainfo:
+  placement: "{{ country }}, {{ provider }}"
+  company: AKH
+
+ansible_domainname: "{{ inventory_hostname }}"
+ansible_host: "{{ ansible_ip }}"
+ansible_port: "{{ sshd_port }}"
+ansible_user: root
+ansible_become: true
+ansible_ssh_common_args: '-o PreferredAuthentications=password -o PubkeyAuthentication=no'
