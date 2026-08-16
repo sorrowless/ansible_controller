@@ -1,3 +1,4 @@
 ---
 sysctl_settings:
   net.netfilter.nf_conntrack_max: 1048576
+  net.ipv4.ip_forward: 1

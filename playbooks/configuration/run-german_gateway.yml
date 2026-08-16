@@ -1,0 +1,14 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-german_gateway.yml
+#
+---
+- name: Деплой немецкого шлюза на Гипервизорах
+  hosts: hypervisors
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: jony321.german_gateway
