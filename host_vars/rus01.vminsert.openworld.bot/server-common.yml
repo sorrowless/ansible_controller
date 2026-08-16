@@ -1,4 +1,0 @@
----
-# Hosts name
-server_common_host:
-  dns_hostname: "{{ ansible_domainname }}"

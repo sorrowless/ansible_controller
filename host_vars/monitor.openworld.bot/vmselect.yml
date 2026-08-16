@@ -4,18 +4,6 @@ vmselect_docker_image: "victoriametrics/vmselect:v1.113.0-cluster"
 vmselect_docker_network_name: prom_network
 vmselect_command:
 - '-storageNode={{ vmstorage_container_name }}:8401'
-- '-storageNode=rus01.vmstorage.openworld.bot:8401'
-- '-storageNode=nld01.vmstorage.openworld.bot:8401'
-- '-storageNode=usa01.vmstorage.openworld.bot:8401'
-- '-storageNode=usa02.vmstorage.openworld.bot:8401'
-- '-storageNode=eng01.vmstorage.openworld.bot:8401'
-- '-storageNode=deu01.vmstorage.openworld.bot:8401'
-- '-storageNode=deu02.vmstorage.openworld.bot:8401'
-- '-storageNode=deu03.vmstorage.openworld.bot:8401'
-- '-storageNode=deu04.vmstorage.openworld.bot:8401'
-- '-storageNode=deu05.vmstorage.openworld.bot:8401'
-- '-storageNode=deu06.vmstorage.openworld.bot:8401'
-- '-storageNode=deu07.vmstorage.openworld.bot:8401'
 # новые промежуточные ноды для хранения метрик
 - '-storageNode=93.152.217.218:8401'  # deu08
 - '-storageNode=91.219.23.161:8401'  # deu09
