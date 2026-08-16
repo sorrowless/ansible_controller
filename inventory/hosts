@@ -9,20 +9,8 @@ ru.ix.hyper06 ansible_ip=185.218.180.6 server_type=hypervisor provider=colocatio
 ru.ix.hyper07 ansible_ip=185.218.180.7 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper08 ansible_ip=185.218.180.8 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper09 ansible_ip=185.218.180.9 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper10 ansible_ip=185.218.180.10 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper11 ansible_ip=185.218.180.21 server_type=hypervisor provider=colocation country=RU
-rus01.vminsert.openworld.bot
-nld01.vminsert.openworld.bot
-usa01.vminsert.openworld.bot
-usa02.vminsert.openworld.bot
-deu01.vminsert.openworld.bot
-deu02.vminsert.openworld.bot
-deu03.vminsert.openworld.bot
-deu04.vminsert.openworld.bot
-deu05.vminsert.openworld.bot
-deu06.vminsert.openworld.bot
-deu07.vminsert.openworld.bot
-eng01.vminsert.openworld.bot
+ru.ix.hyper10 ansible_ip=185.218.180.10 server_type=hypervisor provider=colocation country=RU german_interface="enp175s0f1" german_ip="91.247.185.173"
+ru.ix.hyper11 ansible_ip=185.218.180.21 server_type=hypervisor provider=colocation country=RU german_interface="enp175s0f1" german_ip="91.247.185.174"
 # Промежуточные серверы мониторинга (XRay-коллекторы)
 eng02.vminsert.openworld.bot ansible_ip=194.150.166.100 country=GBR provider=hosters
 deu08.vminsert.openworld.bot ansible_ip=93.152.217.218 country=DEU provider=hosters
@@ -489,6 +477,8 @@ ru.ix.hyper10.wx.037 ansible_ip=78.24.92.38 server_type=WX provider=colocation c
 ru.ix.hyper10.wx.038 ansible_ip=78.24.92.39 server_type=WX provider=colocation country=RU
 ru.ix.hyper10.wx.039 ansible_ip=78.24.92.40 server_type=WX provider=colocation country=RU
 ru.ix.hyper10.wx.040 ansible_ip=78.24.92.41 server_type=WX provider=colocation country=RU
+ru.ix.hyper10.wx.041 ansible_ip=78.24.92.84 server_type=WX provider=colocation country=RU
+
 
 ru.ix.hyper11.wx.001 ansible_ip=78.24.92.42 server_type=WX provider=colocation country=RU
 ru.ix.hyper11.wx.002 ansible_ip=78.24.92.43 server_type=WX provider=colocation country=RU
@@ -530,6 +520,7 @@ ru.ix.hyper11.wx.037 ansible_ip=78.24.92.78 server_type=WX provider=colocation c
 ru.ix.hyper11.wx.038 ansible_ip=78.24.92.79 server_type=WX provider=colocation country=RU
 ru.ix.hyper11.wx.039 ansible_ip=78.24.92.80 server_type=WX provider=colocation country=RU
 ru.ix.hyper11.wx.040 ansible_ip=78.24.92.81 server_type=WX provider=colocation country=RU
+ru.ix.hyper11.wx.041 ansible_ip=78.24.92.82 server_type=WX provider=colocation country=RU
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -620,18 +611,6 @@ ru.ix.hyper08
 ru.ix.hyper09
 ru.ix.hyper10
 ru.ix.hyper11
-rus01.vminsert.openworld.bot
-nld01.vminsert.openworld.bot
-usa01.vminsert.openworld.bot
-usa02.vminsert.openworld.bot
-deu01.vminsert.openworld.bot
-deu02.vminsert.openworld.bot
-deu03.vminsert.openworld.bot
-deu04.vminsert.openworld.bot
-deu05.vminsert.openworld.bot
-deu06.vminsert.openworld.bot
-deu07.vminsert.openworld.bot
-eng01.vminsert.openworld.bot
 deu08.vminsert.openworld.bot
 deu09.vminsert.openworld.bot
 deu10.vminsert.openworld.bot
@@ -1076,6 +1055,7 @@ ru.ix.hyper10.wx.037
 ru.ix.hyper10.wx.038
 ru.ix.hyper10.wx.039
 ru.ix.hyper10.wx.040
+ru.ix.hyper10.wx.041
 ru.ix.hyper11.wx.001
 ru.ix.hyper11.wx.002
 ru.ix.hyper11.wx.003
@@ -1116,6 +1096,7 @@ ru.ix.hyper11.wx.037
 ru.ix.hyper11.wx.038
 ru.ix.hyper11.wx.039
 ru.ix.hyper11.wx.040
+ru.ix.hyper11.wx.041
 
 [monitoring_clients:children]
 xray_monitoring_clients
@@ -1171,5 +1152,5 @@ ru.ix.hyper09
 ru.ix.hyper10
 ru.ix.hyper11
 
-[grafana]
-ru.ix.hyper02.wx.041
+[german_nic:children]
+tg_proxy_hosts_v2
