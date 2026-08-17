@@ -1,0 +1,14 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Playbook to install and run clamav on target nodes. Run it like usual
+# executable script:
+#
+# > ./run-clamav.yml
+---
+- name: Configure target servers
+  hosts: clamav_hosts
+  become: true
+  remote_user: root
+
+  roles:
+    - { role: geerlingguy.clamav, tags: ['clamav'] }
