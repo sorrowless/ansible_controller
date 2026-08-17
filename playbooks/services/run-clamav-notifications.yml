@@ -1,0 +1,206 @@
+---
+- name: Run Clamav notifications
+  hosts: clamav_hosts
+  become: true
+
+  vars:
+    clamav_cpu_limit: 10
+    clamav_dir_to_scan: "/"
+    clamav_log_dir: "/var/log/clamav"
+
+    clamav_telegram_enabled: true
+    clamav_telegram_token: ""
+    clamav_telegram_chatid: ""
+    clamav_telegram_proxy: ""
+
+    clamav_msg_subject: "** PROBLEM - Malware found on {{ ansible_host }} **"
+    clamav_msg_info: "<b>The daily scan on {{ ansible_host }} has detected malware. Please check the attached log snippet.</b>"
+
+    clamav_cron_hour: "3"
+    clamav_cron_minute: "0"
+
+    # директория textfile collector'а node_exporter (тот же путь, что смонтирован в docker-контейнер node_exporter)
+    clamav_textfile_dir: "{{ node_textfile_collector_dir }}"
+    #clamav_exclude_files: ""
+    clamav_exclude_dir: "^/sys"
+
+    clamav_required_packages:
+      - clamav
+      - clamav-docs
+      - clamav-daemon
+      - clamav-freshclam
+      - arc
+      - arj
+      - bzip2
+      - cabextract
+      - lzop
+      - nomarch
+      - p7zip
+      - pax
+      - tnef
+      - unrar-free
+      - unzip
+      - curl
+      - cpulimit
+
+  tasks:
+    # - name: Install required packages
+    #   ansible.builtin.apt:
+    #     name: "{{ clamav_required_packages }}"
+    #     state: present
+    #     update_cache: true
+
+    - name: Ensure log directory exists
+      ansible.builtin.file:
+        path: "{{ clamav_log_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0750"
+
+    - name: Ensure textfile_collector directory exists
+      ansible.builtin.file:
+        path: "{{ node_textfile_collector_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Install script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/clamav-scan.sh
+        owner: root
+        group: root
+        mode: "0750"
+        content: |
+          #!/bin/bash
+          set -uo pipefail
+
+          if ! dpkg -s {{ clamav_required_packages | join(" ") }} >/dev/null 2>&1; then
+                  echo "Before running this script, install the following packages: {{ clamav_required_packages | join(' ') }}"
+                  exit 0
+          fi
+
+          TEXTFILE_DIR="{{ clamav_textfile_dir }}"
+          METRIC_FILE="${TEXTFILE_DIR}/clamav_scan.prom"
+          TMP_FILE="$(mktemp "${TEXTFILE_DIR}/.clamav_scan.XXXXXX")"
+
+          START_TS=$(date +%s)
+          TOTAL_INFECTED=0
+          TOTAL_SCANNED=0
+          WORST_EXIT=0
+
+          for S in {{ clamav_dir_to_scan }}; do
+          	LOG_FILE="{{ clamav_log_dir }}/clamav-$(date +'%Y-%m-%d').log"
+          	DIRSIZE=$(du -sh "$S" 2>/dev/null | cut -f1)
+          	echo "Starting a daily scan of "$S" directory. Amount of data to be scanned is "$DIRSIZE"."
+
+          	cpulimit -z --exe clamscan -l "{{ clamav_cpu_limit }}" &
+          	clamscan -ri --exclude-dir="{{ clamav_exclude_dir }}"{% if clamav_exclude_files %} --exclude="{{ clamav_exclude_files }}"{% endif %} "$S" >> "$LOG_FILE"
+          	SCAN_EXIT=$?
+          	[ "$SCAN_EXIT" -gt "$WORST_EXIT" ] && WORST_EXIT=$SCAN_EXIT
+
+          	# get the values from this run's tail of the log
+          	MALWARE=$(tail "$LOG_FILE" | grep "Infected files" | grep -oP '[0-9]+$' || echo 0)
+          	SCANNED=$(tail "$LOG_FILE" | grep "Scanned files" | grep -oP '[0-9]+$' || echo 0)
+          	MALWARE=${MALWARE:-0}
+          	SCANNED=${SCANNED:-0}
+
+          	TOTAL_INFECTED=$((TOTAL_INFECTED + MALWARE))
+          	TOTAL_SCANNED=$((TOTAL_SCANNED + SCANNED))
+
+          {% if clamav_telegram_enabled %}
+          	if [ "$MALWARE" != "0" ]; then
+          		MSG_INFO="{{ clamav_msg_info }}%0a%0a<code>$(tail $LOG_FILE)</code>"
+          		curl -s -X POST https://api.telegram.org/bot{{ clamav_telegram_token }}/sendMessage \
+          			-d chat_id="{{ clamav_telegram_chatid }}" \
+          			-d parse_mode=HTML \
+          			-d text="$MSG_INFO"{% if clamav_telegram_proxy %} --proxy "{{ clamav_telegram_proxy }}"{% endif %}
+
+          	fi
+          {% endif %}
+          done
+
+          END_TS=$(date +%s)
+          DURATION=$((END_TS - START_TS))
+
+          {
+            echo "# HELP clamav_scan_infected_files Infected files found in the last scan"
+            echo "# TYPE clamav_scan_infected_files gauge"
+            echo "clamav_scan_infected_files ${TOTAL_INFECTED}"
+
+            echo "# HELP clamav_scan_scanned_files Files scanned in the last scan"
+            echo "# TYPE clamav_scan_scanned_files gauge"
+            echo "clamav_scan_scanned_files ${TOTAL_SCANNED}"
+
+            echo "# HELP clamav_scan_duration_seconds Duration of the last scan in seconds"
+            echo "# TYPE clamav_scan_duration_seconds gauge"
+            echo "clamav_scan_duration_seconds ${DURATION}"
+
+            echo "# HELP clamav_scan_last_run_timestamp_seconds Unix timestamp of the last scan completion"
+            echo "# TYPE clamav_scan_last_run_timestamp_seconds gauge"
+            echo "clamav_scan_last_run_timestamp_seconds ${END_TS}"
+
+            echo "# HELP clamav_scan_exit_code Worst clamscan exit code across scanned dirs (0=clean,1=infected,2=error)"
+            echo "# TYPE clamav_scan_exit_code gauge"
+            echo "clamav_scan_exit_code ${WORST_EXIT}"
+          } > "${TMP_FILE}"
+
+          mv "${TMP_FILE}" "${METRIC_FILE}"
+          chmod 644 "${METRIC_FILE}"
+
+          exit 0
+
+    - name: Remove legacy cron task if present
+      ansible.builtin.cron:
+        name: "ClamAV daily scan"
+        state: absent
+        user: root
+
+    - name: Install systemd service unit
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/clamav-scan.service
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=ClamAV daily scan with node_exporter metrics export
+
+          [Service]
+          Type=oneshot
+          ExecStart=/usr/local/bin/clamav-scan.sh
+      notify: Reload systemd
+
+    - name: Install systemd timer unit
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/clamav-scan.timer
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=Run ClamAV scan daily
+
+          [Timer]
+          OnCalendar=*-*-* {{ "%02d" | format(clamav_cron_hour | int) }}:{{ "%02d" | format(clamav_cron_minute | int) }}:00
+          RandomizedDelaySec=1800
+          Persistent=true
+
+          [Install]
+          WantedBy=timers.target
+      notify: Reload systemd
+
+    - name: Flush handlers before enabling timer
+      ansible.builtin.meta: flush_handlers
+
+    - name: Enable and start clamav-scan.timer
+      ansible.builtin.systemd:
+        name: clamav-scan.timer
+        enabled: true
+        state: started
+
+  handlers:
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true
