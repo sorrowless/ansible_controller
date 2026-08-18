@@ -1,0 +1,15 @@
+#!/usr/bin/env ansible-playbook
+#
+# Playbook to install and run Jitsi 
+# Run it like usual executable script:
+#
+# > ./run-jitsi.yml
+#
+# For configuration vars look at roles variables
+#
+---
+- name: Configure target servers
+  hosts: jitsi
+  remote_user: root
+  roles:
+    - { role: one-mind.jitsi, tags: ['jitsi'] }
