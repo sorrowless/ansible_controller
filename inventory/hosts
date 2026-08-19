@@ -1,16 +1,17 @@
-[server_common]
-
 [iptables:children]
-server_common
+server-common
 
 [pwpolicy:children]
-server_common
+server-common
 
 [sshd:children]
-server_common
+server-common
 
 [sudoers:children]
-server_common
+server-common
 
 [atop:children]
-server_common
+server-common
+
+[docker_hosts:children]
+server-common
