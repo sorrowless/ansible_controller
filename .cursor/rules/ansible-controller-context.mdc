@@ -22,3 +22,4 @@ alwaysApply: true
 - Роли в `roles/` не коммитятся; списки — `tools/roles_lists/`.
 - CI-маппинг — `tools/ci-config.yml`.
 - Composite-плейбуки — `playbooks/run-*-full.yml` в корне `playbooks/`, не подкаталог `full-files/`.
+- Демон - в `daemon`, его документация внутри этого подкаталога, код демона не расползается никуда за пределы каталога `daemon`.

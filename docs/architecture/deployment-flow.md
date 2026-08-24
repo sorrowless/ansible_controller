@@ -79,7 +79,7 @@ HOST=myhost.example.com make traefik
 |--------|-------------------|
 | `make <target>` | Частые деплои с выбором хоста через `HOST` или fzf |
 | `ci-script.py --preview` | GitLab CI / PR: diff vars → список ansible-команд |
-| `make daemon` + `POST /deploy` | Автоматический провижининг VM (node-exporter) |
+| `make daemon` + `POST /deploy` | Автоматический провижининг VM |
 
 ## Связь host_vars и Ansible groups
 
