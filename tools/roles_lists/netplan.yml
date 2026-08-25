@@ -1,0 +1,4 @@
+---
+- src: https://github.com/mrlesmithjr/ansible-netplan.git
+  version: master
+  name: mrlesmithjr.netplan

@@ -69,6 +69,12 @@ cp host_vars/.examples/idp.domain.com/traefik.yml host_vars/myhost.example.com/
 HOST=myhost.example.com make traefik
 ```
 
+Или через Make с интерактивным выбором (для более контролируемого запуска):
+
+```bash
+make traefik
+```
+
 ## 6. Проверить список хостов
 
 ```bash

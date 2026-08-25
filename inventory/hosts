@@ -1,3 +1,5 @@
+[server-common]
+
 [iptables:children]
 server-common
 

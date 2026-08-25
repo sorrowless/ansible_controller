@@ -45,4 +45,4 @@ Ansible Controller — каркас для деплоя ПО на удалённ
 - Инвентарь по умолчанию: `inventory/hosts` ([`ansible.cfg`](ansible.cfg))
 - Пароль vault: `tools/get-vault-pass` (переменная `ANSIBLE_VAULT_REAL_PASS`)
 - Become/vault для плейбуков: `vars/extra.yaml` + `. ./tools/set-vars.sh`
-- Make-таргеты с хостами: `HOST=...` или интерактивный `fzf` через `tools/select-hosts.sh`
+- Make-таргеты с хостами: `export HOST=...` для выбора хоста для деплоя или интерактивный `fzf` через `tools/select-hosts.sh`
