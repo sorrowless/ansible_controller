@@ -478,7 +478,7 @@ ru.ix.hyper10.wx.038 ansible_ip=78.24.92.39 server_type=WX provider=colocation c
 ru.ix.hyper10.wx.039 ansible_ip=78.24.92.40 server_type=WX provider=colocation country=RU
 ru.ix.hyper10.wx.040 ansible_ip=78.24.92.41 server_type=WX provider=colocation country=RU
 ru.ix.hyper10.wx.041 ansible_ip=78.24.92.84 server_type=WX provider=colocation country=RU
-ru.ix.hyper10.wx.042 ansible_ip=185.218.180.2 server_type=WX provider=colocation country=RU
+ru.ix.hyper10.wx.042 ansible_ip=185.218.180.2 server_type=free_proxy provider=colocation country=RU
 
 ru.ix.hyper11.wx.001 ansible_ip=78.24.92.42 server_type=WX provider=colocation country=RU
 ru.ix.hyper11.wx.002 ansible_ip=78.24.92.43 server_type=WX provider=colocation country=RU
