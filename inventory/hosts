@@ -9,7 +9,7 @@ ru.ix.hyper06 ansible_ip=185.218.180.6 server_type=hypervisor provider=colocatio
 ru.ix.hyper07 ansible_ip=185.218.180.7 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper08 ansible_ip=185.218.180.8 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper09 ansible_ip=185.218.180.9 server_type=hypervisor provider=colocation country=RU
-ru.ix.hyper10 ansible_ip=185.218.180.10 server_type=hypervisor provider=colocation country=RU german_interface="enp175s0f1" german_ip="91.247.185.173"
+ru.ix.hyper10 ansible_ip=185.218.180.10 server_type=hypervisor provider=colocation country=RU
 ru.ix.hyper11 ansible_ip=185.218.180.21 server_type=hypervisor provider=colocation country=RU german_interface="enp175s0f1" german_ip="91.247.185.174"
 # Промежуточные серверы мониторинга (XRay-коллекторы)
 eng02.vminsert.openworld.bot ansible_ip=194.150.166.100 country=GBR provider=hosters
