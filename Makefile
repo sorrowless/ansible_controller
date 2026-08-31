@@ -1,3 +1,5 @@
+include tools/generated-playbooks.mk
+
 .PHONY: help prepare daemon sshconfig docker-services traefik iptables update-from-upstream xray docker common bitwarden
 
 VENV := .venv
@@ -8,7 +10,8 @@ DAEMON_PORT ?= 8000
 
 define run_with_host
 	@export HOST="$${HOST:-$$(bash tools/select-hosts.sh)}"; \
-	. $(VENV)/bin/activate && $(1) -l $$HOST
+	. $(VENV)/bin/activate && $(1) -l $$HOST && \
+	./playbooks/utils/run-checks.yml -l $$HOST
 endef
 
 help:
@@ -40,23 +43,5 @@ daemon: prepare
 sshconfig: prepare
 		@. $(VENV)/bin/activate && ./playbooks/utils/run-desktop.yml -c 'localhost,' -t sshconfig
 
-docker-services: prepare
-		$(call run_with_host,./playbooks/services/run-docker-services.yml)
-
-traefik: prepare
-		$(call run_with_host,./playbooks/services/run-traefik.yml)
-
-iptables: prepare
-		$(call run_with_host,./playbooks/configuration/run-iptables.yml)
-
-docker: prepare
-		$(call run_with_host,./playbooks/services/run-docker.yml)
-
-xray: prepare
-		$(call run_with_host,./playbooks/vpns/run-xray.yml)
-
-common: prepare iptables
-		$(call run_with_host,./playbooks/configuration/run-server-common.yml)
-
-bitwarden: prepare
-		$(call run_with_host,./playbooks/services/run-bitwarden.yml)
+generate-playbooks:
+	python3 tools/generate-make-targets.py
