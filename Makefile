@@ -16,19 +16,16 @@ endef
 
 help:
 		@echo 'Targets:'
-		@echo '  make common                - deploy common server configuration like hostname and limits (HOST or fzf)'
 		@echo '  make daemon                - start Ansible provisioner API (127.0.0.1:8000)'
-		@echo '  make docker                - deploy docker (HOST or fzf)'
-		@echo '  make docker-services       - deploy docker-services (HOST or fzf)'
-		@echo '  make iptables              - deploy iptables (HOST or fzf)'
 		@echo '  make prepare               - bootstrap uv, venv, poetry, and daemon deps (macOS / Ubuntu)'
 		@echo '  make sshconfig             - change ssh config on localhost'
-		@echo '  make traefik               - deploy traefik with its config (HOST or fzf)'
 		@echo '  make update-from-upstream  - update from upstream if "upstream" remote exists'
-		@echo '  make xray                  - deploy xray server in docker (HOST or fzf)'
+		@echo '  make generate-playbooks    - generate Make targets for Ansible playbooks into tools/generated-playbooks.mk'
+		@echo '                              existing Make targets are skipped and not added to the generated .mk file'
 		@echo ''
 		@echo 'HOST can be one host or comma-separated: HOST=ru01.sbog.org,us03.sbog.org'
 		@echo 'Without HOST, fzf prompts for host(s) from host_vars/'
+
 
 prepare:
 		@bash tools/prepare.sh "$(PYTHON)"
@@ -44,4 +41,4 @@ sshconfig: prepare
 		@. $(VENV)/bin/activate && ./playbooks/utils/run-desktop.yml -c 'localhost,' -t sshconfig
 
 generate-playbooks:
-	python3 tools/generate-make-targets.py
+		python3 tools/generate-make-targets.py
