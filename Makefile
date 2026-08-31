@@ -1,6 +1,6 @@
 include tools/generated-playbooks.mk
 
-.PHONY: help prepare daemon sshconfig docker-services traefik iptables update-from-upstream xray docker common bitwarden
+.PHONY: help prepare daemon sshconfig update-from-upstream generate-playbooks
 
 VENV := .venv
 PYTHON ?= 3.12

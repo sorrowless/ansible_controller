@@ -42,26 +42,34 @@ def main():
 
     generated = 0
     skipped = 0
+    generated_targets = []
+    lines = []
+
+    for playbook in playbooks:
+        # run-nginx.yml -> nginx
+        target = playbook.stem.removeprefix("run-")
+
+        if target in existing_targets:
+            print(f"Skipping existing target: {target}")
+            skipped += 1
+            continue
+
+        path = f"./{playbook.as_posix()}"
+
+        lines.append(f"{target}: prepare\n")
+        lines.append(f"\t$(call run_with_host,{path})\n\n")
+
+        generated += 1
+        generated_targets.append(target)
 
     with OUTPUT_FILE.open("w") as f:
         f.write("# This file is generated automatically.\n")
         f.write("# DO NOT EDIT MANUALLY.\n\n")
 
-        for playbook in playbooks:
-            # run-nginx.yml -> nginx
-            target = playbook.stem.removeprefix("run-")
+        if generated_targets:
+            f.write(".PHONY: " + " ".join(generated_targets) + "\n\n")
 
-            if target in existing_targets:
-                print(f"Skipping existing target: {target}")
-                skipped += 1
-                continue
-
-            path = f"./{playbook.as_posix()}"
-
-            f.write(f"{target}: prepare\n")
-            f.write(f"\t$(call run_with_host,{path})\n\n")
-
-            generated += 1
+        f.writelines(lines)
 
     print(
         f"Generated {generated} targets, "
