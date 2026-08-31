@@ -41,4 +41,13 @@ sshconfig: prepare
 		@. $(VENV)/bin/activate && ./playbooks/utils/run-desktop.yml -c 'localhost,' -t sshconfig
 
 generate-playbooks:
-		python3 tools/generate-make-targets.py
+		python3 tools/generate-make-targets.py; \
+
+%:
+		@if [ -z "$(GENERATED_ONCE)" ]; then \
+				$(MAKE) GENERATED_ONCE=1 generate-playbooks; \
+				$(MAKE) $@; \
+		else \
+				echo "Unknown target: $@" >&2; \
+				exit 1; \
+		fi
