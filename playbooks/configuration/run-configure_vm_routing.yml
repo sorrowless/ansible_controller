@@ -53,7 +53,7 @@
       ansible.builtin.debug:
         msg: "Топология {{ inventory_hostname }}: РФ={{ ru_iface }} (IP={{ ru_ip }}, GW={{ ru_gw }}), Германия={{ de_iface }} (Static IP={{ de_static_ip }})"
 
-    # 6. Очистка старых файликов
+    # 6. Очистка старых конфигов
     - name: 8. Очистка устаревших и ошибочных конфигов Netplan
       ansible.builtin.file:
         path: "{{ item }}"
@@ -67,7 +67,7 @@
         - "/etc/netplan/99-ens8-static.yaml"
         - "/etc/netplan/90-override-ens3.yaml"
 
-    # 7. ПОЛНАЯ КОНФИГУРАЦИЯ ОБЕИХ КАРТ (ens3 с явным ru_ip + de_iface с de_static_ip)
+    # 7. ПОЛНАЯ КОНФИГУРАЦИЯ ОБЕИХ КАРТ С PBR B TABLE 254 (MAIN) ДЛЯ ЛОКАЛЬНЫХ СЕТЕЙ
     - name: 9. Создание единой полной конфигурации Netplan (РФ PBR + Германия)
       ansible.builtin.copy:
         dest: "/etc/netplan/99-german-routing.yaml"
@@ -90,7 +90,12 @@
                     table: 100
                 routing-policy:
                   - from: {{ ru_ip }}
+                    to: 10.0.0.0/8
+                    table: 254
+                    priority: 1000
+                  - from: {{ ru_ip }}
                     table: 100
+                    priority: 2000
               {{ de_iface }}:
                 dhcp4: false
                 dhcp6: false
@@ -111,7 +116,7 @@
       ansible.builtin.command:
         cmd: "netplan apply"
 
-    # Пауза для полной стабилизации стека systemd-networkd
+    # Пауза для полной стабилизации
     - name: 11. Пауза 3 секунды для инициализации сети
       ansible.builtin.pause:
         seconds: 3
@@ -123,14 +128,11 @@
         cmd: "ip route del default dev {{ ru_iface }}"
       failed_when: false
 
-# 10. Проверка немецкого IP (с самовосстановлением при задержках внешнего сайта)
+    # 10. Проверка немецкого IP
     - name: 13. Проверка внешнего немецкого IP
       ansible.builtin.shell:
         cmd: "curl -s -4 --connect-timeout 5 checkip.amazonaws.com"
       register: external_ip_check
-      until: external_ip_check.rc == 0
-      retries: 3
-      delay: 2
       changed_when: false
       when: not ansible_check_mode
 
