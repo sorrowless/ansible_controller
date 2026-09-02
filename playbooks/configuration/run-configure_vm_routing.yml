@@ -10,21 +10,18 @@
   gather_facts: true
 
   tasks:
-    # 1. Автоопределение интерфейса РФ сети (содержит публичный/РФ IP)
     - name: 1. Автоопределение основного интерфейса РФ сети (ru_iface)
       ansible.builtin.shell:
         cmd: "ip -4 -br addr show | awk '$2 == \"UP\" && $3 !~ /^10\\.99\\./ && $3 !~ /^10\\.10\\./ && $3 !~ /^10\\.110\\./ && $1 != \"lo\" {print $1; exit}'"
       register: ru_iface_search
       changed_when: false
 
-    # 2. Автоопределение немецкого интерфейса (ens4, ens8 и т.д.)
     - name: 2. Автоопределение немецкого интерфейса (de_iface)
       ansible.builtin.shell:
         cmd: "ip -br link show | awk -v ru='{{ ru_iface_search.stdout | trim }}' '$1 != \"lo\" && $1 != ru && $1 !~ /docker|veth|prom/ {print $1; exit}'"
       register: de_iface_search
       changed_when: false
 
-    # 3. Фиксация имен интерфейсов
     - name: 3. Фиксация динамических имен интерфейсов
       ansible.builtin.set_fact:
         ru_iface: "{{ ru_iface_search.stdout | trim }}"
@@ -35,14 +32,12 @@
         msg: "Немецкий сетевой интерфейс не найден на ВМ {{ inventory_hostname }}!"
       when: de_iface == ""
 
-    # 4. Извлечение IP и шлюза РФ сети
     - name: 5. Извлечение IP-адреса с {{ ru_iface }}
       ansible.builtin.shell:
         cmd: "ip -4 -br addr show dev {{ ru_iface }} | awk '{print $3}' | cut -d/ -f1"
       register: ru_ip_search
       changed_when: false
 
-    # 5. Расчет всех сетевых переменных
     - name: 6. Расчет статического немецкого IP и параметров РФ сети
       ansible.builtin.set_fact:
         de_static_ip: "10.99.0.{{ 10 + (inventory_hostname | regex_search('\\d+$') | int) }}"
@@ -53,7 +48,6 @@
       ansible.builtin.debug:
         msg: "Топология {{ inventory_hostname }}: РФ={{ ru_iface }} (IP={{ ru_ip }}, GW={{ ru_gw }}), Германия={{ de_iface }} (Static IP={{ de_static_ip }})"
 
-    # 6. Очистка старых конфигов
     - name: 8. Очистка устаревших и ошибочных конфигов Netplan
       ansible.builtin.file:
         path: "{{ item }}"
@@ -67,7 +61,6 @@
         - "/etc/netplan/99-ens8-static.yaml"
         - "/etc/netplan/90-override-ens3.yaml"
 
-    # 7. ПОЛНАЯ КОНФИГУРАЦИЯ ОБЕИХ КАРТ С PBR B TABLE 254 (MAIN) ДЛЯ ЛОКАЛЬНЫХ СЕТЕЙ
     - name: 9. Создание единой полной конфигурации Netplan (РФ PBR + Германия)
       ansible.builtin.copy:
         dest: "/etc/netplan/99-german-routing.yaml"
@@ -108,27 +101,23 @@
                 nameservers:
                   addresses:
                     - 1.1.1.1
+                    - 8.8.8.8
                     - 1.0.0.1
-                    - 77.88.8.8
 
-    # 8. Применение Netplan
     - name: 10. Применение Netplan
       ansible.builtin.command:
         cmd: "netplan apply"
 
-    # Пауза для полной стабилизации
     - name: 11. Пауза 3 секунды для инициализации сети
       ansible.builtin.pause:
         seconds: 3
       when: not ansible_check_mode
 
-    # 9. Принудительное удаление остатков дефолтного маршрута РФ из основной таблицы
     - name: 12. Удаление дефолтного маршрута РФ из основной таблицы
       ansible.builtin.command:
         cmd: "ip route del default dev {{ ru_iface }}"
       failed_when: false
 
-    # 10. Проверка немецкого IP
     - name: 13. Проверка внешнего немецкого IP
       ansible.builtin.shell:
         cmd: "curl -s -4 --connect-timeout 5 checkip.amazonaws.com"
@@ -136,7 +125,6 @@
       changed_when: false
       when: not ansible_check_mode
 
-    # 11. Результат
     - name: 14. Итоговый статус
       ansible.builtin.debug:
         msg: "Успех! {{ inventory_hostname }} (Германия {{ de_static_ip }} на {{ de_iface }}) -> Внешний немецкий IP: {{ external_ip_check.stdout | trim }}"
