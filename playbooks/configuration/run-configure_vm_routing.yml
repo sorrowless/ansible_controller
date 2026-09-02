@@ -53,13 +53,7 @@
         path: "{{ item }}"
         state: absent
       loop:
-        - "/etc/netplan/99-ens3-static.yaml"
-        - "/etc/netplan/99-ens3-dhcp.yaml"
-        - "/etc/netplan/99-ens4-dhcp.yaml"
-        - "/etc/netplan/99-ens4-static.yaml"
-        - "/etc/netplan/99-ens8-dhcp.yaml"
-        - "/etc/netplan/99-ens8-static.yaml"
-        - "/etc/netplan/90-override-ens3.yaml"
+        - "50-cloud-init.yaml"
 
     - name: 9. Создание единой полной конфигурации Netplan (РФ PBR + Германия)
       ansible.builtin.copy:
