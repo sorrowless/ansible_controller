@@ -18,8 +18,8 @@ grafana_cleanup_old_provisioning: true
 grafana_gitsync_enabled: true
 
 # Source repository
-grafana_dashboards_repo_url: "https://github.com/Jony321/grafana-dashboards"
-grafana_dashboards_repo_version: "feature/gitsync-migration"
+grafana_dashboards_repo_url: "https://github.com/oom-ag/grafana-dashboards"
+grafana_dashboards_repo_version: "main"
 grafana_gitsync_token: "{{ vault_grafana_dashboards_repo_token }}"
 
 grafana_sync_dashboards:
