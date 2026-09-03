@@ -1,5 +1,6 @@
 include tools/generated-playbooks.mk
 
+.DEFAULT_GOAL := help
 .PHONY: help prepare daemon sshconfig update-from-upstream generate-playbooks
 
 VENV := .venv
