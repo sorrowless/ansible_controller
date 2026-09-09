@@ -67,6 +67,9 @@ colo06 ansible_ip=185.192.23.115 ansible_domainname=colo06 server_type=proxy dom
 # Финский бесплатный прокси
 free_proxy ansible_ip=92.63.224.67 ansible_domainname=free_proxy server_type=free_proxy domainname=free_proxy provider=ishosting country=FIN ansible_user=root ansible_ssh_common_args='-o PreferredAuthentications=password -o PubkeyAuthentication=no'
 
+#ВМ под различные сервисы
+ru.ix.hyper01.shared-services.001 ansible_ip=185.126.92.26 server_type=shared_services provider=colocation country=RU
+
 # Продуктовые релеи (бывшие m9test-vm-001..007)
 ru.ix.hyper01.wx.001 ansible_ip=62.76.115.195 server_type=relay provider=colocation country=RU
 ru.ix.hyper01.wx.002 ansible_ip=62.76.115.196 server_type=relay provider=colocation country=RU
@@ -655,6 +658,7 @@ colo04
 colo05
 colo06
 free_proxy
+ru.ix.hyper01.shared-services.001
 ru.ix.hyper01.wx.007
 ru.ix.hyper01.wx.001
 ru.ix.hyper01.wx.002
