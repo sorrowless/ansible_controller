@@ -1159,3 +1159,6 @@ ru.ix.hyper11
 
 [german_nic:children]
 tg_proxy_hosts_v2
+
+[vikunja]
+ru.ix.hyper01.shared-services.001

@@ -1,0 +1,19 @@
+---
+# Образ и фиксированная версия
+vikunja_image_repo: "vikunja/vikunja"
+vikunja_image_tag: "2.6.0"
+
+# Домен и публичный URL сервиса
+vikunja_public_url: "https://todo.company.ru"
+
+# Секретный ключ (openssl rand -hex 32)
+vikunja_service_secret: "1b9d6bcdb87ebd59771e39320b9c3f33f95e30d1b9d6bcdb87ebd59771e39320"
+
+# Каталог на хосте для БД и файлов
+vikunja_data_dir: "/opt/vikunja"
+
+# Порт на хосте
+vikunja_listening_port: 80
+
+# Регистрация пользователей
+vikunja_enable_registration: "true"
