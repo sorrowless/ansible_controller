@@ -48,6 +48,11 @@
         - "{{ vikunja_data_dir | default('/opt/vikunja') }}/files"
         - "{{ vikunja_data_dir | default('/opt/vikunja') }}/db"
 
+    - name: Ensure Traefik docker network exists
+      community.docker.docker_network:
+        name: "{{ vikunja_docker_network | default('traefik_net') }}"
+        state: present
+
     - name: Ensure Vikunja container is running with pinned version
       community.docker.docker_container:
         name: vikunja
@@ -63,6 +68,6 @@
         volumes:
           - "{{ vikunja_data_dir | default('/opt/vikunja') }}/files:/app/vikunja/files:rw"
           - "{{ vikunja_data_dir | default('/opt/vikunja') }}/db:/db:rw"
-        published_ports:
-          - "{{ vikunja_listening_port | default('3456') }}:3456"
+        networks:
+          - name: "{{ vikunja_docker_network | default('traefik_net') }}"
         labels: "{{ vikunja_labels | default(omit) }}"

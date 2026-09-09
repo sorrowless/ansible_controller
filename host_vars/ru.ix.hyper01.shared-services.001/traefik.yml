@@ -1,0 +1,69 @@
+---
+traefik_swarm_cluster: false
+
+traefik_environment_vars:
+  - "CF_DNS_API_TOKEN={{ vault_cf_dns_api_token }}"
+
+traefik_docker_tag: "v3.6.6"
+
+traefik_docker_network_name: "traefik_net"
+traefik_docker_networks:
+  traefik_net:
+    name: "traefik_net"
+    driver: bridge
+
+traefik_ports:
+  - "80:80"
+  - "443:443"
+
+traefik_config_default:
+  checkNewVersion: true
+  api:
+    basePath: /traefik
+    dashboard: true
+    insecure: false
+
+  log:
+    level: ERROR
+
+  accesslog:
+    addInternals: true
+
+  entryPoints:
+    web:
+      address: :80
+      http:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+    websecure:
+      address: :443
+      http:
+        tls:
+          certResolver: acmeDNS
+    metrics:
+      address: :8888
+
+  certificatesResolvers:
+    acmeDNS:
+      acme:
+        email: "{{ traefik_acme_email | default('admin@openworld.bot') }}"
+        storage: /etc/traefik/ssl-certs/acme.json
+        dnsChallenge:
+          provider: cloudflare
+          resolvers:
+            - 1.1.1.1:53
+            - 8.8.8.8:53
+
+  providers:
+    docker:
+      endpoint: "unix:///var/run/docker.sock"
+      exposedByDefault: false
+      watch: true
+      network: "traefik_net"
+    file:
+      directory: "/etc/traefik/dynamic-conf"
+      watch: true
+
+traefik_config: {}

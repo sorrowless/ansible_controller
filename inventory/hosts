@@ -1132,6 +1132,7 @@ xray_monitoring_clients
 
 [traefik:children]
 monitoring_servers
+vikunja
 
 [xray_checker_servers]
 monitor.openworld.bot
