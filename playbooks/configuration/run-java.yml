@@ -5,7 +5,7 @@
 # > ./run-java.yml
 ---
 - name: Setup OpenJDK on target hosts
-  hosts: jenkins
+  hosts: java
   remote_user: root
 
   roles:

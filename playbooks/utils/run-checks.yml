@@ -1,0 +1,121 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+# Checks playbook
+#
+# > ./run-checks.yml
+---
+- name: Run host validation checks
+  hosts: checks
+  become: yes
+
+  tasks:
+    - name: Check URLs return HTTP 200
+      uri:
+        url: "{{ item }}"
+        method: GET
+        status_code: 200
+      loop: "{{ urls_to_check }}"
+      when: urls_to_check | length > 0
+      tags: urls
+
+    - name: Check TCP ports are reachable
+      wait_for:
+        host: "{{ item.host }}"
+        port: "{{ item.port }}"
+        state: started
+        timeout: 5
+      loop: "{{ tcp_checks }}"
+      when: tcp_checks | length > 0
+      tags: tcp
+
+    - name: Gather desired replicas for each service
+      command: docker service inspect {{ item }} --format '{% raw %}{{.Spec.Mode.Replicated.Replicas}}{% endraw %}'
+      register: desired_replicas
+      loop: "{{ swarm_services }}"
+      when: swarm_services | length > 0
+      changed_when: false
+      tags: swarm
+
+    - name: Count running tasks for each service
+      shell: docker service ps {{ item }} --filter "desired-state=running" --format '{% raw %}{{.ID}}{% endraw %}' | wc -l
+      register: running_tasks
+      loop: "{{ swarm_services }}"
+      when: swarm_services | length > 0
+      changed_when: false
+      tags: swarm
+
+    - name: Get current states of running tasks
+      shell: docker service ps {{ item }} --filter "desired-state=running" --format '{% raw %}{{.CurrentState}}{% endraw %}'
+      register: task_states
+      loop: "{{ swarm_services }}"
+      when: swarm_services | length > 0
+      changed_when: false
+      tags: swarm
+
+    - name: Assert services are healthy (desired replicas == running, no restarting/failed)
+      assert:
+        that:
+          - desired_replicas.results[idx].stdout | int > 0
+          - running_tasks.results[idx].stdout | int == desired_replicas.results[idx].stdout | int
+          - "'Restarting' not in task_states.results[idx].stdout"
+          - "'Failed' not in task_states.results[idx].stdout"
+          - "'Rejected' not in task_states.results[idx].stdout"
+        fail_msg: "Service {{ item }} is not healthy (desired replicas: {{ desired_replicas.results[idx].stdout }}, running: {{ running_tasks.results[idx].stdout }}, states: {{ task_states.results[idx].stdout }})"
+      loop: "{{ swarm_services }}"
+      loop_control:
+        index_var: idx
+      when: swarm_services | length > 0
+      tags: swarm
+
+    - name: Count matching lines in service logs
+      shell: docker service logs {{ item.service }} 2>&1 | grep -c "{{ item.regexp }}" || true
+      register: service_log_counts
+      loop: "{{ service_log_checks }}"
+      when: service_log_checks | length > 0
+      changed_when: false
+      tags: service_logs
+
+    - name: Assert service log matches do not exceed max_count
+      assert:
+        that:
+          - item.stdout | int <= item.item.max_count
+        fail_msg: >
+          Service '{{ item.item.service }}' has too many matching log lines
+          (found {{ item.stdout }}, max allowed {{ item.item.max_count }})
+      loop: "{{ service_log_counts.results }}"
+      when: service_log_checks | length > 0
+      tags: service_logs
+
+    - name: Ensure files exist before checking
+      stat:
+        path: "{{ item.path }}"
+      register: file_stat
+      loop: "{{ file_log_checks }}"
+      when: file_log_checks | length > 0
+      tags: file_logs
+
+    - name: Assert all files exist
+      assert:
+        that: item.stat.exists
+        fail_msg: "File {{ item.item.path }} does not exist"
+      loop: "{{ file_stat.results }}"
+      when: file_log_checks | length > 0
+      tags: file_logs
+
+    - name: Count matching lines in files
+      shell: grep -c "{{ item.regexp }}" "{{ item.path }}" || true
+      register: file_log_counts
+      loop: "{{ file_log_checks }}"
+      when: file_log_checks | length > 0
+      changed_when: false
+      tags: file_logs
+
+    - name: Assert file log matches do not exceed max_count
+      assert:
+        that:
+          - item.stdout | int <= item.item.max_count
+        fail_msg: >
+          File '{{ item.item.path }}' has too many matching lines
+          (found {{ item.stdout }}, max allowed {{ item.item.max_count }})
+      loop: "{{ file_log_counts.results }}"
+      when: file_log_checks | length > 0
+      tags: file_logs

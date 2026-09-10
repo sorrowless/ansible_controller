@@ -2,7 +2,7 @@
 #
 ---
 - name: Install MTGProxy to target hosts
-  hosts: mtgproxy_servers
+  hosts: mtgproxy
   remote_user: root
   become: yes
   roles:

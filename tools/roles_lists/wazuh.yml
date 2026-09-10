@@ -1,0 +1,4 @@
+---
+- src: https://github.com/one-mINd/ansible-wazuh.git
+  version: master
+  name: one_mind.wazuh

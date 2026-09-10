@@ -8,7 +8,7 @@
 # directory.
 ---
 - name: Install Rainloop web-client
-  hosts: mx
+  hosts: rainloop
   remote_user: root
   roles:
     - { role: sorrowless.rainloop, tags: ['rainloop'] }

@@ -6,7 +6,7 @@
 #
 ---
 - name: Configure cron
-  hosts: cron_hosts
+  hosts: cronjobs
 
   tasks:
     - name: Configure cronjobs

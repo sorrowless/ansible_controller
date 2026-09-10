@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Network Exporter
-  hosts: prometheus_network_exporters
+  hosts: network-exporter
   become: yes
   roles:
     - { role: ageres210784.prometheus_network_exporter }

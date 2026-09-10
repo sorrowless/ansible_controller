@@ -6,7 +6,7 @@
 #
 ---
 - name: Configure target servers
-  hosts: server_common
+  hosts: common
 
   roles:
     - { role: sorrowless.server_common, tags: ['common'] }

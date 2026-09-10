@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: alert_bot_cluster
+  hosts: alertbot
   become: yes
   become_user: root
   tasks:

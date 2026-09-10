@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: mongodb_servers
+  hosts: mongodb
   become: yes
   become_user: root
 

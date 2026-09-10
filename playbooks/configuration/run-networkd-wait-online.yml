@@ -8,7 +8,7 @@
 # directory.
 ---
 - name: Configure systemd-networkd-wait-online service
-  hosts: networkd_wait_online
+  hosts: networkd-wait-online
   become: yes
   become_user: root
 

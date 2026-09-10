@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: openvas_servers
+  hosts: openvas
   become: yes
   become_user: root
 

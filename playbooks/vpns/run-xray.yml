@@ -1,0 +1,17 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run xray on target nodes.
+# Modes (role sorrowless.xray):
+#   - xray_local_install: true  → official install-release.sh + systemd
+#   - xray_swarm_deploy defined → Docker Swarm
+#   - otherwise                 → docker compose
+#
+# > ./run-xray.yml
+
+---
+- name: Configure target servers
+  hosts: xray
+  become: yes
+  become_user: root
+  roles:
+    - { role: sorrowless.xray, tags: ['xray'] }

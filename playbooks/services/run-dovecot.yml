@@ -8,7 +8,7 @@
 # directory.
 ---
 - name: Install dovecot MDA
-  hosts: mx
+  hosts: dovecot
   remote_user: root
   roles:
     - { role: sorrowless.dovecot, tags: ['dovecot'] }

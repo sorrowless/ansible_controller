@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: vpn_bot_servers
+  hosts: vpn-bot
   become: yes
   become_user: root
 

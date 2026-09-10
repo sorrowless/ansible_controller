@@ -8,7 +8,7 @@
 #
 ---
 - name: Install a script for backup database
-  hosts: backup_hosts
+  hosts: dump-postgres-db
   become: true
   become_user: root
 

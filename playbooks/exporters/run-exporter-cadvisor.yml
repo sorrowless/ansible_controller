@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Cadvisor Exporter
-  hosts: prometheus_cadvisor_exporters
+  hosts: cadvisor-exporter
   become: yes
   roles:
     - { role: sorrowless.cadvisor, when: cadvisor_install is defined, tags: ["exporters", "cadvisor_exporter", "cadvisor"] }

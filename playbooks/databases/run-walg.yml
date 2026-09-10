@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Install and configure wal-g
-  hosts: postgresql_servers
+  hosts: postgresql
   remote_user: root
   become: yes
 

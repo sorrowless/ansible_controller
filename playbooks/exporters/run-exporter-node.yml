@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Node Exporter
-  hosts: prometheus_node_exporters
+  hosts: node-exporter
   become: yes
   roles:
     - { role: sorrowless.prometheus_node_exporter, tags: ["exporters", "node_exporter"] }

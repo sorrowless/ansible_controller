@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Install and configure wal-g
-  hosts: patroni_hosts
+  hosts: patroni
   remote_user: root
   become: yes
 

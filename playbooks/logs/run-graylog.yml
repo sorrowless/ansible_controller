@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Install and configure Graylog to the target machine
-  hosts: graylogs
+  hosts: graylog
   remote_user: root
   roles:
     - { name: sorrowless.graylog, tags: graylog }

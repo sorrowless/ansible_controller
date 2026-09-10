@@ -1,2 +1,4 @@
 ---
-- src: mikecher.ansible_prometheus_ssl_exporter
+- src: https://github.com/one-mINd/ansible_prometheus_ssl_exporter.git
+  version: master
+  name: one_mind.prometheus_ssl_exporter

@@ -2,7 +2,7 @@
 #
 ---
 - name: Install VPN server and create some client certs for it
-  hosts: wireguard_vpn_servers
+  hosts: wireguard
   remote_user: root
   become: yes
   roles:

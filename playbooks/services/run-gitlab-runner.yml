@@ -2,7 +2,7 @@
 #
 ---
 - name: Install gitlab-runner
-  hosts: gitlab_runner_servers
+  hosts: gitlab-runner
   remote_user: root
   become: yes
   roles:

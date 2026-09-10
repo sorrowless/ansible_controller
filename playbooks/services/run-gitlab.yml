@@ -2,7 +2,7 @@
 #
 ---
 - name: Install gitlab server
-  hosts: gitlab_servers
+  hosts: gitlab
   remote_user: root
   become: yes
   roles:

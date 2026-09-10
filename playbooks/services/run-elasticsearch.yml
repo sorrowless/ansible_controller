@@ -2,7 +2,7 @@
 #
 ---
 - name: Ensure elasticsearch running on hosts
-  hosts: elasticsearch_nodes
+  hosts: elasticsearch
   tasks:
   - name: Show distribution
     debug:

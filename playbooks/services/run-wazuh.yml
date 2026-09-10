@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
+#
+# Run it like usual executable script:
+#
+# > ./run-wazuh.yml
+#
+---
+- name: Setup wazuh
+  hosts: wazuh
+  become: true
+  roles:
+    - { role: one_mind.wazuh, tags: ['wazuh'] }

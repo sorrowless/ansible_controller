@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Install Squid on target nodes
-  hosts: squids
+  hosts: squid
   remote_user: root
   roles:
     - sorrowless.squid

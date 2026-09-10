@@ -85,3 +85,48 @@
             networks:
               keycloak_net:
                 name: keycloak_net
+
+    - name: Ensure users block
+      block:
+        - name: Get access token
+          ansible.builtin.uri:
+            url: "{{ keycloak_hostname }}/realms/{{ keycloak_realm }}/protocol/openid-connect/token"
+            method: POST
+            body:
+              client_id: "{{ keycloak_client_id }}"
+              client_secret: "{{ keycloak_client_secret }}"
+              grant_type: "client_credentials"
+            body_format: form-urlencoded
+          register: auth_response
+          no_log: true
+        - name: Extract token from response
+          ansible.builtin.set_fact:
+            keycloak_token: "{{ auth_response.json.access_token }}"
+          no_log: true
+
+        - name: "Ensure users"
+          community.general.keycloak_user:
+            auth_keycloak_url: "{{ keycloak_hostname }}"
+            token: "{{ keycloak_token }}"
+            realm: "{{ keycloak_realm }}"
+            username: "{{ item.username }}"
+            credentials:
+              - type: password
+                value: "{{ item.password | default('SuperPassword') }}"
+                temporary: "{{ item.passwordtmp | default(true) }}"
+            email: "{{ item.email | default(omit) }}"
+            firstName: "{{ item.firstName | default(omit) }}"
+            lastName: "{{ item.lastName | default(omit) }}"
+            enabled: "{{ item.enabled | default(true) }}"
+            emailVerified: "{{ item.emailVerified | default(true) }}"
+            state: "{{ item.state | default('present') }}"
+            attributes: "{{ item.attributes | default(omit) }}"
+            groups: "{{ item.groups | default(omit) }}"
+          loop: "{{ keycloak_users }}"
+          loop_control:
+            label: "{{ item.username }}"
+      delegate_to: localhost
+      become: false
+      tags:
+        - never
+        - users

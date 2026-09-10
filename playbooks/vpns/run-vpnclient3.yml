@@ -9,7 +9,7 @@
 
 ---
 - name: Setup openvpn3-client
-  hosts: openvpn3_clients
+  hosts: openvpn3
   become: true
   become_user: root
 

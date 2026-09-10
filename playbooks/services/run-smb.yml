@@ -6,7 +6,7 @@
 #
 ---
 - name: Setup smb server
-  hosts: samba_servers
+  hosts: smb
   gather_facts: false
 
   roles:

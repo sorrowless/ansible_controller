@@ -15,7 +15,7 @@
 #   -i <inventory_file>
 ---
 - name: Deploy ttrss to target host
-  hosts: websites
+  hosts: ttrss
   remote_user: root
 
   roles:

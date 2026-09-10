@@ -5,8 +5,8 @@
 # > ./run-ldap.yml
 #
 ---
-- name:   install openLdap
-  hosts:  openLdap_server 
+- name: install openLdap
+  hosts: ldap
   become: yes
 
   roles:

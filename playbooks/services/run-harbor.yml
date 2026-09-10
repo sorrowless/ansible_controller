@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Install and run Harbor
-  hosts: docker_registries
+  hosts: harbor
   become: true
   roles:
     - { role: one_mind.harbor_ansible_role, tags: ['harbor'] }

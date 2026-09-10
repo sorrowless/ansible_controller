@@ -1,0 +1,4 @@
+---
+- src: https://github.com/one-mINd/ansible-jitsi.git
+  version: master
+  name: one-mind.jitsi

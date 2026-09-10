@@ -12,7 +12,7 @@
 # directory.
 ---
 - name: Configure apprise
-  hosts: apprise
+  hosts: apprise-docker
   remote_user: root
   tasks:
     - name: Start apprise container

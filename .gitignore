@@ -11,3 +11,4 @@ daemon/__pycache__
 logs/
 mass_ansible_rename.sh
 update_inventory.py
+__pycache__

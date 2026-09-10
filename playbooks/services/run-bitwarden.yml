@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure Vaultwarden/Bitwarden server
-  hosts: bitwarden_servers
+  hosts: bitwarden
   remote_user: root
 
   roles:

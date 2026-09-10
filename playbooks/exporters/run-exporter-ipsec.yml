@@ -6,7 +6,7 @@
 # > ./run-exporter-ipsec.yml
 ---
 - name: Setup ipsec exporter
-  hosts: ipsec_exporters
+  hosts: ipsec-exporter
   become: yes
   tasks:
 

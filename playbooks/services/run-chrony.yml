@@ -9,7 +9,7 @@
 # frzk.chrony role default vars
 ---
 - name: Configure target servers
-  hosts: chrony_hosts
+  hosts: chrony
   become: yes
   remote_user: root
 

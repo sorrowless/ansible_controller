@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: xray_exporters
+  hosts: xray-exporter
   become: yes
   become_user: root
 
