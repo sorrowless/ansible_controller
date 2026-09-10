@@ -8,7 +8,7 @@
 #
 ---
 - name: Preconfigure Travis-CI deploy
-  hosts: travis_predeploy
+  hosts: travis-predeploy
   gather_facts: false
 
   tasks:

@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure AlertManager
-  hosts: monitoring_servers
+  hosts: alertmanager
   become: yes
   roles:
     - { role: sorrowless.prometheus_alertmanager, tags: ["server", "vm", "alerts"] }

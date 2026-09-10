@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: swarm_cron_servers
+  hosts: swarm-cron
   become: yes
   become_user: root
 

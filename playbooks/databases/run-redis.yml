@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: redis_servers
+  hosts: redis
   become: yes
   become_user: root
 

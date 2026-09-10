@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Grok Exporter
-  hosts: prometheus_grok_exporters
+  hosts: grok-exporter
   become: yes
   roles:
     - { role: sorrowless.grok_exporter, tags: ["exporters", "grok_exporter"] }

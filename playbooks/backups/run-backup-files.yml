@@ -1,7 +1,7 @@
 #!/usr/bin/env ansible-playbook
 ---
 - name: Backup files to s3 backets from target servers
-  hosts: backups_files_servers
+  hosts: backups-files
   remote_user: root
   become: yes
   roles:

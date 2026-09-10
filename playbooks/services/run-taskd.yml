@@ -6,7 +6,7 @@
 #
 ---
 - name: Configure target servers
-  hosts: taskd_servers
+  hosts: taskd
 
   roles:
     - { role: sorrowless.taskd, tags: ['taskd'] }

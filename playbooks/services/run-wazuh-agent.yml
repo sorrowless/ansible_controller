@@ -13,7 +13,7 @@
 
 ---
 - name: Deploy Wazuh Agent
-  hosts: wazuh_agent
+  hosts: wazuh-agent
 
   tasks:
   - name: Download wazuh agent

@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure VMAlert
-  hosts: monitoring_servers
+  hosts: vmalert
   become: yes
   roles:
     - { role: sorrowless.vmalert, tags: ["server", "vm", "vmalert"] }

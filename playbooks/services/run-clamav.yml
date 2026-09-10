@@ -6,7 +6,7 @@
 # > ./run-clamav.yml
 ---
 - name: Configure target servers
-  hosts: clamav_hosts
+  hosts: clamav
   become: true
   remote_user: root
 

@@ -2,7 +2,7 @@
 #
 ---
 - name: Install PowerDNS authoritative server
-  hosts: dns_server_nodes
+  hosts: pdns
   roles:
     - sorrowless.pdns
 

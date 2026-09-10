@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: docker_services
+  hosts: docker-services
   become: no
   become_user: root
 

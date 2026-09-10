@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: youtracks
+  hosts: youtrack
   remote_user: root
 
   pre_tasks:

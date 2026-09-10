@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: xray_checker_servers
+  hosts: xray-checker
   become: yes
   become_user: root
   roles:

@@ -7,7 +7,7 @@
 #
 ---
 - name: Configure target servers
-  hosts: yarns
+  hosts: yarn
 
   roles:
     - { role: sorrowless.yarn, tags: ['yarn'] }

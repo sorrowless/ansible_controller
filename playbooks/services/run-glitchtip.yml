@@ -2,7 +2,7 @@
 #
 ---
 - name: Install glitchtip
-  hosts: glitchtip_servers
+  hosts: glitchtip
   become: yes
   become_user: root
   vars:

@@ -1,19 +1,52 @@
-[server-common]
+[common]
 
 [iptables:children]
-server-common
+common
 
 [pwpolicy:children]
-server-common
+common
 
 [sshd:children]
-server-common
+common
 
 [sudoers:children]
-server-common
+common
 
 [atop:children]
-server-common
+common
 
 [docker_hosts:children]
-server-common
+common
+
+[os_version:children]
+common
+
+[networkd-wait-online:children]
+common
+
+[apt-dist-upgrade:children]
+common
+
+[apt-update:children]
+common
+
+[checks:children]
+common
+
+[command:children]
+common
+
+[desktop:children]
+common
+
+[ping:children]
+common
+
+[refresh-ssh-host-keys:children]
+common
+
+[restart-docker:children]
+common
+
+[update:children]
+common

@@ -60,33 +60,99 @@ cp host_vars/.examples/idp.domain.com/traefik.yml host_vars/myhost.example.com/
 
 ## Make
 
+Makefile предоставляет удобный интерфейс для запуска Ansible playbook'ов. Для интерактивного выбора используется `fzf`.
+
 ```bash
+make help
+````
+
+ ### Интерактивный запуск
+
+ При запуске `make` без аргументов открывается интерактивный `fzf`, в котором можно выбрать playbook:
+
+```
+make
+```
+
+ После выбора playbook последовательно предлагается выбрать:
+
+1. **Хосты** — только хосты, на которые выбранный playbook действительно может быть применён.
+2. **Теги** — теги, доступные в выбранном playbook.
+
+ В обоих списках поддерживается множественный выбор: используйте `Tab` для выбора нескольких элементов и `Enter` для подтверждения.
+
+ `Esc` позволяет отказаться от выбора и использовать `all`.
+
+ ### Запуск с параметрами
+
+ Playbook можно запускать напрямую, задав хосты и/или теги через переменные окружения:
+
+```
+HOST=ru01.example.com make traefik
+```
+
+ Для нескольких хостов:
+
+```
+HOST=ru01.example.com,us03.example.com make docker-services
+```
+
+ Для запуска только определённых тегов:
+
+```
+TAGS=users,iptables make some-playbook
+```
+
+ Можно одновременно указать несколько хостов и тегов:
+
+```
+HOST=ru01.example.com,us03.example.com \
+TAGS=users,iptables \
+make some-playbook
+```
+
+ Если `HOST` или `TAGS` не заданы, соответствующий параметр будет выбран интерактивно через `fzf`.
+
+ ### Доступные targets
+
+ | Target | Описание |
+| --- | --- |
+| `make` | Интерактивный выбор playbook, хостов и тегов |
+| `prepare` | Подготовка `uv`, `.venv` и зависимостей демона |
+| `daemon` | Запуск REST API провижининга |
+| `sshconfig` | Настройка SSH config на localhost |
+| `docker-services` | Деплой docker-services |
+| `traefik` | Деплой Traefik |
+| `update-from-upstream` | Обновление из upstream |
+| `generate-playbooks` | Генерация Make targets для Ansible playbook'ов |
+| `import-infra-to-sshconfig` | Импорт хостов из Ansible Controller в `~/.ssh/config` |
+
+ Полный список targets:
+
+```
 make help
 ```
 
-| Таргет | Описание |
-|--------|----------|
-| `prepare` | uv, `.venv`, зависимости демона |
-| `daemon` | REST API (Swagger: `/docs`) |
-| `sshconfig` | SSH config на localhost |
-| `docker-services` | Деплой docker-services |
-| `traefik` | Деплой Traefik |
+ ### Требования
 
-`fzf` нужен только если `HOST` не задан. Скрытые каталоги в `host_vars/` (`.examples` и т.п.) не попадают в выбор.
+ Для интерактивного режима требуется `fzf`:
 
-```bash
-make daemon
-DAEMON_HOST=0.0.0.0 DAEMON_PORT=9000 make daemon
-
-make docker-services                                    # fzf
-HOST=ru01.example.com make traefik
-HOST=ru01.example.com,us03.example.com make docker-services
-
-export HOST=router.example.com
-make traefik
+```
+brew install fzf
 ```
 
-Список хостов: `./tools/nodes_list.sh`.
+ При отсутствии `HOST` Makefile автоматически запускает `tools/select-hosts.sh`, который получает список фактических target-хостов выбранного playbook через `ansible-playbook --list-hosts`.
+
+ При отсутствии `TAGS` используется `tools/select-tags.sh`, который получает список тегов через `ansible-playbook --list-tags`.
+
+ После выбора playbook, хостов и тегов выполняется команда в следующем виде:
+
+```
+<playbook> -l <host(s)> -t <tag(s)>
+```
+
+ После успешного выполнения playbook автоматически запускается `./playbooks/utils/run-checks.yml` для выбранных хостов.
+
 
 ## Плейбуки
 
@@ -141,6 +207,40 @@ make daemon
 ```
 
 API и `curl`-примеры: [`daemon/readme.md`](daemon/readme.md), [`docs/guides/provisioner-daemon.md`](docs/guides/provisioner-daemon.md).
+
+## Динамический inventory
+
+Ansible inventory генерируется динамически с помощью [`inventory/hosts.py`](https://github.com/sorrowless/ansible_controller/blob/master/inventory/hosts.py).
+
+Группы хостов автоматически формируются на основе YAML-файлов в `inventory/host_vars/<host>/`. Например:
+
+```text
+inventory/host_vars/
+├── web-01/
+│   ├── nginx.yml
+│   └── docker.yml
+└── web-02/
+    └── nginx.yml
+````
+
+ создаст следующие группы:
+
+```
+[nginx]
+web-01
+web-02
+
+[docker]
+web-01
+```
+
+ Сгенерированный inventory объединяется со статическим inventory `inventory/hosts`. Существующие хосты, группы и переменные сохраняются, а дублирующиеся хосты и группы автоматически объединяются.
+
+ Посмотреть итоговый inventory можно командой:
+
+```
+ansible-inventory -i inventory/hosts.py --list
+```
 
 ## CI
 

@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure victoriametrics server
-  hosts: prometheus_servers
+  hosts: victoriametrics
   become: yes
   roles:
     - { role: sorrowless.victoriametrics, tags: ["victoriametrics", "server"] }

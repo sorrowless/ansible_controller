@@ -6,7 +6,7 @@
 # > ./run-minimal.yml
 #
 - name: Restart docker
-  hosts: iptables
+  hosts: restart-docker
   become: yes
   remote_user: root
 

@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Install Dante proxy to target servers
-  hosts: dantes
+  hosts: dante
   remote_user: root
 
   roles:

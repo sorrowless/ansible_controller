@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure VMSelect
-  hosts: monitoring_servers
+  hosts: vmselect
   become: yes
   roles:
     - { role: sorrowless.vmselect, tags: ["server", "vm", "vmselect"] }

@@ -8,7 +8,7 @@
 #
 ---
 - name: Install postgres-replica container
-  hosts: postgresql_servers
+  hosts: postgresql
   become: yes
   become_user: root
   vars:

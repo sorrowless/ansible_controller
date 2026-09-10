@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: wikijs-servers
+  hosts: wikijs
   become: yes
   become_user: root
 

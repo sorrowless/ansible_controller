@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure VMAgent
-  hosts: monitoring_servers
+  hosts: vmagent
   become: yes
   roles:
     - { role: sorrowless.vmagent, tags: ["server", "vm", "vmagent"] }

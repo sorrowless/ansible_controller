@@ -7,7 +7,7 @@
 #
 ---
 - name: Configure target servers
-  hosts: nodejs_servers
+  hosts: nodejs
 
   roles:
     - { role: sorrowless.nodejs, tags: ['nodejs'] }

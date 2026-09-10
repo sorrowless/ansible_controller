@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Run kafka on target servers
-  hosts: kafka_hosts
+  hosts: kafka
   become: yes
   remote_user: root
 

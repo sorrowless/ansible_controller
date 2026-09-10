@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Mysqld Exporter
-  hosts: prometheus_mysqld_exporters
+  hosts: mysqld-exporter
   become: yes
   roles:
     - { role: sorrowless.prometheus_mysqld_exporter, tags: ["exporters", "mysqld_exporter"] }

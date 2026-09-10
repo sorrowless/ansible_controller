@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure VLInsert
-  hosts: monitoring_servers
+  hosts: vlinsert
   become: yes
   roles:
     - { role: xolog.vlinsert, tags: ["server", "vl", "vlinsert"] }

@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Redis Exporter
-  hosts: prometheus_redis_exporters
+  hosts: redis-exporter
   become: yes
   roles:
     - { role: one_mind.prometheus_redis_exporter, tags: ["exporters", "redis_exporter"] }

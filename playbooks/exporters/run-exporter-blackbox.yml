@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Blackbox Exporter
-  hosts: prometheus_blackbox_exporters
+  hosts: blackbox-exporter
   become: yes
   roles:
     - { role: sorrowless.prometheus_blackbox_exporter, tags: ["exporters", "blackbox_exporter"] }

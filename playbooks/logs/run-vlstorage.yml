@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure VLStorage
-  hosts: monitoring_servers
+  hosts: vlstorage
   become: yes
   roles:
     - { role: xolog.vlstorage, tags: ["server", "vl", "vlstorage"] }

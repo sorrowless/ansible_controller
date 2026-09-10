@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Chrony Exporter
-  hosts: prometheus_chrony_exporters
+  hosts: chrony-exporter
   become: yes
   roles:
     - { role: xolog.prometheus_chrony_exporter, tags: ["exporters", "chrony_exporter"] }

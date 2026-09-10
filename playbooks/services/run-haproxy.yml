@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: haproxy_servers
+  hosts: haproxy
   become: yes
   become_user: root
 

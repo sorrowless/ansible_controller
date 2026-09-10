@@ -7,7 +7,7 @@
 
 ---
 - name: Configure target servers
-  hosts: 3x-ui-servers
+  hosts: 3x-ui
   become: yes
   become_user: root
 

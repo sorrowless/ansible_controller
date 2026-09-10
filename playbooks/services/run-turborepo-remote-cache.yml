@@ -2,7 +2,7 @@
 #
 ---
 - name: Install turborepo remote cache
-  hosts: turborepo_servers
+  hosts: turborepo-remote-cache
   become: yes
   become_user: root
   vars:

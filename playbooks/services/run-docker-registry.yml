@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: docker_registries
+  hosts: docker-registry
   remote_user: root
   tasks:
     - name: Ensure needed packages

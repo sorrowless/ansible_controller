@@ -15,7 +15,7 @@
 # > ./run-postgresql.yml
 ---
 - name: Install Postgresql server
-  hosts: postgresql_servers
+  hosts: postgresql
   remote_user: root
   become: yes
   roles:

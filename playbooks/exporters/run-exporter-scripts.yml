@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Scripts Exporter
-  hosts: prometheus_scripts_exporters
+  hosts: scripts-exporter
   become: yes
   roles:
     - { role: sorrowless.prometheus_scripts_exporter, tags: ["exporters", "scripts_exporter"] }

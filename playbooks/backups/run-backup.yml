@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: all
+  hosts: backup
   become: yes
   become_user: root
 

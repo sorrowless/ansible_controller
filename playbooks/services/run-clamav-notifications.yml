@@ -1,6 +1,6 @@
 ---
 - name: Run Clamav notifications
-  hosts: clamav_hosts
+  hosts: clamav-notifications
   become: true
 
   vars:

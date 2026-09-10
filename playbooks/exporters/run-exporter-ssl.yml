@@ -2,7 +2,7 @@
 #
 ---
 - name: configure ssl exporters
-  hosts: prometheus_ssl_exporters
+  hosts: ssl-exporter
   become: yes
   roles:
     - { role: one_mind.prometheus_ssl_exporter, tags: ["exporters", "ssl_exporter"]}

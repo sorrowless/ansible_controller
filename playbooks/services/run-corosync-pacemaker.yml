@@ -6,7 +6,7 @@
 # > .playbooks/services/run-corosync-pacemaker.yml
 ---
 - name: Configure HA
-  hosts: corosync_pacemaker_hosts
+  hosts: corosync-pacemaker
   remote_user: root
 
   roles:

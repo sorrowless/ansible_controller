@@ -9,7 +9,7 @@
 # directory.
 ---
 - name: Configure target servers
-  hosts: mariadb_servers
+  hosts: mariadb
   become: yes
   become_user: root
 

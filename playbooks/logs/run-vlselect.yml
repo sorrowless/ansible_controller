@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure VLSelect
-  hosts: monitoring_servers
+  hosts: vlselect
   become: yes
   roles:
     - { role: xolog.vlselect, tags: ["server", "vl", "vlselect"] }

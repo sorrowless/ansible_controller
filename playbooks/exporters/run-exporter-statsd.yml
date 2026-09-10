@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Statsd Exporter
-  hosts: prometheus_statsd_exporters
+  hosts: statsd-exporter
   become: yes
   roles:
     - { role: sorrowless.prometheus_statsd_exporter, tags: ["exporters", "statsd_exporter"] }

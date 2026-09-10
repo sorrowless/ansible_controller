@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure VMStorage
-  hosts: monitoring_servers
+  hosts: vmstorage
   become: yes
   roles:
     - { role: sorrowless.vmstorage, tags: ["server", "vm", "vmstorage"] }

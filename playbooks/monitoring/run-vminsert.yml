@@ -2,7 +2,7 @@
 #
 ---
 - name: Install and configure VMInsert
-  hosts: monitoring_servers
+  hosts: vminsert
   become: yes
   roles:
     - { role: sorrowless.vminsert, tags: ["server", "vm", "vminsert"] }

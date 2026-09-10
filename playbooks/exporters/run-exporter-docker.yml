@@ -2,7 +2,7 @@
 #
 ---
 - name: Install docker-exporter
-  hosts: prometheus_cadvisor_exporters
+  hosts: docker-exporter
   become: yes
   become_user: root
   tasks:

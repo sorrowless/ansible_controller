@@ -2,7 +2,7 @@
 #
 ---
 - name: Install ipmi exporters
-  hosts: prometheus_ipmi_exporters
+  hosts: ipmi-exporter
   become: yes
   roles:
     - { role: andrewgodgivens.ansible_prometheus_ipmi_exporter, tags: ["exporters", "ipmi_exporter"]}

@@ -2,7 +2,7 @@
 #
 ---
 - name: Install davical to target hosts
-  hosts: davical_servers
+  hosts: davical
   remote_user: root
   become: yes
   roles:

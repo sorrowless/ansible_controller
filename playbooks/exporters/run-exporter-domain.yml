@@ -2,7 +2,7 @@
 #
 ---
 - name: Setup Domain Exporter
-  hosts: prometheus_domain_exporters
+  hosts: domain-exporter
   become: yes
   roles:
     - { role: sorrowless.prometheus_domain_exporter, tags: ["exporters", "domain_exporter"] }

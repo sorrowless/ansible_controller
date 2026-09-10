@@ -2,7 +2,7 @@
 #
 ---
 - name: Deploy Nexus Repository in Docker
-  hosts: nexus
+  hosts: sonoma-nexus
   become: yes
   vars:
     nexus_env:
