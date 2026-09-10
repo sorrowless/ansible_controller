@@ -14,6 +14,9 @@ vikunja_docker_network: "traefik_net"
 # Admin user first registration
 vikunja_enable_registration: "false"
 
+vikunja_extra_env:
+  VIKUNJA_SERVICE_TIMEZONE: "Europe/Moscow"
+
 vikunja_labels:
   traefik.enable: "true"
   traefik.docker.network: "traefik_net"

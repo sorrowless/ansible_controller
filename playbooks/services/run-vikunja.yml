@@ -59,12 +59,13 @@
         image: "{{ vikunja_image_repo | default('vikunja/vikunja') }}:{{ vikunja_image_tag }}"
         state: started
         restart_policy: unless-stopped
-        env:
-          VIKUNJA_SERVICE_PUBLICURL: "{{ vikunja_public_url }}"
-          VIKUNJA_SERVICE_SECRET: "{{ vikunja_service_secret }}"
-          VIKUNJA_SERVICE_ENABLEREGISTRATION: "{{ vikunja_enable_registration | default('false') }}"
-          VIKUNJA_DATABASE_TYPE: "sqlite"
-          VIKUNJA_DATABASE_PATH: "/db/vikunja.db"
+        env: "{{ {
+            'VIKUNJA_SERVICE_PUBLICURL': vikunja_public_url,
+            'VIKUNJA_SERVICE_SECRET': vikunja_service_secret,
+            'VIKUNJA_SERVICE_ENABLEREGISTRATION': vikunja_enable_registration | default('false') | string,
+            'VIKUNJA_DATABASE_TYPE': 'sqlite',
+            'VIKUNJA_DATABASE_PATH': '/db/vikunja.db'
+          } | combine(vikunja_extra_env | default({})) }}"
         volumes:
           - "{{ vikunja_data_dir | default('/opt/vikunja') }}/files:/app/vikunja/files:rw"
           - "{{ vikunja_data_dir | default('/opt/vikunja') }}/db:/db:rw"
