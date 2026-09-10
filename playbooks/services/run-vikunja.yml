@@ -1,0 +1,73 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run Vikunja with embedded SQLite
+#
+# > ./run-vikunja.yml
+
+---
+- name: Deploy Vikunja standalone with SQLite
+  hosts: vikunja
+  become: yes
+  become_user: root
+  tasks:
+    - name: Ensure strict image tag is defined (disallow 'latest')
+      ansible.builtin.assert:
+        that:
+          - vikunja_image_tag is defined
+          - vikunja_image_tag != 'latest'
+          - vikunja_image_tag | length > 0
+        fail_msg: |
+          'vikunja_image_tag' must be explicitly set to a specific version (e.g. '0.24.6').
+          Using 'latest' or leaving it empty is strictly forbidden in production!
+
+    - name: Check if vikunja public URL is defined
+      ansible.builtin.assert:
+        that: vikunja_public_url is defined
+        fail_msg: |
+          'vikunja_public_url' variable is not defined. Example: "https://todo.domain.ru"
+
+    - name: Check if vikunja service secret is defined
+      ansible.builtin.assert:
+        that: vikunja_service_secret is defined
+        fail_msg: |
+          'vikunja_service_secret' variable is not defined. Generate with: `openssl rand -hex 32`
+
+    - name: Ensure python3-docker package is installed
+      ansible.builtin.package:
+        name: python3-docker
+        state: present
+
+    - name: Ensure host directories for Vikunja exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "1000"
+        group: "1000"
+        mode: "0755"
+      loop:
+        - "{{ vikunja_data_dir | default('/opt/vikunja') }}/files"
+        - "{{ vikunja_data_dir | default('/opt/vikunja') }}/db"
+
+    - name: Ensure Traefik docker network exists
+      community.docker.docker_network:
+        name: "{{ vikunja_docker_network | default('traefik_net') }}"
+        state: present
+
+    - name: Ensure Vikunja container is running with pinned version
+      community.docker.docker_container:
+        name: vikunja
+        image: "{{ vikunja_image_repo | default('vikunja/vikunja') }}:{{ vikunja_image_tag }}"
+        state: started
+        restart_policy: unless-stopped
+        env:
+          VIKUNJA_SERVICE_PUBLICURL: "{{ vikunja_public_url }}"
+          VIKUNJA_SERVICE_SECRET: "{{ vikunja_service_secret }}"
+          VIKUNJA_SERVICE_ENABLEREGISTRATION: "{{ vikunja_enable_registration | default('false') }}"
+          VIKUNJA_DATABASE_TYPE: "sqlite"
+          VIKUNJA_DATABASE_PATH: "/db/vikunja.db"
+        volumes:
+          - "{{ vikunja_data_dir | default('/opt/vikunja') }}/files:/app/vikunja/files:rw"
+          - "{{ vikunja_data_dir | default('/opt/vikunja') }}/db:/db:rw"
+        networks:
+          - name: "{{ vikunja_docker_network | default('traefik_net') }}"
+        labels: "{{ vikunja_labels | default(omit) }}"

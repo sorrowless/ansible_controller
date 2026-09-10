@@ -1,0 +1,24 @@
+---
+vikunja_image_repo: "vikunja/vikunja"
+vikunja_image_tag: "2.6.0"
+
+vikunja_public_url: "https://tracker.openworld.bot"
+
+# App secret(openssl rand -hex 32)
+vikunja_service_secret: "{{ vault_vikunja_service_secret | default('') }}"
+
+vikunja_data_dir: "/opt/vikunja"
+
+vikunja_docker_network: "traefik_net"
+
+# Admin user first registration
+vikunja_enable_registration: "false"
+
+vikunja_labels:
+  traefik.enable: "true"
+  traefik.docker.network: "traefik_net"
+  traefik.http.routers.vikunja.rule: "Host(`tracker.openworld.bot`)"
+  traefik.http.routers.vikunja.entrypoints: "websecure"
+  traefik.http.routers.vikunja.tls: "true"
+  traefik.http.routers.vikunja.tls.certresolver: "acmeDNS"
+  traefik.http.services.vikunja.loadbalancer.server.port: "3456"
